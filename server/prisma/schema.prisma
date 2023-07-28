@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  username     String        @unique
+  name         String
+  email        String        @unique
+  password     String
+  created_at   DateTime      @default(now())
+  sales        Sale[]
+  RefreshToken RefreshToken?
+}
+
+model Sale {
+  id          String    @id @default(uuid())
+  userId      String
+  productId   String
+  client_name String
+  quantity    Float
+  paid        Float
+  date        String
+  discount    Boolean
+  created_at  DateTime  @default(now())
+  User        User      @relation(fields: [userId], references: [id])
+  Product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  Payment     Payment[]
+}
+
+model Product {
+  id                 String   @id @default(uuid())
+  name               String   @unique
+  code               String   @unique
+  discountPercentage Int
+  price              Float
+  bannerUrl          String
+  created_at         DateTime @default(now())
+  sales              Sale[]
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  description String
+  buyerName   String
+  price       Float
+  quantity    Float
+  date        String
+  created_at  DateTime @default(now())
+  userId      String
+}
+
+model Payment {
+  id           String   @id @default(uuid())
+  payment_type String
+  amount       Float
+  description  String
+  date         DateTime
+  created_at   DateTime @default(now())
+  sale_id      String
+
+  sale Sale @relation(fields: [sale_id], references: [id])
+
+  @@map("payment")
+}
+
+model RefreshToken {
+  id        String @id @default(uuid())
+  expiresIn Int
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
+
+  @@map("refresh_token")
+}
