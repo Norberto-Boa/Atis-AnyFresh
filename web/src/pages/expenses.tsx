@@ -1,4 +1,5 @@
 import { TableRow } from "@/components/TableRow";
+import { api } from "@/services/api";
 import { getToken } from "@/utils/getToken";
 import { Inter } from "@next/font/google";
 import axios from "axios";
@@ -21,17 +22,11 @@ export default function Expenses() {
   
 
   useEffect(() => {
-    const token = getToken();
-
-    axios.get(`http://localhost:3333/expenses`, {
-      headers: {
-        Authorization: token
-      }
-    })
+    api.get(`http://localhost:3333/expenses`)
       .then((res) => {
         setExpenses(res.data);
       })
-  },[])
+  }, []);
 
   return (
     <div

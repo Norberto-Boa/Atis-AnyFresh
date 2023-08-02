@@ -1,5 +1,15 @@
 export function getToken() {
+  
+  if (typeof window === "undefined") {
+    return null
+  }
+  
   const bearerToken = localStorage.getItem("token")
+  const token = bearerToken?.split(' ');
 
-  return bearerToken;
+  if (!token) {
+    return null
+  }
+
+  return token[1];
 }

@@ -6,6 +6,14 @@ import { SalesCard } from "@/components/SalesCard";
 import { CreateSaleDialog } from "@/components/CreateSaleDialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { api } from "@/services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from '../redux/store';
+import { fetchSales } from "@/redux/sales/salesActions";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+import { getAPIclient } from "@/services/getApiClient";
+import { AuthOnServerSide } from "@/services/serverSideAuth";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -36,15 +44,12 @@ interface res{
 
 export default function Sales() {
   
-  const [sales, setSales] = useState<res[]>([]);
+  const { sales, loading } = useSelector((state: RootState) => state.sales);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    axios.get(`http://localhost:3333/sales`)
-      .then(res => {
-        setSales(res.data);
-      }).catch(err => console.log(err));
-
-  },[])
+    dispatch(fetchSales());
+  },[dispatch]);
 
   return (
     <div
@@ -105,7 +110,10 @@ export default function Sales() {
         <div
           className="flex gap-4"
         >
-          {sales.map((sale, i) => {
+
+          {
+            sales ?
+            sales.map((sale, i) => {
             return (
               <SalesCard
                 id={sale.id}
@@ -120,7 +128,10 @@ export default function Sales() {
                 key={sale.id}
               />
             )
-          })}
+            })
+              :
+            <p>There is no sale </p>
+        }
          
         </div>
       </div>
@@ -128,3 +139,6 @@ export default function Sales() {
   )
 }
 
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return AuthOnServerSide(ctx);
+}

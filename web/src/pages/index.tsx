@@ -1,22 +1,55 @@
-import { Inter } from 'next/font/google'
-import { Plus, Tag } from "phosphor-react"
+import { GetServerSideProps } from "next";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
+import { Inter } from 'next/font/google';
 import * as Dialog from "@radix-ui/react-dialog";
+import { parseCookies } from "nookies";
+
+import { api } from "@/services/api";
+import { AuthContext } from "@/context/authContext";
+
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
 import { CreateSaleDialog } from "@/components/CreateSaleDialog";
+import { Plus, Tag } from "phosphor-react";
+import { getAPIclient } from "@/services/getApiClient";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { AuthOnServerSide } from "@/services/serverSideAuth";
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
 
-  
+  // const dispacth = useDispatch<AppDispatch>();
+
+
+  // useEffect(() => {
+  //   const token = getToken();
+  //   if (!token) {
+  //     router.push("/login");
+  //     return;
+  //   }
+
+  //   const decodedToken = parseJwt(token);
+  //   const data = {
+  //     id: decodedToken.sub,
+  //     name: decodedToken.name,
+  //     exp: decodedToken.exp
+  //   }
+
+  //   dispacth(setCredentials(data));
+    
+  // })
 
 
   return (
     <div className={`ml-80 pt-16 text-white ${inter.className}`} >
       <div className="p-16">
         <div>
-          <h1 className={`${inter.className} text-2xl font-bold`}>Dona Mena, seja bem vindo a ATIS</h1>
+          <h1 className={`${inter.className} text-2xl font-bold`}>Dona {user?.name}, seja bem vindo a ATIS</h1>
           <span className={` ${inter.className} leading-tight font-semibold text-zinc-500 text-lg`}>A plata forma para gerir o teu business</span>
         </div>
 
@@ -125,4 +158,8 @@ export default function Home() {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return AuthOnServerSide(ctx);
 }

@@ -1,39 +1,49 @@
-import { baseUrl } from "@/utils/axios";
-import { Inter } from 'next/font/google';
-import { FormEvent } from "react";
-import axios from 'axios';
 import { useRouter } from "next/router";
+import { Inter } from 'next/font/google';
+import { useContext, useEffect, useState } from "react";
+import { IUserLogin } from "@/@types/userTypes";
+import { useForm } from 'react-hook-form';
+import { AuthContext } from "@/context/authContext";
 
 const inter = Inter({ subsets: ['latin'] })
 
-
-
 export default function Login() {
 
+  const { register, handleSubmit } = useForm();
+  const { signIn, isAutheticated } = useContext(AuthContext);
+  
   const router = useRouter();
 
-  async function handlelogin(e: FormEvent) {
-    e.preventDefault();
+  async function handleLogin(data : IUserLogin) {
+    await signIn(data);
+  }
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
 
-    try {
-      await axios.post(`http://localhost:3333/login`, {
-        username: data.username,
-        password: data.password
-      }).then((res) => {
-        if (res.data.status === 400) {
-          return
-        } else {
-          localStorage.setItem("token", `Bearer ${res.data.token}`);
-          router.push('/');
-        }
-      })
-    } catch (error) {
-      return error
+
+  useEffect(() => {
+    if (isAutheticated) {
+      router.push('/');
     }
-  }  
+
+  })
+
+  // async function handlelogin(e: FormEvent) {
+  //   e.preventDefault();
+
+  //   const formData = new FormData(e.target as HTMLFormElement);
+  //   const data = Object.fromEntries(formData);
+
+  //   const userCredentials : IUserLogin = {
+  //     username: data.username.toString(),
+  //     password: data.password.toString()
+  //   }
+
+  //   const auth = await dispatch(userLogin(userCredentials));
+
+  //   if (auth.meta.requestStatus === 'fulfilled') {
+  //     router.push("/");
+  //   }
+  // }  
 
   return (
     <div
@@ -54,7 +64,7 @@ export default function Login() {
           <form
             action="#"
             className="space-y-4 md:space-y-6"
-            onSubmit={handlelogin}
+            onSubmit={handleSubmit(handleLogin)}
           >
             <div>
               <label
@@ -64,6 +74,7 @@ export default function Login() {
                 Nome do Usuario
               </label>
               <input
+                {...register("username")}
                 type="text"
                 name="username" id="username"
                 placeholder="Example: Dona_Mena"
@@ -80,6 +91,7 @@ export default function Login() {
                 Password
               </label>
               <input
+                {...register("password")}
                 type="password"
                 name="password" id="password"
                 placeholder="••••••••••"

@@ -126,12 +126,13 @@ const SalesCardDialog = ({id, name, price, product, quantity, date, paid} : Sale
           {format(date, 'dd/MM/yyyy')}
         </span>
       
-        <button
+        <Link
+          href={`sale/${id}/edit`}
           className="w-full border-2 border-blue-500 text-blue-500 mt-4 px-3 py-4 rounded transition-all duration-700 hover:bg-blue-600 hover:text-white uppercase font-bold flex items-center gap-3 justify-center flex-row-reverse"
         >
           <PencilSimple size={24} weight="bold"/>
           Editar 
-        </button>
+        </Link>
         
         <Link
           href={`payment/${id}/create`}

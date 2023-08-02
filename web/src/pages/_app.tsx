@@ -1,48 +1,51 @@
-import { useRouter } from "next/router"
 import { Navbar } from "@/components/Navbar"
 import { Sidebar } from "@/components/Sidebar"
 import '@/styles/globals.css'
-import { checkJwt } from "@/utils/checkJwt"
-import { parseJwt } from "@/utils/parsejwt"
 import type { AppProps } from 'next/app'
-import { useEffect, useState } from "react"
+import { AuthProvider } from "@/context/authContext";
+import { Provider } from "react-redux";
+import  store  from "@/redux/store";
 
 
 export default function App({ Component, pageProps }: AppProps) {
 
-  const [authenticated, setAuthenticated] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    const bearerToken = localStorage.getItem("token")
-    const [, token] = bearerToken?.split(" ");  
+  // useEffect(() => {
+  //   const token = getToken();
     
-    if (token === undefined || null) {
-      setAuthenticated(false);
-    } else {
-      const decodedToken = parseJwt(token);
-      const isLogged = checkJwt(decodedToken)
-      if (!isLogged) {
-        router.push("/login")
-      }
-      setAuthenticated(isLogged);
-    }
+  //   if (token === null) {
+  //     setAuthenticated(false);
+  //     router.push("/login");
+  //     return;
+  //   }
 
-  },[router])
+  //   const decodedToken = parseJwt(token);
+  //   const isLogged = checkJwt(decodedToken)
+  //   if (!isLogged) {
+  //     router.push("/login")
+  //   }
+
+    
+  //   const data = {
+  //     id: decodedToken.sub,
+  //     name: decodedToken.name,
+  //     exp: decodedToken.exp
+  //   }
+    
+
+  //   setAuthenticated(isLogged);
+    
+
+
+  // },[router])
 
   return (
-    <div>
-      {
-        authenticated ? 
-          <div>
-            <Navbar />
-            <Sidebar />   
-          </div> : <></>
-          
-      }
-      
-      <Component {...pageProps} />
-    </div>
+    <AuthProvider>
+      <Provider store={store}>
+          <Navbar />
+          <Sidebar />
+          <Component {...pageProps} />
+      </Provider>
+    </AuthProvider>
   )
     
 }

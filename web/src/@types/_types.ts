@@ -4,3 +4,8 @@ export type NextPageWithLayout = NextPage & {
   getLayout: (page: ReactElement) => ReactNode
   navbarLogo?: string
 }
+
+export interface ProductData{
+  id: string;
+  name: string;
+}

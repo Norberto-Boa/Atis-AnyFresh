@@ -1,6 +1,10 @@
+import { AuthContext } from "@/context/authContext";
+import { RootState } from "@/redux/store";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { House } from "phosphor-react";
+import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 const roboto = Roboto({ weight: "500", subsets: ["latin"] });
 
@@ -13,8 +17,10 @@ const links = [
 
 
 const Sidebar = () => {
+  const { isAutheticated } = useContext(AuthContext);
+
   return (
-    <div className="bg-slate-900 lg:w-80 min-h-screen fixed lg:top-16">
+    <div className={`bg-slate-900 lg:w-80 min-h-screen fixed lg:top-16 ${isAutheticated ? "block" : "hidden"}`}>
       <div className="px-8 py-6">
         <h1 className={`${roboto.className} text-base mb-4`}>Menu</h1>
 
