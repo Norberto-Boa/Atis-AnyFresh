@@ -16,7 +16,7 @@ class getSaleController{
     }
 
 
-    return res.status(200).json({ sale });
+    return res.status(200).json(sale);
   }
 }
 

@@ -5,6 +5,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { AuthOnServerSide } from "@/services/serverSideAuth";
+import { GetServerSideProps } from "next";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -81,4 +83,13 @@ export default function Products() {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  AuthOnServerSide(ctx);
+  return {
+    props: {
+      
+    }
+  }
 }

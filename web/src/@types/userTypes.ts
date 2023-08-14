@@ -39,7 +39,7 @@ export interface salesResponse{
     price: number,
     created_at: string
   },
-  Payment: {
+  Payment?: {
     amount: number,
     payment_type: string,
   }[],

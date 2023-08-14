@@ -1,47 +1,32 @@
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Input } from "./Input";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import axios from "axios";
 import { parseJwt } from "@/utils/parsejwt";
+import { ProductInput } from "./productInput";
+import { IProductCreate } from "@/@types/inputTypes";
+import { api } from "@/services/api";
+import { parseCookies } from "nookies";
 
 
 
 const CreateProductDialog = () => {
-
+  const { register, handleSubmit } = useForm<IProductCreate>();
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    code: "",
-    discountPercentage: 0,
-    price: 0,
-    bannerUrl: ""
-  });
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({...prevFormData, [name]: value}))
-  }
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>){
-    e.preventDefault();
-
-    const bearerToken = localStorage.getItem("token");
-    const [, token] = bearerToken?.split(" ");
+  const handleProductCreation = async(data : IProductCreate) =>{
+    const {['atis.token']: token} = parseCookies();
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub;
 
     try {
-      await axios.post(`http://localhost:3333/product`, {
-        name: formData.name, 
-        code: formData.code,
-        price: Number(formData.price),
-        discountPercentage: Number(formData.discountPercentage),
-        bannerUrl: formData.bannerUrl
+      await api.post(`/product`, {
+        name: data.name, 
+        code: data.code,
+        price: Number(data.price),
+        discountPercentage: Number(data.discountPercentage),
+        bannerUrl: data.bannerUrl
       }, {
         headers: {
-          Authorization: token,
           user: id
         }
       }).then(() => {
@@ -67,7 +52,7 @@ const CreateProductDialog = () => {
         </Dialog.Title>
 
         <form action=""
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(handleProductCreation)}
         >
 
 
@@ -81,7 +66,10 @@ const CreateProductDialog = () => {
               Name
             </label>
             
-            <Input onChange={handleChange} name="name" id="name" type="text"/>
+            <ProductInput 
+            label="name"
+            register={register} 
+            id="name" type="text"/>
           </div>
 
           <div
@@ -94,7 +82,10 @@ const CreateProductDialog = () => {
               Code
             </label>
             
-            <Input onChange={handleChange} name="code" id="code" type="text"/>
+            <ProductInput 
+            label="code"
+            register={register} 
+            name="code" id="code" type="text"/>
           </div>
 
           <div
@@ -107,7 +98,10 @@ const CreateProductDialog = () => {
               Price
             </label>
             
-            <Input onChange={handleChange} name="price" id="price" type="number"/>
+            <ProductInput 
+            label="price"
+            register={register} 
+            name="price" id="price" type="number"/>
           </div>
 
           <div
@@ -120,7 +114,10 @@ const CreateProductDialog = () => {
               Discount (%)
             </label>
             
-            <Input onChange={handleChange} name="discountPercentage" id="discountPercentage" type="number"/>
+            <ProductInput 
+            label="discountPercentage"
+            register={register} 
+            name="discountPercentage" id="discountPercentage" type="number"/>
           </div>
           
           <div
@@ -133,7 +130,10 @@ const CreateProductDialog = () => {
               Banner
             </label>
             
-            <Input onChange={ handleChange} name="bannerUrl" id="bannerUrl" type="text"/>
+            <ProductInput 
+            label="bannerUrl"
+            register={register}
+             name="bannerUrl" id="bannerUrl" type="text"/>
           </div>
 
           <button

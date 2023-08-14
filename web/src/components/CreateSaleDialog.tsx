@@ -1,11 +1,15 @@
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { Input } from "./Input";
 import { FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { Check } from "phosphor-react";
 import { parseJwt } from "@/utils/parsejwt";
+import { SaleInput } from "./SaleInput";
+import { useForm } from "react-hook-form";
+import { ISaleCreate } from "@/@types/inputTypes";
+import { parseCookies } from "nookies";
+import { api } from "@/services/api";
 
 interface products{
   id: string;
@@ -13,7 +17,7 @@ interface products{
 }
 
 const CreateSaleDialog = () => {
-
+  const { register, handleSubmit } = useForm<ISaleCreate>();
   const router = useRouter();
 
   const [hasDiscount, setHasDiscount] = useState(false)
@@ -26,20 +30,14 @@ const CreateSaleDialog = () => {
       });
   });
   
-  async function handleCreateProduct(e: FormEvent) {
-    e.preventDefault();
-
-    const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
-
-    const bearerToken = localStorage.getItem("token")
-    const [, token] = bearerToken?.split(" ");
+  async function handleCreateProduct(data : ISaleCreate) {
+    const { ["atis.token"] : token} = parseCookies();
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub
 
 
     try {
-      await axios.post(`http://localhost:3333/sale`, {
+      await api.post(`http://localhost:3333/sale`, {
         client_name: data.client_name,
         productId: data.product,
         quantity: Number(data.quantity),
@@ -48,13 +46,11 @@ const CreateSaleDialog = () => {
         discount: hasDiscount
       }, {
         headers: {
-          Authorization : `${token}`,
           user: `${id}`
         },
 
       }).then((res) => {
         alert('Anuncio criado');
-        
       });
       
 
@@ -79,7 +75,7 @@ const CreateSaleDialog = () => {
         </Dialog.Title>
 
         <form action=""
-          onSubmit={handleCreateProduct}
+          onSubmit={handleSubmit(handleCreateProduct)}
         >
 
           <div
@@ -93,6 +89,7 @@ const CreateSaleDialog = () => {
             </label>
             
             <select
+              {...register('product')}
               name="product" id="product"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full"
             >
@@ -117,7 +114,10 @@ const CreateSaleDialog = () => {
               Nome do cliente
             </label>
             
-            <Input name="client_name" id="client_name" type="text"/>
+            <SaleInput
+            label="client_name"
+            register={register}
+            name="client_name" id="client_name" type="text"/>
           </div>
 
 
@@ -131,7 +131,10 @@ const CreateSaleDialog = () => {
               Quantidade
             </label>
             
-            <Input name="quantity" id="quantity" type="number"/>
+            <SaleInput
+            label="quantity"
+            register={register}
+            name="quantity" id="quantity" type="number"/>
           </div>
 
           <div
@@ -144,7 +147,10 @@ const CreateSaleDialog = () => {
               Valor pago
             </label>
             
-            <Input name="paid" id="paid" type="number"/>
+            <SaleInput
+            label="paid"
+            register={register}
+            name="paid" id="paid" type="number"/>
           </div>
 
           <div
@@ -157,7 +163,9 @@ const CreateSaleDialog = () => {
               Data
             </label>
             
-            <Input
+            <SaleInput
+              label="date"
+              register={register}
               name="date" id="date" type="date"
             />
           </div>

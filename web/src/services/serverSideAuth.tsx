@@ -5,17 +5,10 @@ function AuthOnServerSide(ctx: GetServerSidePropsContext) {
   const { ['atis.token']: token } = parseCookies(ctx);
 
   if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false
-      }
-    }
+    return false
   }
 
-  return {
-    props: {}
-  }
+  return true;
 }
 
 export { AuthOnServerSide };

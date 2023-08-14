@@ -1,5 +1,5 @@
-import { GetServerSideProps } from "next";
-import { useContext, useEffect } from "react";
+import { GetServerSideProps, GetStaticProps } from "next";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Inter } from 'next/font/google';
 import * as Dialog from "@radix-ui/react-dialog";
@@ -11,40 +11,27 @@ import { AuthContext } from "@/context/authContext";
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
 import { CreateSaleDialog } from "@/components/CreateSaleDialog";
-import { Plus, Tag } from "phosphor-react";
+import { ArrowDown, CurrencyDollar, Plus, ShoppingBag, Tag } from "phosphor-react";
 import { getAPIclient } from "@/services/getApiClient";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
+import axios from "axios";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+interface DashboardData{
+  products: number,
+  sales: number,
+  expenses: number,
+  balance: number,
+}
+
+export default function Home({products, sales, expenses, balance}: DashboardData) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
-
-  // const dispacth = useDispatch<AppDispatch>();
-
-
-  // useEffect(() => {
-  //   const token = getToken();
-  //   if (!token) {
-  //     router.push("/login");
-  //     return;
-  //   }
-
-  //   const decodedToken = parseJwt(token);
-  //   const data = {
-  //     id: decodedToken.sub,
-  //     name: decodedToken.name,
-  //     exp: decodedToken.exp
-  //   }
-
-  //   dispacth(setCredentials(data));
-    
-  // })
-
-
+  
   return (
     <div className={`ml-80 pt-16 text-white ${inter.className}`} >
       <div className="p-16">
@@ -78,14 +65,20 @@ export default function Home() {
             <CreateProductDialog />
           </Dialog.Root>
           
-          <Dialog.Root>
+
+          {/**Create Expense Button */}
+          <Dialog.Root
+            open={open}
+          >
             <Dialog.Trigger
               className="flex items-center border w-60 px-4 py-3 gap-2 justify-center rounded-lg text-red-400 border-red-400 transition-all hover:text-red-500 hover:border-red-500"
             >
               <Plus size={28} />
               <span className="font-semibold">Novo Gasto</span> 
             </Dialog.Trigger>
-            <CreateExpenseDialog />
+            <CreateExpenseDialog
+              isOpen={() => setOpen(!open)}
+            />
           </Dialog.Root>
  
         </div>
@@ -96,60 +89,52 @@ export default function Home() {
           
           <div className="w-80 h-28 border-2 border-emerald-500 rounded-lg px-6 py-8 flex items-center justify-between">
             <div className="flex gap-3 items-center">
-              <div className="p-4 border-2 rounded-full border-emerald-500">
-                <Tag size={28}/>  
-              </div>
+                <ShoppingBag size={26} className="text-emerald-400"/>
               
               <p className="text-xl font-semibold">Produtos</p>
             </div>
 
-            <div className="px-6 py-4 bg-zinc-900 rounded-full">
-              <p className="text-xl font-bold">{3}</p>
+            <div className="px-6 py-4 bg-zinc-900 rounded-xl">
+              <p className="text-xl font-bold">{products}</p>
             </div>
 
           </div>
 
           <div className="w-80 h-28 border-2 border-emerald-500 rounded-lg px-6 py-8 flex items-center justify-between">
             <div className="flex gap-3 items-center">
-              <div className="p-4 border-2 rounded-full border-emerald-500">
-                <Tag size={28}/>  
-              </div>
+              <Tag size={26} className="text-emerald-400"/>
               
               <p className="text-xl font-semibold">Vendas</p>
             </div>
 
-            <div className="px-4 py-4 bg-zinc-900 rounded-full">
-              <p className="text-xl font-bold">{90}</p>
+            <div className="px-6 py-4 bg-zinc-900 rounded-xl">
+              <p className="text-xl font-bold">{sales}</p>
             </div>
 
           </div>
 
           <div className="w-80 h-28 border-2 border-emerald-500 rounded-lg px-6 py-8 flex items-center justify-between">
             <div className="flex gap-3 items-center">
-              <div className="p-4 border-2 rounded-full border-emerald-500">
-                <Tag size={28}/>  
-              </div>
+                <CurrencyDollar size={26} className="text-emerald-400"/>  
               
               <p className="text-xl font-semibold">Saldo</p>
             </div>
 
             <div className="px-2 py-1 bg-zinc-900 ">
-              <p className="text-xl font-bold">{40000} MT</p>
+              <p className="text-xl font-bold">{Intl.NumberFormat('en-DE').format(balance)} MT</p>
             </div>
 
           </div>
 
           <div className="w-80 h-28 border-2 border-emerald-500 rounded-lg px-6 py-8 flex items-center justify-between">
             <div className="flex gap-3 items-center">
-              <div className="p-4 border-2 rounded-full border-emerald-500">
-                <Tag size={28}/>  
-              </div>
+              <ArrowDown size={26} className="text-red-400"/>
               
               <p className="text-xl font-semibold">Gastos</p>
             </div>
 
             <div className="px-1 py-2 bg-zinc-900 ">
-              <p className="text-xl font-bold">{5000} MT</p>
+              <p className="text-xl font-bold">{Intl.NumberFormat('en-DE').format(expenses)} MT</p>
             </div>
 
           </div>
@@ -161,5 +146,50 @@ export default function Home() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return AuthOnServerSide(ctx);
+  const isAuth = AuthOnServerSide(ctx);
+
+  if (!isAuth) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+
+  const endpoints = [
+    "/products",
+    "/sales",
+    "/expenses",
+    "/payments"
+  ]
+  
+  const res = await Promise.all([
+    api.get(endpoints[0]),
+    api.get(endpoints[1]),
+    api.get(endpoints[2]),
+    api.get(endpoints[3])
+  ]) 
+
+  const [res1, res2, res3, res4] = res;
+
+  const products = res1.data.length;
+  const sales = res2.data.length;
+
+  let expenses = 0;
+  res3.data.forEach((expense: { quantity: number, price: number }) => {expenses += (expense.quantity * expense.price)})
+
+  let totalPayment = 0;
+  res4.data.forEach((payment: { amount: number }) => { totalPayment += payment.amount });
+
+  const balance = totalPayment - expenses;
+
+  return {
+    props: {
+      products,
+      sales,
+      expenses,
+      balance 
+    }
+  }
 }

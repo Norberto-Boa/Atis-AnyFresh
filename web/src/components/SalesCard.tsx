@@ -10,8 +10,10 @@ interface SalesProps{
   date: number,
   product: string,
   payment_type: string,
+  discount: boolean
   quantity: number,
-  Payment: {
+  discountPercentage:number,
+  Payment?: {
     amount: number,
     payment_type: string,
   }[]
@@ -19,7 +21,7 @@ interface SalesProps{
 type StatusIR = 'paid' | 'pending' | 'expired'
 
 
-const SalesCard = ({id, name, price, paid, date, product, payment_type, quantity, Payment }: SalesProps) => {
+const SalesCard = ({id, name, price, paid, date, product, payment_type, quantity, Payment, discountPercentage, discount }: SalesProps) => {
 
   const expirationDate = addDays(date, 15);
 
@@ -31,17 +33,21 @@ const SalesCard = ({id, name, price, paid, date, product, payment_type, quantity
     status = 'expired'
   }
 
-  Payment.forEach(payment => {
+  Payment?.forEach(payment => {
     return paid += payment.amount;
   })
+
+  const totalPrice = discount ?  ((price - (price *discountPercentage/100)) * quantity): (price * quantity)
 
 
   return (
     <Dialog.Root>
       <Dialog.Trigger
-        className={`w-80 h-36 ${paid === price*quantity ? "bg-green-600" : (paid < price*quantity && isFuture(expirationDate)) ? "bg-transparent border border-zinc-400" : "bg-red-600"} rounded-lg py-6 px-5`}
+        className={`w-80 h-36 ${paid === totalPrice ? "bg-green-600" : (paid < totalPrice && isFuture(expirationDate)) ? "bg-transparent border border-zinc-400" : "bg-red-600"} rounded-lg py-6 px-5`}
       >
         <SalesCardDialog
+          discount={discount}
+          discountPercentage={discountPercentage}
           id={id}
           name={name}
           paid={paid}
@@ -62,7 +68,7 @@ const SalesCard = ({id, name, price, paid, date, product, payment_type, quantity
           <h2
             className="text- font-extrabold"
           >
-            {(price * quantity)} MT
+            {totalPrice} MT
           </h2>
           
 

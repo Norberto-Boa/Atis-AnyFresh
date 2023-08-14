@@ -1,13 +1,13 @@
-import { IExpenseCreate, IProductCreate } from "@/@types/inputTypes";
+import { ISaleCreate } from "@/@types/inputTypes";
 import { InputHTMLAttributes } from "react";
 import { Path, UseFormRegister } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement>{ 
-  label: Path<IExpenseCreate>,
-  register: UseFormRegister<IExpenseCreate>
+  label: Path<ISaleCreate>,
+  register: UseFormRegister<ISaleCreate>
 }
 
-const Input = (props: InputProps) => {
+const SaleInput = (props: InputProps) => {
   return (
     <input
       {...props.register(props.label)}
@@ -16,4 +16,4 @@ const Input = (props: InputProps) => {
   )
 }
 
-export { Input };
+export { SaleInput };

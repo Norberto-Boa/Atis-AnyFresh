@@ -10,10 +10,16 @@ interface SalesCardProps{
   product: string,
   quantity: number,
   date: number,
-  paid: number
+  paid: number,
+  discount: boolean,
+  discountPercentage: number,
 }
 
-const SalesCardDialog = ({id, name, price, product, quantity, date, paid} : SalesCardProps) => {
+const SalesCardDialog = ({ id, name, price, product, quantity, date, paid, discount, discountPercentage }: SalesCardProps) => {
+  
+  const totalPrice = discount ?  ((price - (price *discountPercentage/100)) * quantity): (price * quantity)
+
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay
@@ -27,7 +33,7 @@ const SalesCardDialog = ({id, name, price, product, quantity, date, paid} : Sale
           className="text-3xl font-bold text-white mb-4 flex justify-between"
         >
           <span>{name}</span>
-          {price * quantity} MT
+          {totalPrice} MT
         </Dialog.Title>
       
         <div
@@ -86,7 +92,7 @@ const SalesCardDialog = ({id, name, price, product, quantity, date, paid} : Sale
           <span
             className="font-bold text-lg"
           >
-            {price * quantity} MT
+            {totalPrice} MT
           </span>
         </div>
       
@@ -116,7 +122,7 @@ const SalesCardDialog = ({id, name, price, product, quantity, date, paid} : Sale
           <span
             className="font-bold text-lg"
           >
-            {price * quantity - paid} MT
+            {totalPrice - paid} MT
           </span>
         </div>
 

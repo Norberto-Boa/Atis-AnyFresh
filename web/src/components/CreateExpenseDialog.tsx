@@ -2,48 +2,51 @@ import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Input } from "./Input";
 import { ChangeEvent, FormEvent, useState } from "react";
-import axios from 'axios';
 import { parseJwt } from "@/utils/parsejwt";
+import { useForm } from "react-hook-form";
+import { api } from "@/services/api";
+import { parseCookies } from "nookies";
+import { IExpenseCreate } from "@/@types/inputTypes";
 
-const CreateExpenseDialog = () => {
-  const [formData, setFormData] = useState({
-    buyerName: "",
-    description: "",
-    price: 0,
-    quantity: 0,
-    date:""
-  });
+interface CreateExpenseProps{
+  isOpen: () => void,
+  updateState?: boolean,
+}
 
+const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
+  const { register, handleSubmit } = useForm<IExpenseCreate>()
+  const [date, setDate] = useState("");
   const router = useRouter();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  }
 
-    const bearerToken = localStorage.getItem("token")
-    const [, token] = bearerToken?.split(" ");
+  const handleExpenseCreation = async (data : IExpenseCreate) => {
+    
+    const {['atis.token'] : token} = parseCookies()
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub
     
 
     try {
-      await axios.post(`http://localhost:3333/expense`, {
-        buyerName: formData.buyerName,
-        description: formData.description,
-        price: Number(formData.price),
-        quantity: Number(formData.quantity),
-        date: formData.date
+      await api.post(`/expense`, {
+        buyerName: data.buyerName,
+        description: data.description,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+        date: date
       }, {
         headers: {
           Authorization: token,
           user: id
         }
-      }).then(() => {
-        router.reload();
+      }).then((res) => {
+        if (updateState) {
+          router.reload();
+        }
+        isOpen();
       })
     } catch (error) {
       console.log(error);
@@ -66,7 +69,7 @@ const CreateExpenseDialog = () => {
 
         <form
           action=""
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(handleExpenseCreation)}
         >
 
 
@@ -80,7 +83,7 @@ const CreateExpenseDialog = () => {
               Nome do comprador
             </label>
             
-            <Input onChange={handleChange} name="buyerName" id="buyerName" type="text"/>
+            <Input label="buyerName" register={register} id="buyerName" type="text"/>
           </div>
 
           <div
@@ -93,7 +96,7 @@ const CreateExpenseDialog = () => {
               Nome do Produto
             </label>
             
-            <Input onChange={handleChange} name="description" id="description" type="text"/>
+            <Input label="description" register={register} id="description" type="text"/>
           </div>
 
           <div
@@ -106,7 +109,7 @@ const CreateExpenseDialog = () => {
               Preço
             </label>
             
-            <Input onChange={handleChange} name="price" id="price" type="number"/>
+            <Input label="price" register={register} id="price" type="number"/>
           </div>
 
           <div
@@ -119,7 +122,7 @@ const CreateExpenseDialog = () => {
               Quantidade
             </label>
             
-            <Input onChange={handleChange} name="quantity" id="quantity" type="number"/>
+            <Input label="quantity" register={register} id="quantity" type="number"/>
           </div>
 
           <div
@@ -132,7 +135,11 @@ const CreateExpenseDialog = () => {
               Data
             </label>
             
-            <Input onChange={handleChange} name="date" id="date" type="datetime-local"/>
+            <input
+              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
+              id="date" type="datetime-local"
+              onChange={handleDate}
+            />
           </div>
 
           <button

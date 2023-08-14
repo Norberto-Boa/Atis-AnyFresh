@@ -16,11 +16,14 @@ import { createSaleController } from "./createSale/createSaleController";
 import { getSalesController } from "./getAllSales/getSalesController";
 import { getSaleController } from "./getSingleSale/getSaleController";
 import { deleteSaleController } from "./deleteSale/deleteSaleController";
+import { editSaleController } from "./editSale/editSaleController";
 
 import { createUserController } from "./createUser/createUserController";
 import { authenticateUserController } from "./authenticateUser/authenticateUserController";
 import { ensureAuthenticated } from '../middleware/ensureAuthenticated';
 import { refreshTokenUserController } from "./refreshTokenUser/refreshTokenUserController";
+
+import { getPaymentsController } from "./getAllPayments/getAllPaymentsController";
 import { createPaymentController } from "./createPayment/createPaymentController";
 
 const corsOptions = {
@@ -44,6 +47,7 @@ const createSale = new createSaleController();
 const getSales = new getSalesController();
 const getSale = new getSaleController();
 const deleteSale = new deleteSaleController();
+const editSale = new editSaleController();
 
 //Authentication Routes
 const createUser = new createUserController();
@@ -52,6 +56,7 @@ const refreshToken = new refreshTokenUserController();
 
 //Payment Routes
 const createPayment = new createPaymentController();
+const getPayment = new getPaymentsController();
 
 const router = Router();
 
@@ -63,7 +68,7 @@ router.post('/product/:id/delete', tryCatch(deleteProduct.handle));
 
 //Expenses Routes
 router.post('/expense', tryCatch(createExpense.create));
-router.get('/expenses', ensureAuthenticated, tryCatch(getExpenses.get));
+router.get('/expenses', tryCatch(getExpenses.get));
 router.get('/expense/:id', tryCatch(getExpense.get));
 router.delete('/expense/:id/delete', tryCatch(deleteExpense.delete));
 
@@ -71,6 +76,7 @@ router.delete('/expense/:id/delete', tryCatch(deleteExpense.delete));
 router.post('/sale', tryCatch(createSale.create));
 router.get('/sales', tryCatch(getSales.get));
 router.get('/sale/:id', tryCatch(getSale.get));
+router.put('/sale/:id/edit', tryCatch(editSale.edit));
 router.delete('/sale/:id', tryCatch(deleteSale.delete));
 
 //Authentication Routes
@@ -81,5 +87,6 @@ router.post('/refresh-token/:id', tryCatch(refreshToken.refresh));
 
 // Payment Routes
 router.post('/payment/:sale_id', tryCatch(createPayment.handle));
+router.get('/payments', tryCatch(getPayment.get));
 
 export { router };

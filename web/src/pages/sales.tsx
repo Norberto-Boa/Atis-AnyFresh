@@ -11,9 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from '../redux/store';
 import { fetchSales } from "@/redux/sales/salesActions";
 import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
-import { getAPIclient } from "@/services/getApiClient";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
+import Products from './products';
 
 const inter = Inter({subsets: ['latin']})
 
@@ -108,7 +107,7 @@ export default function Sales() {
         </div>
         
         <div
-          className="flex gap-4"
+          className="flex gap-4 flex-wrap"
         >
 
           {
@@ -119,11 +118,13 @@ export default function Sales() {
                 id={sale.id}
                 paid={0}
                 Payment={sale.Payment}
+                discount={sale.discount}
                 name={sale.client_name}
                 date={Date.parse(sale.date)}
-                payment_type={sale.Payment.length === 0 ? "Not paid" : sale.Payment[0].payment_type}
+                payment_type={sale.Payment?.length === 0 ? "Not paid" : sale.Payment[0].payment_type}
                 price={sale.Product.price}
                 product={sale.Product.name}
+                discountPercentage = {sale.Product.discountPercentage}
                 quantity={sale.quantity}
                 key={sale.id}
               />
@@ -140,5 +141,22 @@ export default function Sales() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return AuthOnServerSide(ctx);
+  const isAuth = AuthOnServerSide(ctx);
+
+  if (!isAuth) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+
+  const products = await api.get('products');
+
+  return {
+    props: {
+      
+    }
+  };
 }

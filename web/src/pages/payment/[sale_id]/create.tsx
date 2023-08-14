@@ -12,15 +12,10 @@ import { AuthContext } from "@/context/authContext";
 import Link from "next/link";
 import { GetServerSideProps } from 'next';
 import { AuthOnServerSide } from "@/services/serverSideAuth";
+import { PaymentInput } from "@/components/PaymentInput";
+import { IPayment } from "@/@types/inputTypes";
 
 const inter = Inter({subsets: ['latin']})
-
-interface IPayment{
-  payment_type?: "Cash" | "M-pesa" | "E-mola" | "BIM" | "Conta-Movel",
-  amount?: number,
-  date?: Date,
-  description?: string
-}
 
 
 export default function Create() {
@@ -52,7 +47,12 @@ export default function Create() {
     
 
     try {
-      api.post(`http://localhost:3333/payment/${sale_id}`, data, {
+      api.post(`http://localhost:3333/payment/${sale_id}`, {
+        payment_type: data.payment_type,
+        amount: Number(data.amount),
+        date: data.date,
+        description: data.description
+      }, {
         headers: {
           user: user.id
         }  
@@ -80,7 +80,7 @@ export default function Create() {
         <h1
           className={`${inter.className} text-2xl font-semibold`}
         >
-          Criar pagamento da venda {sale?.client_name}
+          Criar pagamento da venda para {sale?.client_name} - {sale?.quantity} {sale?.Product.name}
         </h1>
 
         <h2
@@ -126,8 +126,8 @@ export default function Create() {
               Quantia
             </label>
             
-            <Input
-              {...register("amount")} name="amount" id="amount" type="number" className="!w-80 disabled:opacity-60 disabled:cursor-not-allowed"
+            <PaymentInput
+              register={register} label="amount" id="amount" type="number" className="!w-80 disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={paid === true ? true : false}
             />
           </div>
@@ -142,8 +142,10 @@ export default function Create() {
               Date
             </label>
             
-            <Input
-              {...register("date")} name="date" id="date" type="datetime-local" className="!w-80 disabled:opacity-60 disabled:cursor-not-allowed"
+            <input
+              {...register("date")}
+              id="date" type="datetime-local"
+              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={paid === true ? true : false}
             />
           </div>
@@ -191,5 +193,18 @@ export default function Create() {
 
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return AuthOnServerSide(ctx);
+  const isAuth = AuthOnServerSide(ctx);
+
+  if (!isAuth) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props:{}
+  }
 }
