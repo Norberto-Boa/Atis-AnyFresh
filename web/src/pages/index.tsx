@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import axios from "axios";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,6 +35,10 @@ export default function Home({products, sales, expenses, balance}: DashboardData
   
   return (
     <div className={`ml-80 pt-16 text-white ${inter.className}`} >
+      <Head>
+        <title>Dashboard | AnyFresh</title>
+      </Head>
+
       <div className="p-16">
         <div>
           <h1 className={`${inter.className} text-2xl font-bold`}>Dona {user?.name}, seja bem vindo a ATIS</h1>
