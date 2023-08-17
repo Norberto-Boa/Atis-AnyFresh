@@ -1,21 +1,17 @@
 import { Inter } from "@next/font/google";
-import { CaretLeft, CaretRight, MagnifyingGlass, Plus } from "phosphor-react";
+import { MagnifyingGlass, Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { SalesCard } from "@/components/SalesCard";
 import { CreateSaleDialog } from "@/components/CreateSaleDialog";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { api } from "@/services/api";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from '../redux/store';
-import { fetchSales } from "@/redux/sales/salesActions";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { ParsedUrlQuery } from "querystring";
 import { salesResponse } from "@/@types/userTypes";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { PaginationButtons } from "@/components/PaginationButtons";
 
 
 interface Params extends ParsedUrlQuery{
@@ -26,12 +22,10 @@ const inter = Inter({subsets: ['latin']})
 interface PropsSale{
   sales: salesResponse[],
   page: number,
-  total: number
+  count: number
 }
 
-export default function Sales({ sales, page, total }: PropsSale) {
-  const router = useRouter();
-  const lastPage = Math.ceil(total / 12);
+export default function Sales({ sales, page, count }: PropsSale) {
 
   return (
     <div
@@ -97,22 +91,11 @@ export default function Sales({ sales, page, total }: PropsSale) {
           <div
             className="flex gap-2 items-center"
           >
-            <button 
-              className="p-2 border border-zinc-700 rounded-md hover:border-zinc-600 transition-all text-zinc-300 disabled:border-zinc-800 disabled:text-zinc-700 disabled:cursor-not-allowed"
-              onClick={() => router.push(`sales?page=${page - 1}`)}
-              disabled={page <= 1}
-            >
-              <CaretLeft size={24} />
-            </button>
-            <span className="text-zinc-300">{page}</span>
-            <span className="text-zinc-400">/ {lastPage}</span>
-            <button 
-              className={`p-2 border border-zinc-700 rounded-md hover:border-zinc-600 transition-all text-zinc-300`}
-              onClick={() => router.push(`sales?page=${page + 1}`)}
-              disabled={page >= lastPage}
-            >
-              <CaretRight size={24} />
-            </button>
+            <PaginationButtons
+              count={count}
+              page={page}
+              url="sales"
+            />
           </div>
         </div>
 
@@ -162,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
   
-  const data = await api.get(`http://localhost:3333/sales?page=${page}`)
+  const data = await api.get(`/sales?page=${page}`)
     .then((res) => {
       return res.data
     }).catch((err) => { return (err) });
@@ -171,7 +154,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       sales: data.Sales,
       page: +page,
-      total: data.count
+      count: data.count
     }
   };
 }

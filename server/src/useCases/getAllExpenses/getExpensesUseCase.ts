@@ -1,14 +1,25 @@
+import { Prisma } from "@prisma/client";
 import { client } from "../../prisma/client";
 
 class getExpensesUseCase{
-  async handle() {
-    const expenses = await client.expense.findMany({
+  async handle( page : number) {
+    const expensesPerPage = 8;
+    const start = page === 1 ? 0 : (page - 1) * expensesPerPage;
+    const query: Prisma.ExpenseFindManyArgs = {
       orderBy: {
-        date: 'desc'
-      }
-    });
+        date: 'asc'
+      }, 
+      skip: start,
+      take: expensesPerPage
+    }
 
-    return expenses ;
+
+    const [count, expenses] = await client.$transaction([
+      client.expense.count(),
+      client.expense.findMany(query)
+    ])
+
+    return {count, expenses} ;
   }
 }
 

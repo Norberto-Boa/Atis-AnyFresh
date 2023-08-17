@@ -50,7 +50,7 @@ const CreateSaleDialog = () => {
           user: `${id}`
         },
 
-      }).then((res) => {
+      }).then(() => {
         alert('Anuncio criado');
       });
       
@@ -72,7 +72,7 @@ const CreateSaleDialog = () => {
         <Dialog.Title
           className="text-3xl font-bold text-white mb-4"
         >
-          Criar nova compra
+          Criar nova venda
         </Dialog.Title>
 
         <form action=""
@@ -94,7 +94,7 @@ const CreateSaleDialog = () => {
               name="product" id="product"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full"
             >
-              <option value={""} className="text-zinc-500 py-3 px-4">Selecione o game que deseja jogar</option>
+              <option value={""} className="text-zinc-500 py-3 px-4">Selecione o produto vendido</option>
               {
                 products.map((product, i) => {
                   return (

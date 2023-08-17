@@ -20,3 +20,12 @@ export interface expenseDashboard{
 export interface Params extends ParsedUrlQuery{
   id: string
 }
+
+export interface expense{
+  id: string,
+  description: string,
+  buyerName: string,
+  price: number,
+  quantity: number,
+  date: Date,
+}

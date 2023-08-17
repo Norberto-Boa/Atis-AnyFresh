@@ -137,7 +137,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
             
             <input
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
-              id="date" type="datetime-local"
+              id="date" type="date"
               onChange={handleDate}
             />
           </div>
