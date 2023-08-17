@@ -1,9 +1,13 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+ <img 
+ width=200px height=200px 
+ src="https://png.pngtree.com/template/20190322/ourmid/pngtree-chicken-logo-designs-image_83471.jpg" 
+ alt="Project logo">
+ </a>
 </p>
 
-<h3 align="center">ATIS - AnyTech Iventory System</h3>
+<h1 align="center">ATIS - AnyTech Iventory System</h1>
 
 <div align="center">
 
@@ -16,11 +20,7 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
-
-## 📝 Table of Contents
+# 📝 Table of Contents
 
 - [About](#about)
 - [Getting Started](#getting_started)
