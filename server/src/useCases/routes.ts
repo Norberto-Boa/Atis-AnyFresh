@@ -9,11 +9,12 @@ import { deleteProductController } from "./deleteProduct/deleteProductController
 
 import { createExpenseController } from "./createExpense/createExpenseController";
 import { getExpensesController } from "./getAllExpenses/getExpensesController";
+import { getAllExpensesController } from "./getTheExpenses/getTheExpensesController";
 import { getExpenseController } from "./getSingleExpense/getExpenseController";
 import { deleteExpenseController } from "./deleteExpense/deleteExpenseController";
 
 import { createSaleController } from "./createSale/createSaleController";
-import { getSalesController } from "./getAllSales/getSalesController";
+import { getSomeSalesController } from "./getAllSales/getSomeSalesController";
 import { getSaleController } from "./getSingleSale/getSaleController";
 import { deleteSaleController } from "./deleteSale/deleteSaleController";
 import { editSaleController } from "./editSale/editSaleController";
@@ -39,12 +40,13 @@ const deleteProduct = new deleteProductController();
 // Expenses Controllers
 const createExpense = new createExpenseController();
 const getExpenses = new getExpensesController();
+const getAllExpenses = new getAllExpensesController();
 const getExpense = new getExpenseController();
 const deleteExpense = new deleteExpenseController();
 
 //Sales Controllers
 const createSale = new createSaleController();
-const getSales = new getSalesController();
+const getSales = new getSomeSalesController();
 const getSale = new getSaleController();
 const deleteSale = new deleteSaleController();
 const editSale = new editSaleController();
@@ -69,6 +71,7 @@ router.post('/product/:id/delete', tryCatch(deleteProduct.handle));
 //Expenses Routes
 router.post('/expense', tryCatch(createExpense.create));
 router.get('/expenses', tryCatch(getExpenses.get));
+router.get('/allexpenses', tryCatch(getAllExpenses.get));
 router.get('/expense/:id', tryCatch(getExpense.get));
 router.delete('/expense/:id/delete', tryCatch(deleteExpense.delete));
 

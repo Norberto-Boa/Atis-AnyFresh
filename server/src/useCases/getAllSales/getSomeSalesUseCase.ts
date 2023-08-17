@@ -1,9 +1,8 @@
-import { Prisma } from "@prisma/client";
 import { client } from "../../prisma/client";
 
 
 
-class getSalesUseCase{
+class getSomeSalesUseCase{
   async handle(page: number ) {
     const salesPerPage = 12;
 
@@ -34,4 +33,4 @@ class getSalesUseCase{
   }
 }
 
-export { getSalesUseCase };
+export { getSomeSalesUseCase };

@@ -1,15 +1,15 @@
 import { Response, Request } from 'express';
-import { getSalesUseCase } from "./getSalesUseCase";
+import { getSomeSalesUseCase } from "./getSomeSalesUseCase";
 import { totalPrice } from "../../utils/discountedPrice";
 
 
-class getSalesController{
+class getSomeSalesController{
   async get(req: Request, res: Response) {
     const { page } = req.query;
 
     const pageNumber = page ? Number(page) :  1
 
-    const getSales = new getSalesUseCase();
+    const getSales = new getSomeSalesUseCase();
 
     const {count, sales}  = await getSales.handle(pageNumber);
 
@@ -23,4 +23,4 @@ class getSalesController{
   }
 }
 
-export { getSalesController };
+export { getSomeSalesController };
