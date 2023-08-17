@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode } from "react"
+import { ParsedUrlQuery } from 'querystring';
 
 export type NextPageWithLayout = NextPage & {
   getLayout: (page: ReactElement) => ReactNode
@@ -14,4 +15,8 @@ export interface expenseDashboard{
   id: string;
   quantity: number;
   price: number;
+}
+
+export interface Params extends ParsedUrlQuery{
+  id: string
 }

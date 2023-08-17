@@ -13,6 +13,7 @@ import { AuthOnServerSide } from "@/services/serverSideAuth";
 import React from "react";
 import { Check } from "phosphor-react";
 import { ParsedUrlQuery } from "querystring";
+import { format } from "date-fns";
 
 interface Params extends ParsedUrlQuery{
   id: string;
@@ -232,7 +233,7 @@ export default function Sale({products, sale} : Props) {
 
               <li className="text-lg mt-4">
                 <span className="font-medium tracking-wide">Data: </span>
-                <span>{sale.date}</span>
+                <span>{format(new Date(sale.date), 'dd/MM/yyyy')}</span>
               </li>
 
               <li className="text-lg mt-4">

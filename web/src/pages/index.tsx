@@ -174,7 +174,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const [res1, res2, res3, res4] = res;
 
   const products = res1.data.length;
-  const sales = res2.data.length;
+  const sales = res2.data.count;
 
   let expenses = 0;
   res3.data.forEach((expense: { quantity: number, price: number }) => {expenses += (expense.quantity * expense.price)})

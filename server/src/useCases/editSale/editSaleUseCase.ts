@@ -28,7 +28,7 @@ class editSaleUseCase{
       data: {
         client_name: client_name || undefined,
         date: date || undefined,
-        discount: discount || undefined,
+        discount: discount,
         quantity: quantity || undefined,
         productId: productId || undefined,
       }

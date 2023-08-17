@@ -58,7 +58,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
       <Dialog.Content
-        className="bg-darkbg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 px-8 py-7 w-96 rounded-lg"
+        className="bg-darkbg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 px-8 py-7 w-96 rounded-lg"
       >
 
         <Dialog.Title

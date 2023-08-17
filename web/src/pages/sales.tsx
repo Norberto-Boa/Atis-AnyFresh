@@ -1,5 +1,5 @@
 import { Inter } from "@next/font/google";
-import { MagnifyingGlass, Plus } from "phosphor-react";
+import { CaretLeft, CaretRight, MagnifyingGlass, Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { SalesCard } from "@/components/SalesCard";
@@ -12,48 +12,35 @@ import { AppDispatch, RootState } from '../redux/store';
 import { fetchSales } from "@/redux/sales/salesActions";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import Products from './products';
+import { ParsedUrlQuery } from "querystring";
+import { salesResponse } from "@/@types/userTypes";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
+
+interface Params extends ParsedUrlQuery{
+  page: string;
+}
 const inter = Inter({subsets: ['latin']})
 
-interface res{
-  id: string,
-  client_name: string,
-  userId: string,
-  productId: string,
-  quantity: number,
-  paid: number,
-  date: string,
-  discount: boolean,
-  created_at: string
-  Product: {
-    id: string,
-    name: string,
-    code: string,
-    discountPercentage: number,
-    price: number,
-    created_at: string
-  },
-  Payment: {
-    amount: number,
-    payment_type: string,
-  }[],
-  TotalPrice: number
+interface PropsSale{
+  sales: salesResponse[],
+  page: number,
+  total: number
 }
 
-export default function Sales() {
-  
-  const { sales, loading } = useSelector((state: RootState) => state.sales);
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchSales());
-  },[dispatch]);
+export default function Sales({ sales, page, total }: PropsSale) {
+  const router = useRouter();
+  const lastPage = Math.ceil(total / 12);
 
   return (
     <div
       className={`ml-80 pt-16 text-white ${inter.className}`}
     >
+      <Head>
+        <title>Vendas - AnyFresh</title>
+      </Head>
+
       <div
         className="p-16"
       >
@@ -65,11 +52,11 @@ export default function Sales() {
 
         {/* Divider line */}
 
-        <div className={`w-full h-[1px] bg-zinc-700 my-12`} />
+        <div className={`w-full h-[1px] bg-zinc-700 my-10`} />
         
 
         <div
-          className="flex gap-4 mb-8 items-center"
+          className="flex gap-4 mb-4 justify-center"
         >
           {/* Create new Sale dialog trigger */}
           <Dialog.Root>
@@ -82,8 +69,10 @@ export default function Sales() {
 
             <CreateSaleDialog />
           </Dialog.Root>
+        </div>
 
-          {/* Search input and button */}
+        <div className="flex justify-between items-center mb-4">          
+        {/* Search input and button */}
           <div
             className="flex items-center gap-2"
           >
@@ -104,10 +93,31 @@ export default function Sales() {
             </button>
 
           </div>
+          
+          <div
+            className="flex gap-2 items-center"
+          >
+            <button 
+              className="p-2 border border-zinc-700 rounded-md hover:border-zinc-600 transition-all text-zinc-300 disabled:border-zinc-800 disabled:text-zinc-700 disabled:cursor-not-allowed"
+              onClick={() => router.push(`sales?page=${page - 1}`)}
+              disabled={page <= 1}
+            >
+              <CaretLeft size={24} />
+            </button>
+            <span className="text-zinc-300">{page}</span>
+            <span className="text-zinc-400">/ {lastPage}</span>
+            <button 
+              className={`p-2 border border-zinc-700 rounded-md hover:border-zinc-600 transition-all text-zinc-300`}
+              onClick={() => router.push(`sales?page=${page + 1}`)}
+              disabled={page >= lastPage}
+            >
+              <CaretRight size={24} />
+            </button>
+          </div>
         </div>
-        
+
         <div
-          className="flex gap-4 flex-wrap"
+          className="flex gap-4 flex-wrap justify-between"
         >
 
           {
@@ -132,8 +142,7 @@ export default function Sales() {
             })
               :
             <p>There is no sale </p>
-        }
-         
+          }
         </div>
       </div>
     </div>
@@ -142,7 +151,8 @@ export default function Sales() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isAuth = AuthOnServerSide(ctx);
-
+  let page = ctx.query.page ?? 1;
+  
   if (!isAuth) {
     return {
       redirect: {
@@ -151,12 +161,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
     }
   }
-
-  const products = await api.get('products');
+  
+  const data = await api.get(`http://localhost:3333/sales?page=${page}`)
+    .then((res) => {
+      return res.data
+    }).catch((err) => { return (err) });
 
   return {
     props: {
-      
+      sales: data.Sales,
+      page: +page,
+      total: data.count
     }
   };
 }

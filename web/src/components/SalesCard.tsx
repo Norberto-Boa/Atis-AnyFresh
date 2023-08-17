@@ -25,14 +25,6 @@ const SalesCard = ({id, name, price, paid, date, product, payment_type, quantity
 
   const expirationDate = addDays(date, 15);
 
-  if (paid == price) {
-    status = 'paid'
-  } else if (paid < price && isFuture(expirationDate)) {
-    status = 'pending'
-  } else if (paid < price && isPast(expirationDate))  {
-    status = 'expired'
-  }
-
   Payment?.forEach(payment => {
     return paid += payment.amount;
   })

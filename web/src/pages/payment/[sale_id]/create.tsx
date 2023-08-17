@@ -14,20 +14,20 @@ import { GetServerSideProps } from 'next';
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { PaymentInput } from "@/components/PaymentInput";
 import { IPayment } from "@/@types/inputTypes";
+import { Params } from "@/@types/_types";
+import { salesResponse } from "@/@types/userTypes";
 
 const inter = Inter({subsets: ['latin']})
 
+interface Props{
+  sale: salesResponse;
+}
 
-export default function Create() {
+export default function Create({sale}: Props) {
   const router = useRouter();
   const { register, handleSubmit } = useForm<IPayment>();
   const { user } = useContext(AuthContext);
 
-  const { sale_id } = router.query;
-
-  const sale = useSelector((state: RootState) => state.sales.sales.find(sale => sale.id === sale_id));
-  const dispatch = useDispatch<AppDispatch>();
-  
   if (!sale) {
     return (
       <p className={`ml-96 pt-20 text-white ${inter.className}`} >We did not find the sale... <Link href={'/sales'} className="text-blue-400 font-semibold"> Go back to sale and do not refresh the page </Link></p>
@@ -35,19 +35,10 @@ export default function Create() {
   };
 
   const paid = isPaid(sale.TotalPrice, sale.Payment)
-  // useEffect(() => {
-  //   axios.get(`http://localhost:3333/sale/${router.query['sale_id']}`)
-  //     .then((res) => {
-  //       setSaleData(res.data);
-  //     });
-  // })
-
 
   const handlePayment = (data: IPayment,) => {
-    
-
     try {
-      api.post(`http://localhost:3333/payment/${sale_id}`, {
+      api.post(`http://localhost:3333/payment/${sale.id}`, {
         payment_type: data.payment_type,
         amount: Number(data.amount),
         date: data.date,
@@ -80,7 +71,7 @@ export default function Create() {
         <h1
           className={`${inter.className} text-2xl font-semibold`}
         >
-          Criar pagamento da venda para {sale?.client_name} - {sale?.quantity} {sale?.Product.name}
+          Criar pagamento da venda para {sale.client_name} - {sale.quantity} {sale.Product.name}
         </h1>
 
         <h2
@@ -184,8 +175,6 @@ export default function Create() {
           </div>
           
         </form>
-        
-      
       </div>
     </div>
   )
@@ -194,6 +183,7 @@ export default function Create() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isAuth = AuthOnServerSide(ctx);
+  const { sale_id } = ctx.params as Params; 
 
   if (!isAuth) {
     return {
@@ -204,7 +194,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  const data = await api.get(`/sale/${sale_id}`).then(res => { return res.data }).catch(err => { return err });
+
   return {
-    props:{}
+    props: {
+      sale: data
+    }
   }
 }

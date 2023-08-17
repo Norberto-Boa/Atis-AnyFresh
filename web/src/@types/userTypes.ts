@@ -43,5 +43,6 @@ export interface salesResponse{
     amount: number,
     payment_type: string,
   }[],
+  _count: number,
   TotalPrice: number
 }

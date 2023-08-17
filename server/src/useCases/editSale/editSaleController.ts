@@ -11,7 +11,7 @@ class editSaleController{
       quantity: z.number().optional(),
       date: z.string().optional(),
       productId: z.string().optional(),
-      discount: z.boolean().optional(),
+      discount: z.boolean(),
       client_name: z.string().optional()
     }).parse(req.body);
 

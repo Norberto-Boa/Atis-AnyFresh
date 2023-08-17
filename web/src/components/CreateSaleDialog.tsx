@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { ISaleCreate } from "@/@types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
+import { Input } from "postcss";
 
 interface products{
   id: string;
@@ -65,7 +66,7 @@ const CreateSaleDialog = () => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
       <Dialog.Content
-        className="bg-darkbg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 w-96 rounded-lg"
+        className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 w-96 rounded-lg"
       >
 
         <Dialog.Title
@@ -163,10 +164,10 @@ const CreateSaleDialog = () => {
               Data
             </label>
             
-            <SaleInput
-              label="date"
-              register={register}
+            <input
+              {...register("date")}
               name="date" id="date" type="date"
+              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
             />
           </div>
 

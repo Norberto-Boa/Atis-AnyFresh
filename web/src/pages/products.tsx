@@ -60,7 +60,7 @@ export default function Products() {
           </Dialog.Root>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           {products ? 
             products.map((product) => {
               return (
@@ -76,7 +76,7 @@ export default function Products() {
             )
             }) 
             :
-            <p>Nao existem produtos registados, clique em + para registar!</p>  
+            <p>Nao existm produtos registados, clique em + para registar!</p>  
           }
 
         </div>
