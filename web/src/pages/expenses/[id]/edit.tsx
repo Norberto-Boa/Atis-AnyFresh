@@ -23,16 +23,21 @@ export default function Edit({ expense }: Props) {
   const [date, setDate] = useState("");
   const {register, handleSubmit} = useForm<IExpenseCreate>();
 
-  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
-  }
 
-  const handleEditData = (data : IExpenseCreate) => {
-    try {
-      
-    } catch (error) {
-      
-    }
+  function handleEditData ({buyerName, description, price, quantity} : IExpenseCreate){
+    api.put(`/expense/${expense.id}/edit`, {
+      buyerName,
+      description,
+      price: Number(price),
+      quantity: Number(quantity),
+      date: date
+    })
+      .then(() => {
+        alert(`Gasto editado com sucesso!`);
+        router.push('/expenses');
+      })
+      .catch(err => console.log(err));
+    
   }
 
   return (
@@ -59,7 +64,10 @@ export default function Edit({ expense }: Props) {
           className="flex gap-20"
           >
           {/*Edit Form*/}
-          <form action="">
+          <form
+            onSubmit={handleSubmit(handleEditData)}
+            className="w-1/3"
+          >
             <div
               className="mb-2"
             >
@@ -112,7 +120,9 @@ export default function Edit({ expense }: Props) {
               <input
                 className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
                 id="date" type="date"
-                onChange={handleDate}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setDate(e.target.value);
+                }}
               />
             </div>
 
@@ -188,8 +198,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .then((res) => { return res.data.expense })
     .catch ((err) => {return err})
 
-  console.log(expense);
-  
   return {
     props: {
       expense

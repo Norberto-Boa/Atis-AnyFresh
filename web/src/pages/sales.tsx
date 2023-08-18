@@ -32,7 +32,7 @@ export default function Sales({ sales, page, count }: PropsSale) {
       className={`ml-80 pt-16 text-white ${inter.className}`}
     >
       <Head>
-        <title>Vendas - AnyFresh</title>
+        <title>Vendas | AnyFresh</title>
       </Head>
 
       <div
@@ -114,7 +114,7 @@ export default function Sales({ sales, page, count }: PropsSale) {
                 discount={sale.discount}
                 name={sale.client_name}
                 date={Date.parse(sale.date)}
-                payment_type={sale.Payment?.length === 0 ? "Not paid" : sale.Payment[0].payment_type}
+                payment_type={sale.Payment?.length === 0 ? "Not paid" : sale?.Payment[0].payment_type}
                 price={sale.Product.price}
                 product={sale.Product.name}
                 discountPercentage = {sale.Product.discountPercentage}

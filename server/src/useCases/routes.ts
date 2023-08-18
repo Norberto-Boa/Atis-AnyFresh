@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { tryCatch } from "../utils/tryCatch";
-import cors from "cors";
 
 import { createProductController } from "./createProduct/createProductController";
 import { getProductController } from "./getSingleProduct/getProductController";
@@ -26,6 +25,7 @@ import { refreshTokenUserController } from "./refreshTokenUser/refreshTokenUserC
 
 import { getPaymentsController } from "./getAllPayments/getAllPaymentsController";
 import { createPaymentController } from "./createPayment/createPaymentController";
+import { editExpenseController } from "./editExpense/editExpenseController";
 
 const corsOptions = {
   origin: '*'
@@ -43,6 +43,7 @@ const getExpenses = new getExpensesController();
 const getAllExpenses = new getAllExpensesController();
 const getExpense = new getExpenseController();
 const deleteExpense = new deleteExpenseController();
+const editExpense = new editExpenseController();
 
 //Sales Controllers
 const createSale = new createSaleController();
@@ -73,6 +74,7 @@ router.post('/expense', tryCatch(createExpense.create));
 router.get('/expenses', tryCatch(getExpenses.get));
 router.get('/allexpenses', tryCatch(getAllExpenses.get));
 router.get('/expense/:id', tryCatch(getExpense.get));
+router.put('/expense/:id/edit', tryCatch(editExpense.edit));
 router.delete('/expense/:id/delete', tryCatch(deleteExpense.delete));
 
 //Sales Routes
