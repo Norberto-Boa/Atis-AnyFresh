@@ -11,25 +11,18 @@ import { ISaleCreate } from "@/@types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
 import { Input } from "postcss";
+import { GetServerSideProps } from "next";
 
 interface products{
   id: string;
   name: string;
 }
 
-const CreateSaleDialog = () => {
+const CreateSaleDialog = (products : products[]) => {
   const { register, handleSubmit } = useForm<ISaleCreate>();
   const router = useRouter();
 
   const [hasDiscount, setHasDiscount] = useState(false)
-  const [products, setProducts] = useState<products[]>([]);
-
-  useEffect(() => {
-    axios.get(`http://localhost:3333/products`)
-      .then(res => {
-        setProducts(res.data);
-      });
-  });
   
   async function handleCreateProduct(data : ISaleCreate) {
     const { ["atis.token"] : token} = parseCookies();
@@ -38,7 +31,7 @@ const CreateSaleDialog = () => {
 
 
     try {
-      await api.post(`http://localhost:3333/sale`, {
+      await api.post(`/sale`, {
         client_name: data.client_name,
         productId: data.product,
         quantity: Number(data.quantity),
@@ -214,6 +207,20 @@ const CreateSaleDialog = () => {
       </Dialog.Content>
     </Dialog.Portal>
   )
+}
+
+const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const products = await api.get(`/products`)
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => { console.log(err) });
+  
+  return {
+    props: {
+      products
+    }
+  }
 }
 
 export { CreateSaleDialog };

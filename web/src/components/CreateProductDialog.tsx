@@ -2,12 +2,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { parseJwt } from "@/utils/parsejwt";
-import { ProductInput } from "./productInput";
+import { ProductInput } from "./ProductInput";
 import { IProductCreate } from "@/@types/inputTypes";
 import { api } from "@/services/api";
 import { parseCookies } from "nookies";
-
-
 
 const CreateProductDialog = () => {
   const { register, handleSubmit } = useForm<IProductCreate>();
