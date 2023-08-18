@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { GetServerSideProps } from "next";
+import { api } from "@/services/api";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,16 +24,7 @@ interface productResponse{
   }
 }
 
-export default function Products() {
-  const [products, setProducts] = useState<productResponse[]>();
-
-  useEffect(() => {
-    axios.get('http://localhost:3333/products')
-      .then((res) => {
-        setProducts(res.data);
-      }).catch((err) => console.log(err));
-  })
-
+export default function Products(products: productResponse[]) {
   return (
     <div
       className={`ml-80 pt-16 text-white ${inter.className}`}
@@ -86,10 +78,24 @@ export default function Products() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  AuthOnServerSide(ctx);
+  const isAuth = AuthOnServerSide(ctx);
+
+  if (!isAuth) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false
+      }
+    }
+  }
+
+  const products: productResponse = await api.get(`/products`)
+    .then((res) => { return res.data })
+    .catch((err) => { console.log(err) });
+
   return {
     props: {
-      
+      products
     }
   }
 }
