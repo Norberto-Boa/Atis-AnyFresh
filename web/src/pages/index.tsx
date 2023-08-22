@@ -10,7 +10,7 @@ import { AuthContext } from "@/context/authContext";
 
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
-import { CreateSaleDialog } from "@/components/CreateSaleDialog";
+import { CreateSaleDialog, products } from "@/components/CreateSaleDialog";
 import { ArrowDown, CurrencyDollar, Plus, ShoppingBag, Tag } from "phosphor-react";
 import { getAPIclient } from "@/services/getApiClient";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ import Head from "next/head";
 const inter = Inter({ subsets: ['latin'] })
 
 interface DashboardData{
-  products: number,
+  products: products[],
   sales: number,
   expenses: number,
   balance: number,
@@ -56,7 +56,9 @@ export default function Home({products, sales, expenses, balance}: DashboardData
               <span className="font-semibold">Nova Compra</span> 
             </Dialog.Trigger>
 
-            <CreateSaleDialog />
+            <CreateSaleDialog
+              products={products}
+            />
           </Dialog.Root>
     
           <Dialog.Root>
@@ -100,7 +102,7 @@ export default function Home({products, sales, expenses, balance}: DashboardData
             </div>
 
             <div className="px-6 py-4 bg-zinc-900 rounded-xl">
-              <p className="text-xl font-bold">{products}</p>
+              <p className="text-xl font-bold">{products.length}</p>
             </div>
 
           </div>
@@ -178,7 +180,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const [res1, res2, res3, res4] = res;
 
-  const products = res1.data.length;
+  const products = res1.data;
   const sales = res2.data.count;
 
   

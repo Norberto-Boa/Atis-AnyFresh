@@ -1,7 +1,6 @@
 import { Inter } from "@next/font/google";
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
-
 import { SalesCard } from "@/components/SalesCard";
 import { CreateSaleDialog } from "@/components/CreateSaleDialog";
 import { api } from "@/services/api";
@@ -12,6 +11,7 @@ import { salesResponse } from "@/@types/userTypes";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { PaginationButtons } from "@/components/PaginationButtons";
+import { products } from '../components/CreateSaleDialog';
 
 
 interface Params extends ParsedUrlQuery{
@@ -22,10 +22,23 @@ const inter = Inter({subsets: ['latin']})
 interface PropsSale{
   sales: salesResponse[],
   page: number,
-  count: number
+  count: number,
+  products: products[]
 }
 
-export default function Sales({ sales, page, count }: PropsSale) {
+export default function Sales({ sales, page, count, products }: PropsSale) {
+  let money = 0
+  let paid = 0
+  sales.map(sale => {
+    return money = money + sale.TotalPrice;
+  });
+
+  sales.map(sale => {
+    sale?.Payment?.forEach(payment => {
+      return paid += payment.amount
+    })
+  });
+
 
   return (
     <div
@@ -50,7 +63,7 @@ export default function Sales({ sales, page, count }: PropsSale) {
         
 
         <div
-          className="flex gap-4 mb-4 justify-center"
+          className="flex gap-4 mb-4 justify-between"
         >
           {/* Create new Sale dialog trigger */}
           <Dialog.Root>
@@ -61,8 +74,19 @@ export default function Sales({ sales, page, count }: PropsSale) {
               <span className="font-semibold">Nova Compra</span> 
             </Dialog.Trigger>
 
-            <CreateSaleDialog />
+            <CreateSaleDialog
+              products={products}
+            />
           </Dialog.Root>
+
+          <h1
+            className="text-2xl font-bold text-green-500"
+          >
+            <span className="text-white">
+              Pagamento esperado: 
+            </span>
+            <span> {money - paid} MT</span>
+          </h1>
         </div>
 
         <div className="flex justify-between items-center mb-4">          
@@ -126,6 +150,7 @@ export default function Sales({ sales, page, count }: PropsSale) {
               :
             <p>There is no sale </p>
           }
+
         </div>
       </div>
     </div>
@@ -145,16 +170,27 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
   
-  const data = await api.get(`/sales?page=${page}`)
-    .then((res) => {
-      return res.data
-    }).catch((err) => { return (err) });
+  const endpoints = [
+    "/products",
+    `/sales?page=${page}`
+  ]
+
+  const res = await Promise.all([
+    api.get(endpoints[0]),
+    api.get(endpoints[1])
+  ])
+
+  const [res1, res2] = res
+  
+  const products = res1.data;
+  const data = res2.data
 
   return {
     props: {
       sales: data.Sales,
       page: +page,
-      count: data.count
+      count: data.count, 
+      products: products
     }
   };
 }

@@ -1,9 +1,10 @@
 <p align="center">
   <a href="" rel="noopener">
- <img 
- width=200px height=200px 
- src="https://png.pngtree.com/template/20190322/ourmid/pngtree-chicken-logo-designs-image_83471.jpg" 
- alt="Project logo">
+  <img 
+    width=200px height=200px 
+    src="https://png.pngtree.com/template/20190322/ourmid/pngtree-chicken-logo-designs-image_83471.jpg" 
+    alt="Project logo"
+  >
  </a>
 </p>
 
@@ -42,32 +43,56 @@ This project is not responsive yet, so it is a desktop-only project.
 
 You can clone this repository by running the following command
 
+<h3> GitHub CLI </h3>
+
 ```
-gh repo clone Norberto-Boa/NLWeSports-Norberto
+gh repo clone https://github.com/Norberto-Boa/Atis-AnyFresh.git
 ```
+
+<h3>Git clone</h3>
+
+```
+git clone https://github.com/Norberto-Boa/Atis-AnyFresh.git
+```
+
+Then you must navigate to the project directory.
 
 ### Prerequisites
 
 What things you need to install the software and how to install them
 
+<img
+  width=80px height=80px 
+  src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" 
+  alt="Pre requirement"
+/>
+
+### Built with
+<p align="start">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=nextjs,tailwind,sqlite,express" />
+  </a>
+</p>
+
+
+### Installing and running
+
+First you must navigate to the server directory and install the dependencies, then run the dev script using npm.
+To achive this you can write the following commands:
+
 ```
-Give examples
+cd server
+npm install
+npm run dev
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
+Same goes with the front end, navigate to the web directory and install the dependencies, then run the dev script using npm.
+To achive this you can write the following commands:
 
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+cd web
+npm install
+npm run dev
 ```
 
 End with an example of getting some data out of the system or using it for a little demo.

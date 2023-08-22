@@ -13,12 +13,16 @@ import { api } from "@/services/api";
 import { Input } from "postcss";
 import { GetServerSideProps } from "next";
 
-interface products{
+export interface products{
   id: string;
   name: string;
 }
 
-const CreateSaleDialog = (products : products[]) => {
+interface props{
+  products: products[];
+}
+
+const CreateSaleDialog = ({products} : props) => {
   const { register, handleSubmit } = useForm<ISaleCreate>();
   const router = useRouter();
 
@@ -209,18 +213,5 @@ const CreateSaleDialog = (products : products[]) => {
   )
 }
 
-const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const products = await api.get(`/products`)
-    .then((res) => {
-      return res.data
-    })
-    .catch((err) => { console.log(err) });
-  
-  return {
-    props: {
-      products
-    }
-  }
-}
 
 export { CreateSaleDialog };
