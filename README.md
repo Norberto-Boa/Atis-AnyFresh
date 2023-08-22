@@ -67,14 +67,6 @@ What things you need to install the software and how to install them
   alt="Pre requirement"
 />
 
-### Built with
-<p align="start">
-  <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=nextjs,tailwind,sqlite,express" />
-  </a>
-</p>
-
-
 ### Installing and running
 
 First you must navigate to the server directory and install the dependencies, then run the dev script using npm.
@@ -127,10 +119,11 @@ Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+<p align="start">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=nextjs,tailwind,sqlite,express" />
+  </a>
+</p>
 
 ## ✍️ Authors <a name = "authors"></a>
 
