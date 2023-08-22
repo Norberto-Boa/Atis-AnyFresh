@@ -1,9 +1,10 @@
-import { salesResponse } from "@/@types/userTypes";
+import { PaymentResponse } from "@/@types/userTypes";
 import { Roboto } from "@next/font/google";
 import { api } from "@/services/api";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { format } from "date-fns";
 
 const roboto = Roboto({
   weight:["100", "300", "400", "500", "700", "900"],
@@ -12,10 +13,12 @@ const roboto = Roboto({
 
 
 interface Props{
-  sales: salesResponse[]
+  payments: PaymentResponse[]
 }
 
-export default function Payment({sales}: Props) {
+export default function Payment({payments}: Props) {
+  console.log(payments);
+
 
   return (
     <div
@@ -46,6 +49,7 @@ export default function Payment({sales}: Props) {
             <thead
               className="ltr:text-left rtl:text-right border-t-2 border-zinc-600"
             >
+              {/* TableHeaders */}
               <tr>
                 <th
                   className="whitespace-nowrap px-4 pt-4 pb-2 font-medium text-zinc-100 text-start"
@@ -80,10 +84,50 @@ export default function Payment({sales}: Props) {
                 <th
                   className="whitespace-nowrap px-4 pt-4 pb-2 font-medium text-zinc-100 text-start"
                 >
-                  Pagamentos
+                  Data do pagamento
                 </th>           
               </tr>
             </thead>
+
+            <tbody
+              className="divide-y divide-gray-200"
+            >
+              {
+                payments ? 
+                  payments.map(payment => {
+                    return (
+                      <tr className="odd:bg-zinc-900"
+                        key={payment.id}
+                      >
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-zinc-100">
+                          {payment.sale.client_name}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-zinc-100">
+                          {payment.sale.Product.name}
+                        </td>
+
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-zinc-100">
+                          {format(new Date(payment.sale.date), "dd/MM/yyyy")}
+                        </td>
+
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-zinc-100">
+                          {payment.sale.quantity * payment.sale.Product.price}
+                        </td>
+                        
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-zinc-100">
+                          {payment.amount}
+                        </td>
+                        
+                        <td className="whitespace-nowrap px-4 py-2 font-medium text-zinc-100">
+                          {format(new Date(payment.date), "dd/MM/yyyy")}
+                        </td>
+                        
+                      </tr>
+                    )
+                  }) :
+                  <p>Nao existe nenhum pagamento</p>
+              }
+            </tbody>
           </table>
         </div>
 
@@ -105,13 +149,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  const data = await api.get(`/sales?page=${page}`)
+  const data = await api.get(`/payments`)
     .then(res => { return res.data })
     .catch(err => {console.log(err)});
 
+  console.log(data);
+  
   return {
     props: {
-      sales: data.Sales
+      payments: data
     }
   }
 }

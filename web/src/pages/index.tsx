@@ -1,9 +1,8 @@
-import { GetServerSideProps, GetStaticProps } from "next";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { Inter } from 'next/font/google';
 import * as Dialog from "@radix-ui/react-dialog";
-import { parseCookies } from "nookies";
 
 import { api } from "@/services/api";
 import { AuthContext } from "@/context/authContext";
@@ -12,11 +11,7 @@ import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
 import { CreateSaleDialog, products } from "@/components/CreateSaleDialog";
 import { ArrowDown, CurrencyDollar, Plus, ShoppingBag, Tag } from "phosphor-react";
-import { getAPIclient } from "@/services/getApiClient";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import axios from "axios";
 import Head from "next/head";
 
 const inter = Inter({ subsets: ['latin'] })
@@ -29,7 +24,6 @@ interface DashboardData{
 }
 
 export default function Home({products, sales, expenses, balance}: DashboardData) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
   

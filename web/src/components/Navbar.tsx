@@ -3,14 +3,13 @@ import { Roboto } from "@next/font/google";
 import Link from "next/link";
 import { Gear, BellSimple } from "phosphor-react";
 import { useContext } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from '../redux/store';
 
 const roboto = Roboto({weight: "900", subsets:['latin']});
 
 
 const Navbar = () => {
   const { isAutheticated } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   
 
   return (
@@ -26,8 +25,7 @@ const Navbar = () => {
           <div className="flex gap-4 items-center">
             <div className="h-10 w-10 bg-slate-700 rounded-full" />
             <div>
-              <span className="block font-bold text-xl leading-none">BoaN</span>
-              <span className="block text-slate-400 text-sm">Norberto Boa</span>
+              <span className="block font-bold text-xl leading-none">{isAutheticated ? user.name : ""}</span>
             </div>
           </div>
         </div>

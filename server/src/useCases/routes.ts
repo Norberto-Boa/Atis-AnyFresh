@@ -27,9 +27,6 @@ import { getPaymentsController } from "./getAllPayments/getAllPaymentsController
 import { createPaymentController } from "./createPayment/createPaymentController";
 import { editExpenseController } from "./editExpense/editExpenseController";
 
-const corsOptions = {
-  origin: '*'
-}
 
 // Product Controllers
 const createProduct = new createProductController();
@@ -93,5 +90,6 @@ router.post('/refresh-token/:id', tryCatch(refreshToken.refresh));
 // Payment Routes
 router.post('/payment/:sale_id', tryCatch(createPayment.handle));
 router.get('/payments', tryCatch(getPayment.get));
+
 
 export { router };

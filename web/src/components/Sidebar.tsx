@@ -1,18 +1,17 @@
 import { AuthContext } from "@/context/authContext";
-import { RootState } from "@/redux/store";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
-import { House } from "phosphor-react";
+import { ArrowDown, Bag, Gauge, Money, Tag } from "phosphor-react";
 import { useContext } from "react";
-import { useSelector } from "react-redux";
 
 const roboto = Roboto({ weight: "500", subsets: ["latin"] });
 
 const links = [
-  { title: "Dashboard", href: "/", icon: <House size={32} />},
-  { title: "Produtos", href: "/products", icon: <House size={32} />},
-  { title: "Vendas", href: "/sales", icon: <House size={32} />},
-  { title: "Gastos", href: "/expenses", icon: <House size={32} />},
+  { title: "Dashboard", href: "/", icon: <Gauge size={24} />},
+  { title: "Produtos", href: "/products", icon: <Tag size={24} />},
+  { title: "Vendas", href: "/sales", icon: <Bag size={24} />},
+  { title: "Gastos", href: "/expenses", icon: <ArrowDown size={24} />},
+  { title: "Pagamentos", href: "/payments", icon: <Money size={24} />},
 ]
 
 
@@ -30,10 +29,10 @@ const Sidebar = () => {
               <Link
                 href={link.href}
                 key={index}
-                className="flex items-center py-1 gap-2"
+                className="flex items-center py-2 gap-2"
               >
                 {link.icon}
-                <span className={`text-lg ${roboto.className}`}>{link.title}</span>
+                <span className={`text-xl ${roboto.className}`}>{link.title}</span>
               </Link>
             )
           })}

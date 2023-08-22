@@ -46,3 +46,21 @@ export interface salesResponse{
   _count: number,
   TotalPrice: number
 }
+
+
+export interface PaymentResponse{
+  id: string,
+  payment_type: string,
+  amount: number,
+  description: string,
+  date: string,
+  sale: {
+    client_name: string,
+    date: string,
+    quantity: number,
+    Product: {
+      name: string,
+      price: number
+    }
+  }
+}
