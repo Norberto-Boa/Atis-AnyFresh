@@ -21,6 +21,15 @@
 
 ---
 
+<div>
+  <img
+  src="./View.jpg"
+  alt="ATIS View"
+  >
+</div>
+
+---
+
 # 📝 Table of Contents
 
 - [About](#about)

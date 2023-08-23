@@ -1,11 +1,10 @@
 import { sign } from "jsonwebtoken";
-import { client } from "../prisma/client";
-import { generateRefreshToken } from "./generateRefreshToken";
-
 
 class generateToken{
-  async handle(userId: string, name: string){
-    const token = sign({name}, "Mena", {
+  async handle(userId: string, name: string) {
+    const key : string = process.env.JWT_KEY  ?? "";
+
+    const token = sign({name}, key, {
       subject: userId,
       expiresIn: "1h"
     });

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowDown, Bag, Gauge, Money, Tag } from "phosphor-react";
 import { useContext } from "react";
 
-const roboto = Roboto({ weight: "500", subsets: ["latin"] });
+const roboto = Roboto({ weight: ["500", "100", "300", "400", "700", "900"], subsets: ["latin"] });
 
 const links = [
   { title: "Dashboard", href: "/", icon: <Gauge size={24} />},
@@ -21,7 +21,7 @@ const Sidebar = () => {
   return (
     <div className={`bg-slate-900 lg:w-80 min-h-screen fixed lg:top-16 ${isAutheticated ? "block" : "hidden"}`}>
       <div className="px-8 py-6">
-        <h1 className={`${roboto.className} text-base mb-4`}>Menu</h1>
+        <h1 className={`${roboto.className} text-xl font-bold tracking-wide mb-4 uppercase`}>Menu</h1>
 
         <div>
           {links.map((link, index) => {
