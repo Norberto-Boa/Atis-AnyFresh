@@ -1,5 +1,5 @@
 import { PaymentResponse } from "@/@types/userTypes";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import { api } from "@/services/api";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { GetServerSideProps } from "next";

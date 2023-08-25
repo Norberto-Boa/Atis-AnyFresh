@@ -2,7 +2,7 @@ import { Params } from "@/@types/_types";
 import { useForm } from "react-hook-form";
 import { api } from "@/services/api";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
 import { expense } from '../../../@types/_types';

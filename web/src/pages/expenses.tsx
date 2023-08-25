@@ -1,6 +1,6 @@
 import { TableRow } from "@/components/TableRow";
 import { api } from "@/services/api";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";

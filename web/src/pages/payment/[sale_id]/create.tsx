@@ -4,7 +4,7 @@ import { Input } from "@/components/Input";
 import { AppDispatch, RootState } from "@/redux/store";
 import { api } from "@/services/api";
 import { isPaid } from "@/utils/isPaid";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 import { useRouter } from 'next/router';
 import { ArrowLineUp } from "phosphor-react";
 import {  useContext } from "react";

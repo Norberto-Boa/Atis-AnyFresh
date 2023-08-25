@@ -1,5 +1,5 @@
 import { AuthContext } from "@/context/authContext";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { Gear, BellSimple } from "phosphor-react";

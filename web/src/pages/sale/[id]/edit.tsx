@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { ProductData } from "@/@types/_types"
 import { salesResponse } from "@/@types/userTypes"
 import { api } from "@/services/api"
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import * as Checkbox from "@radix-ui/react-checkbox";

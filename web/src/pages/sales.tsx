@@ -1,4 +1,4 @@
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { SalesCard } from "@/components/SalesCard";
