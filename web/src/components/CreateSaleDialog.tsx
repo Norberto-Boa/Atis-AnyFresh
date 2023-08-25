@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { FormEvent, useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Check } from "phosphor-react";
 import { parseJwt } from "@/utils/parsejwt";
 import { SaleInput } from "./SaleInput";
@@ -10,8 +9,6 @@ import { useForm } from "react-hook-form";
 import { ISaleCreate } from "@/@types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
-import { Input } from "postcss";
-import { GetServerSideProps } from "next";
 
 export interface products{
   id: string;

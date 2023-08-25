@@ -1,11 +1,9 @@
 import { AuthContext } from "@/context/authContext";
-import { Roboto } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { Gear, BellSimple } from "phosphor-react";
 import { useContext } from "react";
 
-const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets:['latin']});
 
 
 const Navbar = () => {
@@ -17,7 +15,7 @@ const Navbar = () => {
     <div className={`w-full h-16 fixed ${isAutheticated ? "block" : "hidden"}`}>
       <div className="w-full lg:max-w-full mx-auto flex justify-between items-center h-full py-4 lg:px-20 bg-slate-900 border-b-2 border-slate-700">
         <div>
-          <Link href={`#`} className="text-2xl font-bold">Any<span className={`${roboto.className} text-green-400`}>Fresh</span></Link>
+          <Link href={`#`} className="text-2xl font-bold">Any<span className={`text-green-400`}>Fresh</span></Link>
         </div>
 
         <div className="flex gap-4 items-center">

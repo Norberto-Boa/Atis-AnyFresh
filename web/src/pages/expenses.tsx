@@ -1,6 +1,5 @@
 import { TableRow } from "@/components/TableRow";
 import { api } from "@/services/api";
-import { Roboto } from "next/font/google";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
@@ -14,10 +13,6 @@ import { useRouter } from "next/router";
 
 
 
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['100', '300', '500', '700', '900']
-});
 
 interface expensesResponse{
   expenses: expense[], 
@@ -46,7 +41,7 @@ export default function Expenses({expenses, count, page}: Props) {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${roboto.className}`}
+      className={`ml-80 pt-16 text-white`}
     >
       <Head>
         <title>Gastos | AnyFresh</title>

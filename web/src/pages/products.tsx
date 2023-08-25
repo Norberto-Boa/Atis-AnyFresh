@@ -1,15 +1,11 @@
 import { ProductDialog } from "@/components/ProductDialog";
-import { Inter } from 'next/font/google';
 import { Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { CreateProductDialog } from "@/components/CreateProductDialog";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { GetServerSideProps } from "next";
 import { api } from "@/services/api";
 
-const inter = Inter({ subsets: ['latin'] })
 
 interface productResponse{
   id: string,
@@ -27,11 +23,11 @@ interface productResponse{
 export default function Products(products: productResponse[]) {
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
       <div className="p-16">
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={`text-2xl font-semibold`}
         >
           Produtos
         </h1>

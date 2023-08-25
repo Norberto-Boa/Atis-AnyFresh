@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { SalesCard } from "@/components/SalesCard";
@@ -6,18 +5,10 @@ import { CreateSaleDialog } from "@/components/CreateSaleDialog";
 import { api } from "@/services/api";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import { ParsedUrlQuery } from "querystring";
 import { salesResponse } from "@/@types/userTypes";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { products } from '../components/CreateSaleDialog';
-
-
-interface Params extends ParsedUrlQuery{
-  page: string;
-}
-const inter = Inter({subsets: ['latin']})
 
 interface PropsSale{
   sales: salesResponse[],
@@ -42,7 +33,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
       <Head>
         <title>Vendas | AnyFresh</title>
@@ -52,7 +43,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
         className="p-16"
       >
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={` text-2xl font-semibold`}
         >
           Vendas
         </h1>

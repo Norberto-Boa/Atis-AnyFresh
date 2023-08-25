@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import { Inter } from 'next/font/google';
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { api } from "@/services/api";
@@ -14,7 +13,6 @@ import { ArrowDown, CurrencyDollar, Plus, ShoppingBag, Tag } from "phosphor-reac
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import Head from "next/head";
 
-const inter = Inter({ subsets: ['latin'] })
 
 interface DashboardData{
   products: products[],
@@ -28,15 +26,15 @@ export default function Home({products, sales, expenses, balance}: DashboardData
   const { user } = useContext(AuthContext);
   
   return (
-    <div className={`ml-80 pt-16 text-white ${inter.className}`} >
+    <div className={`ml-80 pt-16 text-white`} >
       <Head>
         <title>Dashboard | AnyFresh</title>
       </Head>
 
       <div className="p-16">
         <div>
-          <h1 className={`${inter.className} text-2xl font-bold`}>Dona {user?.name}, seja bem vindo a ATIS</h1>
-          <span className={` ${inter.className} leading-tight font-semibold text-zinc-500 text-lg`}>A plata forma para gerir o teu business</span>
+          <h1 className={`text-2xl font-bold`}>Dona {user?.name}, seja bem vindo a ATIS</h1>
+          <span className={` leading-tight font-semibold text-zinc-500 text-lg`}>A plata forma para gerir o teu business</span>
         </div>
 
         <div className={`w-full h-[1px] bg-zinc-700 my-12`} />

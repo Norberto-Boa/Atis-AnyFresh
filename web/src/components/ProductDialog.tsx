@@ -1,12 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
 
-import { Inter } from 'next/font/google';
 import Link from "next/link";
-import { EndOfLineState } from "typescript";
 import { NotePencil } from "phosphor-react";
 
-const inter = Inter({ subsets: ['latin'] });
 
 
 interface ProductDialogProps{
@@ -22,7 +19,7 @@ const ProductDialog = ({name, code, bannerUrl, discountPercentage, price, sales}
   return (
     <Dialog.Root>
       <Dialog.Trigger
-        className={`${inter.className} font-medium relative rounded-lg overflow-hidden group`}
+        className={`font-medium relative rounded-lg overflow-hidden group`}
       >
         <Image
           src={bannerUrl}
@@ -35,7 +32,7 @@ const ProductDialog = ({name, code, bannerUrl, discountPercentage, price, sales}
           className="absolute w-full h-full bg-black/40 inset-0 overflow-hidden"
         />
         <h1
-         className={`${inter.className} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-3xl`}
+         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-3xl`}
         >
           {name}
         </h1>

@@ -2,7 +2,6 @@ import { Params } from "@/@types/_types";
 import { useForm } from "react-hook-form";
 import { api } from "@/services/api";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import { Inter } from "next/font/google";
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
 import { expense } from '../../../@types/_types';
@@ -12,7 +11,6 @@ import { Input } from "@/components/Input";
 import { IExpenseCreate } from "@/@types/inputTypes";
 import { ChangeEvent, useState } from "react";
 
-const inter = Inter({subsets: ['latin']})
 
 interface Props{
   expense: expense
@@ -42,7 +40,7 @@ export default function Edit({ expense }: Props) {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
       <Head>
         <title>Edit | Expense</title>
@@ -51,7 +49,7 @@ export default function Edit({ expense }: Props) {
         className="p-16"
       >
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={` text-2xl font-semibold`}
         >
           Editar gasto feito por {expense.buyerName} no dia {format(new Date(expense.date), "MM/dd/yyyy")}
         </h1>

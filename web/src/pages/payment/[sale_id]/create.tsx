@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { Input } from "@/components/Input";
 import { api } from "@/services/api";
 import { isPaid } from "@/utils/isPaid";
-import { Inter } from "next/font/google";
 import { useRouter } from 'next/router';
 import { ArrowLineUp } from "phosphor-react";
 import {  useContext } from "react";
@@ -15,8 +14,6 @@ import { IPayment } from "@/@types/inputTypes";
 import { Params } from "@/@types/_types";
 import { salesResponse } from "@/@types/userTypes";
 
-const inter = Inter({subsets: ['latin']})
-
 interface Props{
   sale: salesResponse;
 }
@@ -28,7 +25,7 @@ export default function Create({sale}: Props) {
 
   if (!sale) {
     return (
-      <p className={`ml-96 pt-20 text-white ${inter.className}`} >We did not find the sale... <Link href={'/sales'} className="text-blue-400 font-semibold"> Go back to sale and do not refresh the page </Link></p>
+      <p className={`ml-96 pt-20 text-white `} >We did not find the sale... <Link href={'/sales'} className="text-blue-400 font-semibold"> Go back to sale and do not refresh the page </Link></p>
     )
   };
 
@@ -61,19 +58,19 @@ export default function Create({sale}: Props) {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
       <div
         className="p-16"
       >
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={` text-2xl font-semibold`}
         >
           Criar pagamento da venda para {sale.client_name} - {sale.quantity} {sale.Product.name}
         </h1>
 
         <h2
-          className={`mt-4 ${inter.className} font-semibold text-xl ${paid ? 'text-green-400' : 'text-red-400'}`}
+          className={`mt-4  font-semibold text-xl ${paid ? 'text-green-400' : 'text-red-400'}`}
         >
           {typeof paid === "number" ? `O valor pago desta divida e ${paid}` : `Esta divida ja foi paga!`}
         </h2>

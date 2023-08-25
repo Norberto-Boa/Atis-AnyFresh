@@ -1,15 +1,9 @@
 import { PaymentResponse } from "@/@types/userTypes";
-import { Roboto } from "next/font/google";
 import { api } from "@/services/api";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { format } from "date-fns";
-
-const roboto = Roboto({
-  weight:["100", "300", "400", "500", "700", "900"],
-  subsets: ['cyrillic']
-})
 
 
 interface Props{
@@ -22,7 +16,7 @@ export default function Payment({payments}: Props) {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${roboto.className}`}
+      className={`ml-80 pt-16 text-white`}
     >
       <Head>
         <title>Pagamentos | AnyFresh</title>
