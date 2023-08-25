@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { ReactElement, ReactNode, createContext, useEffect, useState } from "react";
 import { setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 import { IUserLogin, UserInfo, decodedTokenData } from "@/@types/userTypes";
@@ -9,14 +9,18 @@ import { api } from "@/services/api";
 
 interface isAutheticatedType{
   isAutheticated: boolean;
-  user: UserInfo;
+  user?: UserInfo | null;
   signIn: (data: IUserLogin) => Promise<void>
+}
+
+type ChildrenProps = {
+  children: ReactNode
 }
 
 const AuthContext = createContext({} as isAutheticatedType);
 
 
-function AuthProvider({ children }) {
+function AuthProvider({ children }: ChildrenProps) {
   const [user, setUser] = useState<UserInfo | null>(null);
   const isAutheticated = !!user;
 

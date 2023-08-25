@@ -1,7 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useForm } from 'react-hook-form';
 import { Input } from "@/components/Input";
-import { AppDispatch, RootState } from "@/redux/store";
 import { api } from "@/services/api";
 import { isPaid } from "@/utils/isPaid";
 import { Inter } from "next/font/google";
@@ -45,7 +43,7 @@ export default function Create({sale}: Props) {
         description: data.description
       }, {
         headers: {
-          user: user.id
+          user: user?.id
         }  
       }
       ).then(() => {

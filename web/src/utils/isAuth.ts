@@ -1,5 +1,4 @@
 import { UserInfo } from "@/@types/userTypes";
-import { useDispatch } from "react-redux";
 import { parseJwt } from "./parsejwt";
 import { checkJwt } from "./checkJwt";
 

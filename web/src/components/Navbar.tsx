@@ -34,7 +34,7 @@ const Navbar = () => {
               />
             </div>
             <div>
-              <span className="block font-bold text-xl leading-none">{isAutheticated ? user.name : ""}</span>
+              <span className="block font-bold text-xl leading-none">{isAutheticated ? user?.name : ""}</span>
             </div>
           </div>
         </div>

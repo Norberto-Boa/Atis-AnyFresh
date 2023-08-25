@@ -1,4 +1,5 @@
-import { ReactElement, ReactNode } from "react"
+import { ReactElement, ReactNode } from "react";
+import { NextPage } from "next";
 import { ParsedUrlQuery } from 'querystring';
 
 export type NextPageWithLayout = NextPage & {

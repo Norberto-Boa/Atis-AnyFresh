@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Login() {
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<IUserLogin>();
   const { signIn, isAutheticated } = useContext(AuthContext);
   
   const router = useRouter();
