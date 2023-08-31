@@ -5,8 +5,6 @@ import { parseCookies } from "nookies";
 function getAPIclient(ctx?: any) {
   const { 'atis.token': token } = parseCookies(ctx);
 
-  console.log(baseUrl);
-
   const api = axios.create({
     baseURL: baseUrl,
   })
