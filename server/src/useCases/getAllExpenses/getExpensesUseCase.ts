@@ -1,11 +1,10 @@
-import { Prisma } from "@prisma/client";
 import { client } from "../../prisma/client";
 
 class getExpensesUseCase{
   async handle( page : number) {
     const expensesPerPage = 8;
     const start = page === 1 ? 0 : (page - 1) * expensesPerPage;
-    const query: Prisma.ExpenseFindManyArgs = {
+    const query : any = {
       orderBy: {
         date: 'desc'
       }, 

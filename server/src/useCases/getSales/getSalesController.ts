@@ -7,7 +7,7 @@ class getAllSalesController{
   async get(req: Request, res: Response) {
     const getSales = new getAllSalesUseCase();
     const data = await getSales.handle();
-    const sales = data.map((sale) => {
+    const sales = data.map((sale: any) => {
       const TotalPrice = totalPrice(sale.Product.price, sale.discount, sale.quantity, sale.Product.discountPercentage)
       return { ...sale, TotalPrice }
     });
