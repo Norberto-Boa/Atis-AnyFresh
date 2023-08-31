@@ -13,7 +13,7 @@ class getSomeSalesController{
 
     const {count, sales}  = await getSales.handle(pageNumber);
 
-    const Sales = sales.map((sale) => {
+    const Sales = sales.map((sale: any) => {
       const TotalPrice = totalPrice(sale.Product.price, sale.discount, sale.quantity, sale.Product.discountPercentage)
     
       return {...sale, TotalPrice}
