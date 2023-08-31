@@ -26,7 +26,8 @@ function AuthProvider({ children }: ChildrenProps) {
 
   useEffect(() => {
     const { 'atis.token': token } = parseCookies();
-    
+   
+
     if (token) {
       const decodedToken: decodedTokenData = parseJwt(token);
 
@@ -40,17 +41,19 @@ function AuthProvider({ children }: ChildrenProps) {
 
   async function signIn({username, password} : IUserLogin) {
     
-    const { data } = await api.post(`/login`,
+
+    const res = await api.post(`/login`,
       { username, password }
     );
+
     
-    setCookie(undefined, 'atis.token', data.token, {
+    setCookie(undefined, 'atis.token', res.data.token, {
       maxAge: 60 * 60 * 1 // 1 hour
     });
 
-    api.defaults.headers['Authorization'] = 'Bearer ' + data.token;
+    api.defaults.headers['Authorization'] = 'Bearer ' + res.data.token;
 
-    const decodedToken : decodedTokenData = parseJwt(data.token);
+    const decodedToken : decodedTokenData = parseJwt(res.data.token);
 
     setUser({
       id: decodedToken.sub,

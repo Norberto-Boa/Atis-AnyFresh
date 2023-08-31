@@ -9,6 +9,7 @@ export default function Login() {
   const { register, handleSubmit } = useForm<IUserLogin>();
   const { signIn, isAutheticated } = useContext(AuthContext);
   
+  
   const router = useRouter();
 
   async function handleLogin(data : IUserLogin) {
