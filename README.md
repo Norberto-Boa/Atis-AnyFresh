@@ -82,13 +82,7 @@ First you must navigate to the server directory and install the dependencies, th
 
 Before running the project, you must create a .env file, to store the environment variables, which are:
 
-```
-// .env file
 
-DATABASE_URL="file:../src/database/db.sqlite"
-JWT_KEY="Mena"
-
-```
 
 After creating the .env file, proceed with the installation and database migration. 
 To achive this you can write the following commands:
@@ -143,7 +137,7 @@ Add additional notes about how to deploy this on a live system.
 
 <p align="start">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=nextjs,tailwind,sqlite,express" />
+    <img src="https://skillicons.dev/icons?i=nextjs,tailwind,postgres,express" />
   </a>
 </p>
 

@@ -4,12 +4,13 @@ import { useRouter } from "next/router";
 interface PaginationButtonsProps{
   page: number,
   count: number
-  url: string
+  url: string,
+  items: number
 }
 
-const PaginationButtons = ({page, count, url} : PaginationButtonsProps) => {
+const PaginationButtons = ({page, count, url, items} : PaginationButtonsProps) => {
   const router = useRouter();
-  const lastPage = Math.ceil(count / 12);
+  const lastPage = Math.ceil(count / items);
 
   return (
     <div

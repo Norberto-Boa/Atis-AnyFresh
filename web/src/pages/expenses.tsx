@@ -1,10 +1,10 @@
 import { TableRow } from "@/components/TableRow";
 import { api } from "@/services/api";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
 import * as Dialog from "@radix-ui/react-dialog";
-import { CaretRight, Plus } from "phosphor-react";
+import { Plus } from "phosphor-react";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { expense } from "@/@types/_types";
@@ -72,7 +72,6 @@ export default function Expenses({expenses, count, page}: Props) {
             </Dialog.Trigger>
             <CreateExpenseDialog
             isOpen={() => {
-              console.log(open)
               setOpen(!open)
             }}
               updateState={true}  
@@ -83,6 +82,7 @@ export default function Expenses({expenses, count, page}: Props) {
             count={count}
             page={page}
             url="/expenses"
+            items={8}
           />
 
         </div>

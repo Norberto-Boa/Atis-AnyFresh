@@ -110,6 +110,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
               count={count}
               page={page}
               url="sales"
+              items={12}
             />
           </div>
         </div>
@@ -129,7 +130,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
                 discount={sale.discount}
                 name={sale.client_name}
                 date={Date.parse(sale.date)}
-                payment_type={!sale.Payment ? "Not paid" : sale.Payment[0].payment_type  }
+                payment_type={sale.Payment ? "Not paid" : sale.Payment[0].payment_type  }
                 price={sale.Product.price}
                 product={sale.Product.name}
                 discountPercentage = {sale.Product.discountPercentage}

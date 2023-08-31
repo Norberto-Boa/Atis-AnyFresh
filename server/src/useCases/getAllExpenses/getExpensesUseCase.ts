@@ -7,7 +7,7 @@ class getExpensesUseCase{
     const start = page === 1 ? 0 : (page - 1) * expensesPerPage;
     const query: Prisma.ExpenseFindManyArgs = {
       orderBy: {
-        date: 'asc'
+        date: 'desc'
       }, 
       skip: start,
       take: expensesPerPage

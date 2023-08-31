@@ -20,7 +20,10 @@ interface productResponse{
   }
 }
 
-export default function Products(products: productResponse[]) {
+interface Props{
+  products: productResponse[]
+}
+export default function Products({products}: Props) {
   return (
     <div
       className={`ml-80 pt-16 text-white `}
@@ -85,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  const products: productResponse = await api.get(`/products`)
+  const products: productResponse[] = await api.get(`/products`)
     .then((res) => { return res.data })
     .catch((err) => { console.log(err) });
 
