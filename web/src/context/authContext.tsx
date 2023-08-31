@@ -27,8 +27,11 @@ function AuthProvider({ children }: ChildrenProps) {
   useEffect(() => {
     const { 'atis.token': token } = parseCookies();
    
+    console.log(token);
 
-    if (token) {
+    console.log(!token ? "true" : "false");
+
+    if (!token) {
       const decodedToken: decodedTokenData = parseJwt(token);
 
       setUser({
