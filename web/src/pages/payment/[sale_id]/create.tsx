@@ -33,7 +33,7 @@ export default function Create({sale}: Props) {
 
   const handlePayment = (data: IPayment,) => {
     try {
-      api.post(`http://localhost:3333/payment/${sale.id}`, {
+      api.post(`/payment/${sale.id}`, {
         payment_type: data.payment_type,
         amount: Number(data.amount),
         date: data.date,
