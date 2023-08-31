@@ -21,4 +21,22 @@ function isPaid(totalPrice?: number, payment? : paymentData[]) {
   return totalPaid;
 }
 
-export { isPaid };
+function whatIsPaid(totalPrice: number, payment?: paymentData[]) {
+  var totalPaid = 0
+  if ( payment === null || !payment) {
+    return "Nao pago"
+  }
+
+  
+  payment.forEach(payment => totalPaid += payment.amount);
+
+
+  if (totalPrice === totalPaid) {
+    return payment[0].payment_type;
+  }
+
+  return "Parcelado";
+}
+
+
+export { isPaid, whatIsPaid };

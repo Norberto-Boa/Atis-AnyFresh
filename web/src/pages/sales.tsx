@@ -9,6 +9,7 @@ import { salesResponse } from "@/@types/userTypes";
 import Head from "next/head";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { products } from '../components/CreateSaleDialog';
+import { whatIsPaid } from "@/utils/isPaid";
 
 interface PropsSale{
   sales: salesResponse[],
@@ -130,7 +131,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
                 discount={sale.discount}
                 name={sale.client_name}
                 date={Date.parse(sale.date)}
-                payment_type={!sale.Payment ? "Not paid" : sale.Payment[0].payment_type  }
+                payment_type={whatIsPaid(sale.TotalPrice, sale.Payment)}
                 price={sale.Product.price}
                 product={sale.Product.name}
                 discountPercentage = {sale.Product.discountPercentage}
