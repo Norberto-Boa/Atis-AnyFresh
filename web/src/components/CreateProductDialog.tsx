@@ -6,12 +6,16 @@ import { ProductInput } from "./ProductInput";
 import { IProductCreate } from "@/@types/inputTypes";
 import { api } from "@/services/api";
 import { parseCookies } from "nookies";
+import { useState } from "react";
+import { Button } from "./Button";
 
 const CreateProductDialog = () => {
   const { register, handleSubmit } = useForm<IProductCreate>();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const router = useRouter();
 
-  const handleProductCreation = async(data : IProductCreate) =>{
+  const handleProductCreation = async (data: IProductCreate) => {
+    setButtonDisabled(true);
     const {['atis.token']: token} = parseCookies();
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub;
@@ -28,9 +32,11 @@ const CreateProductDialog = () => {
           user: id
         }
       }).then(() => {
+        setButtonDisabled(false);
         router.reload();
       })
     } catch (err) {
+      setButtonDisabled(false);
       console.log(err);
     }
 
@@ -134,11 +140,12 @@ const CreateProductDialog = () => {
              name="bannerUrl" id="bannerUrl" type="text"/>
           </div>
 
-          <button
-            className="w-full bg-emerald-500 mt-2 px-3 py-4 rounded transition-all hover:bg-emerald-600 uppercase font-bold"
-          >
-            Create Product
-          </button>
+          <Button
+            color="bg-emerald-500"
+            hover="bg-emerald-600"
+            label="Create Product"
+            disabled={buttonDisabled}
+          />
         </form>
 
 

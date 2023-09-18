@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { ISaleCreate } from "@/@types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
+import { Button } from "./Button";
 
 export interface products{
   id: string;
@@ -21,11 +22,11 @@ interface props{
 
 const CreateSaleDialog = ({products} : props) => {
   const { register, handleSubmit } = useForm<ISaleCreate>();
-  const router = useRouter();
-
-  const [hasDiscount, setHasDiscount] = useState(false)
+  const [hasDiscount, setHasDiscount] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   
-  async function handleCreateProduct(data : ISaleCreate) {
+  async function handleCreateProduct(data: ISaleCreate) {
+    setButtonDisabled(true);
     const { ["atis.token"] : token} = parseCookies();
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub
@@ -46,11 +47,13 @@ const CreateSaleDialog = ({products} : props) => {
 
       }).then(() => {
         alert('Anuncio criado');
+        setButtonDisabled(false);
       });
       
 
     } catch (err) {
       console.log(err)
+      setButtonDisabled(false);
     }
 
   }
@@ -196,12 +199,12 @@ const CreateSaleDialog = ({products} : props) => {
           <p className="text-2xl font-medium mt-4">Total:</p>
           <span className="text-2xl font-bold text-emerald-500 mb-2">{2500} MT</span>
 
-
-          <button
-            className="w-full bg-green-500 mt-2 px-3 py-4 rounded transition-all hover:bg-green-600 uppercase font-bold"
-          >
-            Nova Venda
-          </button>
+          <Button
+            color="bg-green-500"
+            hover="bg-green-600"
+            disabled={buttonDisabled}
+            label="Nova Venda"
+          />
         </form>
 
 

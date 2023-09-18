@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { isPaid } from "@/utils/isPaid";
 import { useRouter } from 'next/router';
 import { ArrowLineUp } from "phosphor-react";
-import {  useContext } from "react";
+import {  useContext, useState } from "react";
 import { AuthContext } from "@/context/authContext";
 import Link from "next/link";
 import { GetServerSideProps } from 'next';
@@ -13,6 +13,7 @@ import { PaymentInput } from "@/components/PaymentInput";
 import { IPayment } from "@/@types/inputTypes";
 import { Params } from "@/@types/_types";
 import { salesResponse } from "@/@types/userTypes";
+import { Button } from "@/components/Button";
 
 interface Props{
   sale: salesResponse;
@@ -21,6 +22,7 @@ interface Props{
 export default function Create({sale}: Props) {
   const router = useRouter();
   const { register, handleSubmit } = useForm<IPayment>();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const { user } = useContext(AuthContext);
 
   if (!sale) {
@@ -32,6 +34,7 @@ export default function Create({sale}: Props) {
   const paid = isPaid(sale.TotalPrice, sale.Payment)
 
   const handlePayment = (data: IPayment,) => {
+    setButtonDisabled(true);
     try {
       api.post(`/payment/${sale.id}`, {
         payment_type: data.payment_type,
@@ -49,6 +52,7 @@ export default function Create({sale}: Props) {
       })
       
     } catch (error) {
+      setButtonDisabled(false);
       console.log(error);
     }
 
@@ -130,7 +134,7 @@ export default function Create({sale}: Props) {
             
             <input
               {...register("date")}
-              id="date" type="datetime-local"
+              id="date" type="date"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={paid === true ? true : false}
             />
@@ -158,17 +162,13 @@ export default function Create({sale}: Props) {
           <div className="w-96 mt-2"> 
 
                
-            <button
-              
-              type="submit"
-              className="w-full bg-green-500 border-2 border-green-400 text-white mt-2 px-3 py-4 rounded transition-all duration-700 hover:bg-green-600 hover:text-white uppercase font-bold flex items-center gap-3 justify-center flex-row-reverse disabled:opacity-60 disabled:cursor-not-allowed"
-              disabled= {paid === true ? true : false}
-            >
-              <ArrowLineUp size={24} weight="bold" />
-              Pagar
-            </button>
+            <Button 
+              hover="bg-green-600"
+              color="bg-green-500"
+              label="Pagar"
+              disabled={buttonDisabled}
+            />
           </div>
-          
         </form>
       </div>
     </div>

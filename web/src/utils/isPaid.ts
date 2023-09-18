@@ -33,9 +33,11 @@ function whatIsPaid(totalPrice: number, payment?: paymentData[]) {
 
   if (totalPrice === totalPaid) {
     return payment[0].payment_type;
+  } else if (totalPaid !== 0 && totalPaid < totalPrice){
+    return `Parcelado ${totalPaid}`;
   }
 
-  return "Parcelado";
+  return "Nao pago"
 }
 
 

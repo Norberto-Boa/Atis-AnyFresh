@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { api } from "@/services/api";
 import { parseCookies } from "nookies";
 import { IExpenseCreate } from "@/@types/inputTypes";
+import { Button } from "./Button";
 
 interface CreateExpenseProps{
   isOpen: () => void,
@@ -15,6 +16,7 @@ interface CreateExpenseProps{
 
 const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
   const { register, handleSubmit } = useForm<IExpenseCreate>()
+  const [disabled, setDisabled] = useState(false);
   const [date, setDate] = useState("");
   const router = useRouter();
 
@@ -24,7 +26,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
   }
 
   const handleExpenseCreation = async (data : IExpenseCreate) => {
-    
+    setDisabled(true);
     const {['atis.token'] : token} = parseCookies()
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub
@@ -44,6 +46,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
         }
       }).then((res) => {
         if (updateState) {
+          setDisabled(false);
           router.reload();
         }
         isOpen();
@@ -142,11 +145,12 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
             />
           </div>
 
-          <button
-            className="w-full bg-red-500 mt-2 px-3 py-4 rounded transition-all hover:bg-red-600 uppercase font-bold"
-          >
-            Create Expense
-          </button>
+          <Button
+            color="bg-red-500"
+            hover="bg-red-600"
+            label="Create Expense"
+            disabled={disabled}
+          />
         </form>
 
 

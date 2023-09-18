@@ -11,7 +11,6 @@ interface Props{
 }
 
 export default function Payment({payments}: Props) {
-  console.log(payments);
 
 
   return (
@@ -147,8 +146,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     .then(res => { return res.data })
     .catch(err => {console.log(err)});
 
-  console.log(data);
-  
   return {
     props: {
       payments: data
