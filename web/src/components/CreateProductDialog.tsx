@@ -71,9 +71,12 @@ const CreateProductDialog = () => {
             </label>
             
             <ProductInput 
-            label="name"
-            register={register} 
-            id="name" type="text"/>
+              label="name"
+              register={register} 
+              id="name"
+              type="text"
+              required
+            />
           </div>
 
           <div
@@ -86,7 +89,8 @@ const CreateProductDialog = () => {
               Code
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="code"
             register={register} 
             name="code" id="code" type="text"/>
@@ -102,7 +106,8 @@ const CreateProductDialog = () => {
               Price
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="price"
             register={register} 
             name="price" id="price" type="number"/>
@@ -118,7 +123,8 @@ const CreateProductDialog = () => {
               Discount (%)
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="discountPercentage"
             register={register} 
             name="discountPercentage" id="discountPercentage" type="number"/>
@@ -134,7 +140,8 @@ const CreateProductDialog = () => {
               Banner
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="bannerUrl"
             register={register}
              name="bannerUrl" id="bannerUrl" type="text"/>

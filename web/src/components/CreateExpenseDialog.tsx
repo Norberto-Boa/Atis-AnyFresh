@@ -86,7 +86,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Nome do comprador
             </label>
             
-            <Input label="buyerName" register={register} id="buyerName" type="text"/>
+            <Input required label="buyerName" register={register} id="buyerName" type="text"/>
           </div>
 
           <div
@@ -99,7 +99,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Nome do Produto
             </label>
             
-            <Input label="description" register={register} id="description" type="text"/>
+            <Input required label="description" register={register} id="description" type="text"/>
           </div>
 
           <div
@@ -112,7 +112,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Preço
             </label>
             
-            <Input label="price" register={register} id="price" type="number"/>
+            <Input required label="price" register={register} id="price" type="number"/>
           </div>
 
           <div
@@ -125,7 +125,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Quantidade
             </label>
             
-            <Input label="quantity" register={register} id="quantity" type="number"/>
+            <Input required label="quantity" register={register} id="quantity" type="number"/>
           </div>
 
           <div
@@ -139,6 +139,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
             </label>
             
             <input
+              required
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
               id="date" type="date"
               onChange={handleDate}

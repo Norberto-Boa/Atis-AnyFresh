@@ -1,19 +1,22 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IUserLogin } from "@/@types/userTypes";
 import { useForm } from 'react-hook-form';
 import { AuthContext } from "@/context/authContext";
+import { Button } from "@/components/Button";
 
 export default function Login() {
-
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const { register, handleSubmit } = useForm<IUserLogin>();
   const { signIn, isAutheticated } = useContext(AuthContext);
   
   
   const router = useRouter();
 
-  async function handleLogin(data : IUserLogin) {
+  async function handleLogin(data: IUserLogin) {
+    setButtonDisabled(true);
     await signIn(data);
+    setButtonDisabled(false);
   }
 
 
@@ -98,6 +101,12 @@ export default function Login() {
               />
             </div>
 
+            <Button
+              color="bg-blue-500"
+              hover="bg-blue-600"
+              label="Login"
+              disabled={buttonDisabled}
+            />
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center transition-all"

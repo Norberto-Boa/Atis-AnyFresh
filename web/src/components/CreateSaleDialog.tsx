@@ -90,6 +90,7 @@ const CreateSaleDialog = ({products} : props) => {
               {...register('product')}
               name="product" id="product"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full"
+              required
             >
               <option value={""} className="text-zinc-500 py-3 px-4">Selecione o produto vendido</option>
               {
@@ -113,6 +114,7 @@ const CreateSaleDialog = ({products} : props) => {
             </label>
             
             <SaleInput
+            required
             label="client_name"
             register={register}
             name="client_name" id="client_name" type="text"/>
@@ -130,6 +132,7 @@ const CreateSaleDialog = ({products} : props) => {
             </label>
             
             <SaleInput
+            required
             label="quantity"
             register={register}
             name="quantity" id="quantity" type="number"/>
@@ -146,6 +149,7 @@ const CreateSaleDialog = ({products} : props) => {
             </label>
             
             <SaleInput
+            required
             label="paid"
             register={register}
             name="paid" id="paid" type="number"/>
@@ -163,6 +167,7 @@ const CreateSaleDialog = ({products} : props) => {
             
             <input
               {...register("date")}
+              required
               name="date" id="date" type="date"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
             />
