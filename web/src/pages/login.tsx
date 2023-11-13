@@ -4,6 +4,7 @@ import { IUserLogin } from "@/@types/userTypes";
 import { useForm } from 'react-hook-form';
 import { AuthContext } from "@/context/authContext";
 import { Button } from "@/components/Button";
+import Head from "next/head";
 
 export default function Login() {
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -50,6 +51,10 @@ export default function Login() {
     <div
       className={`flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0`}
     >
+      <Head>
+        <title>Login | AnyFresh</title>
+      </Head>
+
       <div
         className="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-zinc-800 border-zinc-700" 
       >
@@ -107,12 +112,12 @@ export default function Login() {
               label="Login"
               disabled={buttonDisabled}
             />
-            <button
+            {/* <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center transition-all"
             >
               Login
-            </button>
+            </button> */}
           </form>
         </div>
       </div>

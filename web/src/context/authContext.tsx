@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, createContext, useEffect, useState } from "react";
-import { setCookie, parseCookies } from "nookies";
+import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from "next/router";
 import { IUserLogin, UserInfo, decodedTokenData } from "@/@types/userTypes";
 import { parseJwt } from "@/utils/parsejwt";
@@ -11,6 +11,7 @@ interface isAutheticatedType{
   isAutheticated: boolean;
   user?: UserInfo | null;
   signIn: (data: IUserLogin) => Promise<void>
+  LogOut: () => void;
 }
 
 type ChildrenProps = {
@@ -38,9 +39,13 @@ function AuthProvider({ children }: ChildrenProps) {
 
   }, []);
 
+  async function LogOut() {
+    setUser(null);
+    destroyCookie(null, 'atis.token');
+  }
+
   async function signIn({username, password} : IUserLogin) {
     
-
     const res = await api.post(`/login`,
       { username, password }
     );
@@ -63,7 +68,7 @@ function AuthProvider({ children }: ChildrenProps) {
   }
 
   return (
-    <AuthContext.Provider value={{isAutheticated, signIn, user}}>
+    <AuthContext.Provider value={{isAutheticated, signIn, user, LogOut}}>
       {children}
     </AuthContext.Provider>     
   )

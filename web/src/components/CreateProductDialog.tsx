@@ -10,7 +10,11 @@ import { useState } from "react";
 import { Button } from "./Button";
 
 const CreateProductDialog = () => {
-  const { register, handleSubmit } = useForm<IProductCreate>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IProductCreate>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const router = useRouter();
 
@@ -72,11 +76,14 @@ const CreateProductDialog = () => {
             
             <ProductInput 
               label="name"
-              register={register} 
+              register={register}
+              // aria-invalid={errors.name ? "true" : "false"}
               id="name"
               type="text"
               required
             />
+
+            {errors.name?.type === "required" && (<p role="alert"> Name of the product is required!</p>)}
           </div>
 
           <div
