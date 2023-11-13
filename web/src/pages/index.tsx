@@ -1,11 +1,9 @@
 import { GetServerSideProps } from "next";
 import { useContext, useState } from "react";
-import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { api } from "@/services/api";
 import { AuthContext } from "@/context/authContext";
-
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
 import { CreateSaleDialog, products } from "@/components/CreateSaleDialog";
@@ -26,12 +24,12 @@ export default function Home({products, sales, expenses, balance}: DashboardData
   const { user } = useContext(AuthContext);
   
   return (
-    <div className={`ml-80 pt-16 text-white`} >
+    <div className={`lg:ml-80 pt-16 text-white`} >
       <Head>
         <title>Dashboard | AnyFresh</title>
       </Head>
 
-      <div className="p-16">
+      <div className="lg:p-16 px-6">
         <div>
           <h1 className={`text-2xl font-bold`}>Dona {user?.name}, seja bem vindo a ATIS</h1>
           <span className={` leading-tight font-semibold text-zinc-500 text-lg`}>A plata forma para gerir o teu business</span>

@@ -11,7 +11,7 @@ interface isAutheticatedType{
   isAutheticated: boolean;
   user?: UserInfo | null;
   signIn: (data: IUserLogin) => Promise<void>
-  LogOut: () => void;
+  logOut: () => void;
 }
 
 type ChildrenProps = {
@@ -39,7 +39,7 @@ function AuthProvider({ children }: ChildrenProps) {
 
   }, []);
 
-  async function LogOut() {
+  async function logOut() {
     setUser(null);
     destroyCookie(null, 'atis.token');
   }
@@ -68,7 +68,7 @@ function AuthProvider({ children }: ChildrenProps) {
   }
 
   return (
-    <AuthContext.Provider value={{isAutheticated, signIn, user, LogOut}}>
+    <AuthContext.Provider value={{isAutheticated, signIn, user, logOut}}>
       {children}
     </AuthContext.Provider>     
   )

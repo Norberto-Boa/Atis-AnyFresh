@@ -1,7 +1,7 @@
 import { AuthContext } from "@/context/authContext";
 import Link from "next/link";
-import { ArrowDown, Bag, Gauge, Money, Tag } from "phosphor-react";
-import { useContext } from "react";
+import { ArrowDown, Bag, Gauge, List, Money, Tag } from "phosphor-react";
+import { useContext, useState } from "react";
 
 const links = [
   { title: "Dashboard", href: "/", icon: <Gauge size={24} />},
@@ -14,27 +14,78 @@ const links = [
 
 const Sidebar = () => {
   const { isAutheticated } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
 
+  
   return (
-    <div className={`bg-slate-900 lg:w-80 min-h-screen fixed lg:top-16 ${isAutheticated ? "block" : "hidden"}`}>
-      <div className="px-8 py-6">
-        <h1 className={`text-xl font-bold tracking-wide mb-4 uppercase`}>Menu</h1>
 
-        <div>
-          {links.map((link, index) => {
-            return (
-              <Link
-                href={link.href}
-                key={index}
-                className="flex items-center py-2 gap-2"
-              >
-                {link.icon}
-                <span className={`text-xl`}>{link.title}</span>
-              </Link>
-            )
-          })}
+    <div
+      className="pt-16 relative"
+    >
+      <div
+        className={`absolute inset-0 h-screen bg-black/25 ${open ? '' : 'hidden'} overflow-hidden`}
+        onClick={() => setOpen(!open)}
+      />
+      
+      <div className="lg:hidden px-4">
+        <List
+          size={36} weight="bold"
+          className="text-slate-100 cursor-pointer mt-2"
+          onClick={()=> setOpen(!open)}
+        />
+      </div>
+
+      {/* Mobile Navbar  */}
+
+      <div
+        className={`bg-slate-900 min-h-screen fixed lg:hidden transition-all duration-700
+        -translate-y-11 ${open ? '-translate-x-0' : '-translate-x-64'}
+        ${isAutheticated ? "block" : "hidden"}`}
+      >
+        <div className="px-8 py-6">
+          <h1 className={`text-xl font-bold tracking-wide mb-4 uppercase`}>Menu</h1>
+
+          <div>
+            {links.map((link, index) => {
+              return (
+                <Link
+                  href={link.href}
+                  key={index}
+                  className="flex items-center py-2 gap-2"
+                >
+                  {link.icon}
+                  <span className={`text-xl`}>{link.title}</span>
+                </Link>
+              )
+            })}
+          </div>
+
         </div>
+      </div>
 
+      <div
+        className={`bg-slate-900 lg:w-64 min-h-screen fixed hidden
+        ${isAutheticated ? "lg:block" : "hidden"}`}
+      >
+        <div className="px-8 py-6">
+          <h1 className={`text-xl font-bold tracking-wide mb-4 uppercase`}>Menu</h1>
+
+          <div>
+            {links.map((link, index) => {
+              return (
+                <Link
+                  href={link.href}
+                  key={index}
+                  className="flex items-center py-2 gap-2"
+                >
+                  {link.icon}
+                  <span className={`text-xl`}>{link.title}</span>
+                </Link>
+              )
+            })}
+          </div>
+
+        </div>
       </div>
     </div>
   )
