@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, createContext, useEffect, useState } from "react";
-import { setCookie, parseCookies, destroyCookie } from "nookies";
+import { setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 import { IUserLogin, UserInfo, decodedTokenData } from "@/@types/userTypes";
 import { parseJwt } from "@/utils/parsejwt";
@@ -11,7 +11,10 @@ interface isAutheticatedType{
   isAutheticated: boolean;
   user?: UserInfo | null;
   signIn: (data: IUserLogin) => Promise<void>
+<<<<<<< HEAD
   logOut: () => void;
+=======
+>>>>>>> parent of 61cc948 (:rocket: Feat: Disable login button while loading.)
 }
 
 type ChildrenProps = {
@@ -39,13 +42,17 @@ function AuthProvider({ children }: ChildrenProps) {
 
   }, []);
 
+<<<<<<< HEAD
   async function logOut() {
     setUser(null);
     destroyCookie(null, 'atis.token');
   }
 
+=======
+>>>>>>> parent of 61cc948 (:rocket: Feat: Disable login button while loading.)
   async function signIn({username, password} : IUserLogin) {
     
+
     const res = await api.post(`/login`,
       { username, password }
     );
@@ -68,7 +75,11 @@ function AuthProvider({ children }: ChildrenProps) {
   }
 
   return (
+<<<<<<< HEAD
     <AuthContext.Provider value={{isAutheticated, signIn, user, logOut}}>
+=======
+    <AuthContext.Provider value={{isAutheticated, signIn, user}}>
+>>>>>>> parent of 61cc948 (:rocket: Feat: Disable login button while loading.)
       {children}
     </AuthContext.Provider>     
   )
