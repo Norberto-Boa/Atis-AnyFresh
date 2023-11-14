@@ -1,60 +1,49 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useForm } from 'react-hook-form';
 import { Input } from "@/components/Input";
-import { AppDispatch, RootState } from "@/redux/store";
 import { api } from "@/services/api";
 import { isPaid } from "@/utils/isPaid";
-import { Inter } from "@next/font/google";
 import { useRouter } from 'next/router';
 import { ArrowLineUp } from "phosphor-react";
-import {  useContext } from "react";
+import {  useContext, useState } from "react";
 import { AuthContext } from "@/context/authContext";
 import Link from "next/link";
 import { GetServerSideProps } from 'next';
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { PaymentInput } from "@/components/PaymentInput";
 import { IPayment } from "@/@types/inputTypes";
+import { Params } from "@/@types/_types";
+import { salesResponse } from "@/@types/userTypes";
+import { Button } from "@/components/Button";
 
-const inter = Inter({subsets: ['latin']})
+interface Props{
+  sale: salesResponse;
+}
 
-
-export default function Create() {
+export default function Create({sale}: Props) {
   const router = useRouter();
   const { register, handleSubmit } = useForm<IPayment>();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const { user } = useContext(AuthContext);
 
-  const { sale_id } = router.query;
-
-  const sale = useSelector((state: RootState) => state.sales.sales.find(sale => sale.id === sale_id));
-  const dispatch = useDispatch<AppDispatch>();
-  
   if (!sale) {
     return (
-      <p className={`ml-96 pt-20 text-white ${inter.className}`} >We did not find the sale... <Link href={'/sales'} className="text-blue-400 font-semibold"> Go back to sale and do not refresh the page </Link></p>
+      <p className={`ml-96 pt-20 text-white `} >We did not find the sale... <Link href={'/sales'} className="text-blue-400 font-semibold"> Go back to sale and do not refresh the page </Link></p>
     )
   };
 
   const paid = isPaid(sale.TotalPrice, sale.Payment)
-  // useEffect(() => {
-  //   axios.get(`http://localhost:3333/sale/${router.query['sale_id']}`)
-  //     .then((res) => {
-  //       setSaleData(res.data);
-  //     });
-  // })
-
 
   const handlePayment = (data: IPayment,) => {
-    
-
+    setButtonDisabled(true);
     try {
-      api.post(`http://localhost:3333/payment/${sale_id}`, {
+      api.post(`/payment/${sale.id}`, {
         payment_type: data.payment_type,
         amount: Number(data.amount),
         date: data.date,
         description: data.description
       }, {
         headers: {
-          user: user.id
+          user: user?.id
         }  
       }
       ).then(() => {
@@ -63,6 +52,7 @@ export default function Create() {
       })
       
     } catch (error) {
+      setButtonDisabled(false);
       console.log(error);
     }
 
@@ -72,19 +62,19 @@ export default function Create() {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
       <div
         className="p-16"
       >
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={` text-2xl font-semibold`}
         >
-          Criar pagamento da venda para {sale?.client_name} - {sale?.quantity} {sale?.Product.name}
+          Criar pagamento da venda para {sale.client_name} - {sale.quantity} {sale.Product.name}
         </h1>
 
         <h2
-          className={`mt-4 ${inter.className} font-semibold text-xl ${paid ? 'text-green-400' : 'text-red-400'}`}
+          className={`mt-4  font-semibold text-xl ${paid ? 'text-green-400' : 'text-red-400'}`}
         >
           {typeof paid === "number" ? `O valor pago desta divida e ${paid}` : `Esta divida ja foi paga!`}
         </h2>
@@ -144,7 +134,7 @@ export default function Create() {
             
             <input
               {...register("date")}
-              id="date" type="datetime-local"
+              id="date" type="date"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={paid === true ? true : false}
             />
@@ -172,20 +162,14 @@ export default function Create() {
           <div className="w-96 mt-2"> 
 
                
-            <button
-              
-              type="submit"
-              className="w-full bg-green-500 border-2 border-green-400 text-white mt-2 px-3 py-4 rounded transition-all duration-700 hover:bg-green-600 hover:text-white uppercase font-bold flex items-center gap-3 justify-center flex-row-reverse disabled:opacity-60 disabled:cursor-not-allowed"
-              disabled= {paid === true ? true : false}
-            >
-              <ArrowLineUp size={24} weight="bold" />
-              Pagar
-            </button>
+            <Button 
+              hover="bg-green-600"
+              color="bg-green-500"
+              label="Pagar"
+              disabled={buttonDisabled}
+            />
           </div>
-          
         </form>
-        
-      
       </div>
     </div>
   )
@@ -194,6 +178,7 @@ export default function Create() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isAuth = AuthOnServerSide(ctx);
+  const { sale_id } = ctx.params as Params; 
 
   if (!isAuth) {
     return {
@@ -204,7 +189,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  const data = await api.get(`/sale/${sale_id}`).then(res => { return res.data }).catch(err => { return err });
+
   return {
-    props:{}
+    props: {
+      sale: data
+    }
   }
 }

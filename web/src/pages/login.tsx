@@ -1,21 +1,22 @@
 import { useRouter } from "next/router";
-import { Inter } from 'next/font/google';
 import { useContext, useEffect, useState } from "react";
 import { IUserLogin } from "@/@types/userTypes";
 import { useForm } from 'react-hook-form';
 import { AuthContext } from "@/context/authContext";
-
-const inter = Inter({ subsets: ['latin'] })
+import { Button } from "@/components/Button";
 
 export default function Login() {
-
-  const { register, handleSubmit } = useForm();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { register, handleSubmit } = useForm<IUserLogin>();
   const { signIn, isAutheticated } = useContext(AuthContext);
+  
   
   const router = useRouter();
 
-  async function handleLogin(data : IUserLogin) {
+  async function handleLogin(data: IUserLogin) {
+    setButtonDisabled(true);
     await signIn(data);
+    setButtonDisabled(false);
   }
 
 
@@ -47,7 +48,7 @@ export default function Login() {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ${inter.className}`}
+      className={`flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0`}
     >
       <div
         className="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-zinc-800 border-zinc-700" 
@@ -100,6 +101,12 @@ export default function Login() {
               />
             </div>
 
+            <Button
+              color="bg-blue-500"
+              hover="bg-blue-600"
+              label="Login"
+              disabled={buttonDisabled}
+            />
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center transition-all"

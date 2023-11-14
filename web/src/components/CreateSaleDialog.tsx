@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { FormEvent, useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Check } from "phosphor-react";
 import { parseJwt } from "@/utils/parsejwt";
 import { SaleInput } from "./SaleInput";
@@ -10,34 +9,31 @@ import { useForm } from "react-hook-form";
 import { ISaleCreate } from "@/@types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
+import { Button } from "./Button";
 
-interface products{
+export interface products{
   id: string;
   name: string;
 }
 
-const CreateSaleDialog = () => {
+interface props{
+  products: products[];
+}
+
+const CreateSaleDialog = ({products} : props) => {
   const { register, handleSubmit } = useForm<ISaleCreate>();
-  const router = useRouter();
-
-  const [hasDiscount, setHasDiscount] = useState(false)
-  const [products, setProducts] = useState<products[]>([]);
-
-  useEffect(() => {
-    axios.get(`http://localhost:3333/products`)
-      .then(res => {
-        setProducts(res.data);
-      });
-  });
+  const [hasDiscount, setHasDiscount] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   
-  async function handleCreateProduct(data : ISaleCreate) {
+  async function handleCreateProduct(data: ISaleCreate) {
+    setButtonDisabled(true);
     const { ["atis.token"] : token} = parseCookies();
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub
 
 
     try {
-      await api.post(`http://localhost:3333/sale`, {
+      await api.post(`/sale`, {
         client_name: data.client_name,
         productId: data.product,
         quantity: Number(data.quantity),
@@ -49,13 +45,15 @@ const CreateSaleDialog = () => {
           user: `${id}`
         },
 
-      }).then((res) => {
+      }).then(() => {
         alert('Anuncio criado');
+        setButtonDisabled(false);
       });
       
 
     } catch (err) {
       console.log(err)
+      setButtonDisabled(false);
     }
 
   }
@@ -65,13 +63,13 @@ const CreateSaleDialog = () => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
       <Dialog.Content
-        className="bg-darkbg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 w-96 rounded-lg"
+        className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 w-96 rounded-lg"
       >
 
         <Dialog.Title
           className="text-3xl font-bold text-white mb-4"
         >
-          Criar nova compra
+          Criar nova venda
         </Dialog.Title>
 
         <form action=""
@@ -92,8 +90,9 @@ const CreateSaleDialog = () => {
               {...register('product')}
               name="product" id="product"
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full"
+              required
             >
-              <option value={""} className="text-zinc-500 py-3 px-4">Selecione o game que deseja jogar</option>
+              <option value={""} className="text-zinc-500 py-3 px-4">Selecione o produto vendido</option>
               {
                 products.map((product, i) => {
                   return (
@@ -115,6 +114,7 @@ const CreateSaleDialog = () => {
             </label>
             
             <SaleInput
+            required
             label="client_name"
             register={register}
             name="client_name" id="client_name" type="text"/>
@@ -132,6 +132,7 @@ const CreateSaleDialog = () => {
             </label>
             
             <SaleInput
+            required
             label="quantity"
             register={register}
             name="quantity" id="quantity" type="number"/>
@@ -148,6 +149,7 @@ const CreateSaleDialog = () => {
             </label>
             
             <SaleInput
+            required
             label="paid"
             register={register}
             name="paid" id="paid" type="number"/>
@@ -163,10 +165,11 @@ const CreateSaleDialog = () => {
               Data
             </label>
             
-            <SaleInput
-              label="date"
-              register={register}
+            <input
+              {...register("date")}
+              required
               name="date" id="date" type="date"
+              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
             />
           </div>
 
@@ -201,12 +204,12 @@ const CreateSaleDialog = () => {
           <p className="text-2xl font-medium mt-4">Total:</p>
           <span className="text-2xl font-bold text-emerald-500 mb-2">{2500} MT</span>
 
-
-          <button
-            className="w-full bg-green-500 mt-2 px-3 py-4 rounded transition-all hover:bg-green-600 uppercase font-bold"
-          >
-            Nova Venda
-          </button>
+          <Button
+            color="bg-green-500"
+            hover="bg-green-600"
+            disabled={buttonDisabled}
+            label="Nova Venda"
+          />
         </form>
 
 
@@ -214,5 +217,6 @@ const CreateSaleDialog = () => {
     </Dialog.Portal>
   )
 }
+
 
 export { CreateSaleDialog };

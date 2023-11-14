@@ -1,75 +1,61 @@
-import { Inter } from "@next/font/google";
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
-
 import { SalesCard } from "@/components/SalesCard";
 import { CreateSaleDialog } from "@/components/CreateSaleDialog";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { api } from "@/services/api";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from '../redux/store';
-import { fetchSales } from "@/redux/sales/salesActions";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import Products from './products';
+import { salesResponse } from "@/@types/userTypes";
+import Head from "next/head";
+import { PaginationButtons } from "@/components/PaginationButtons";
+import { products } from '../components/CreateSaleDialog';
+import { whatIsPaid } from "@/utils/isPaid";
 
-const inter = Inter({subsets: ['latin']})
-
-interface res{
-  id: string,
-  client_name: string,
-  userId: string,
-  productId: string,
-  quantity: number,
-  paid: number,
-  date: string,
-  discount: boolean,
-  created_at: string
-  Product: {
-    id: string,
-    name: string,
-    code: string,
-    discountPercentage: number,
-    price: number,
-    created_at: string
-  },
-  Payment: {
-    amount: number,
-    payment_type: string,
-  }[],
-  TotalPrice: number
+interface PropsSale{
+  sales: salesResponse[],
+  page: number,
+  count: number,
+  products: products[]
 }
 
-export default function Sales() {
-  
-  const { sales, loading } = useSelector((state: RootState) => state.sales);
-  const dispatch = useDispatch<AppDispatch>();
+export default function Sales({ sales, page, count, products }: PropsSale) {
+  let money = 0
+  let paid = 0
+  sales.map(sale => {
+    return money = money + sale.TotalPrice;
+  });
 
-  useEffect(() => {
-    dispatch(fetchSales());
-  },[dispatch]);
+  sales.map(sale => {
+    sale?.Payment?.forEach(payment => {
+      return paid += payment.amount
+    })
+  });
+
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
+      <Head>
+        <title>Vendas | AnyFresh</title>
+      </Head>
+
       <div
         className="p-16"
       >
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={` text-2xl font-semibold`}
         >
           Vendas
         </h1>
 
         {/* Divider line */}
 
-        <div className={`w-full h-[1px] bg-zinc-700 my-12`} />
+        <div className={`w-full h-[1px] bg-zinc-700 my-10`} />
         
 
         <div
-          className="flex gap-4 mb-8 items-center"
+          className="flex gap-4 mb-4 justify-between"
         >
           {/* Create new Sale dialog trigger */}
           <Dialog.Root>
@@ -80,10 +66,23 @@ export default function Sales() {
               <span className="font-semibold">Nova Compra</span> 
             </Dialog.Trigger>
 
-            <CreateSaleDialog />
+            <CreateSaleDialog
+              products={products}
+            />
           </Dialog.Root>
 
-          {/* Search input and button */}
+          <h1
+            className="text-2xl font-bold text-green-500"
+          >
+            <span className="text-white">
+              Pagamento esperado: 
+            </span>
+            <span> {money - paid} MT</span>
+          </h1>
+        </div>
+
+        <div className="flex justify-between items-center mb-4">          
+        {/* Search input and button */}
           <div
             className="flex items-center gap-2"
           >
@@ -104,10 +103,21 @@ export default function Sales() {
             </button>
 
           </div>
+          
+          <div
+            className="flex gap-2 items-center"
+          >
+            <PaginationButtons
+              count={count}
+              page={page}
+              url="sales"
+              items={12}
+            />
+          </div>
         </div>
-        
+
         <div
-          className="flex gap-4 flex-wrap"
+          className="flex gap-4 flex-wrap justify-between"
         >
 
           {
@@ -121,7 +131,7 @@ export default function Sales() {
                 discount={sale.discount}
                 name={sale.client_name}
                 date={Date.parse(sale.date)}
-                payment_type={sale.Payment?.length === 0 ? "Not paid" : sale.Payment[0].payment_type}
+                payment_type={whatIsPaid(sale.TotalPrice, sale.Payment)}
                 price={sale.Product.price}
                 product={sale.Product.name}
                 discountPercentage = {sale.Product.discountPercentage}
@@ -132,8 +142,8 @@ export default function Sales() {
             })
               :
             <p>There is no sale </p>
-        }
-         
+          }
+
         </div>
       </div>
     </div>
@@ -142,7 +152,8 @@ export default function Sales() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isAuth = AuthOnServerSide(ctx);
-
+  let page = ctx.query.page ?? 1;
+  
   if (!isAuth) {
     return {
       redirect: {
@@ -151,12 +162,28 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
     }
   }
+  
+  const endpoints = [
+    "/products",
+    `/sales?page=${page}`
+  ]
 
-  const products = await api.get('products');
+  const res = await Promise.all([
+    api.get(endpoints[0]),
+    api.get(endpoints[1])
+  ])
+
+  const [res1, res2] = res
+  
+  const products = res1.data;
+  const data = res2.data
 
   return {
     props: {
-      
+      sales: data.Sales,
+      page: +page,
+      count: data.count, 
+      products: products
     }
   };
 }

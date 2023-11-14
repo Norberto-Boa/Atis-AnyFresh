@@ -2,8 +2,7 @@ import { useRouter } from "next/router"
 import { ProductData } from "@/@types/_types"
 import { salesResponse } from "@/@types/userTypes"
 import { api } from "@/services/api"
-import { Roboto } from "@next/font/google";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { Input } from "@/components/Input";
@@ -13,15 +12,11 @@ import { AuthOnServerSide } from "@/services/serverSideAuth";
 import React from "react";
 import { Check } from "phosphor-react";
 import { ParsedUrlQuery } from "querystring";
+import { format } from "date-fns";
 
 interface Params extends ParsedUrlQuery{
   id: string;
 }
-
-const roboto = Roboto({
-  weight: ['400', '500', '700', '900', '300'],
-  subsets: ["latin"]
-})
 
 interface Props{
   products: ProductData[],
@@ -64,7 +59,7 @@ export default function Sale({products, sale} : Props) {
 
   return (
     <div
-      className={`ml-80 pt-16 text-white ${roboto.className}`}
+      className={`ml-80 pt-16 text-white`}
     >
       <Head>
         <title>Sale | Edit</title>
@@ -232,7 +227,7 @@ export default function Sale({products, sale} : Props) {
 
               <li className="text-lg mt-4">
                 <span className="font-medium tracking-wide">Data: </span>
-                <span>{sale.date}</span>
+                <span>{format(new Date(sale.date), 'dd/MM/yyyy')}</span>
               </li>
 
               <li className="text-lg mt-4">

@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { tryCatch } from "../utils/tryCatch";
-import cors from "cors";
 
 import { createProductController } from "./createProduct/createProductController";
 import { getProductController } from "./getSingleProduct/getProductController";
@@ -9,11 +8,12 @@ import { deleteProductController } from "./deleteProduct/deleteProductController
 
 import { createExpenseController } from "./createExpense/createExpenseController";
 import { getExpensesController } from "./getAllExpenses/getExpensesController";
+import { getAllExpensesController } from "./getTheExpenses/getTheExpensesController";
 import { getExpenseController } from "./getSingleExpense/getExpenseController";
 import { deleteExpenseController } from "./deleteExpense/deleteExpenseController";
 
 import { createSaleController } from "./createSale/createSaleController";
-import { getSalesController } from "./getAllSales/getSalesController";
+import { getSomeSalesController } from "./getAllSales/getSomeSalesController";
 import { getSaleController } from "./getSingleSale/getSaleController";
 import { deleteSaleController } from "./deleteSale/deleteSaleController";
 import { editSaleController } from "./editSale/editSaleController";
@@ -25,10 +25,8 @@ import { refreshTokenUserController } from "./refreshTokenUser/refreshTokenUserC
 
 import { getPaymentsController } from "./getAllPayments/getAllPaymentsController";
 import { createPaymentController } from "./createPayment/createPaymentController";
+import { editExpenseController } from "./editExpense/editExpenseController";
 
-const corsOptions = {
-  origin: '*'
-}
 
 // Product Controllers
 const createProduct = new createProductController();
@@ -39,12 +37,14 @@ const deleteProduct = new deleteProductController();
 // Expenses Controllers
 const createExpense = new createExpenseController();
 const getExpenses = new getExpensesController();
+const getAllExpenses = new getAllExpensesController();
 const getExpense = new getExpenseController();
 const deleteExpense = new deleteExpenseController();
+const editExpense = new editExpenseController();
 
 //Sales Controllers
 const createSale = new createSaleController();
-const getSales = new getSalesController();
+const getSales = new getSomeSalesController();
 const getSale = new getSaleController();
 const deleteSale = new deleteSaleController();
 const editSale = new editSaleController();
@@ -69,7 +69,9 @@ router.post('/product/:id/delete', tryCatch(deleteProduct.handle));
 //Expenses Routes
 router.post('/expense', tryCatch(createExpense.create));
 router.get('/expenses', tryCatch(getExpenses.get));
+router.get('/allexpenses', tryCatch(getAllExpenses.get));
 router.get('/expense/:id', tryCatch(getExpense.get));
+router.put('/expense/:id/edit', tryCatch(editExpense.edit));
 router.delete('/expense/:id/delete', tryCatch(deleteExpense.delete));
 
 //Sales Routes
@@ -88,5 +90,6 @@ router.post('/refresh-token/:id', tryCatch(refreshToken.refresh));
 // Payment Routes
 router.post('/payment/:sale_id', tryCatch(createPayment.handle));
 router.get('/payments', tryCatch(getPayment.get));
+
 
 export { router };

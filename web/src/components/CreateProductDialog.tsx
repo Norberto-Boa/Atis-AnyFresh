@@ -2,18 +2,20 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { parseJwt } from "@/utils/parsejwt";
-import { ProductInput } from "./productInput";
+import { ProductInput } from "./ProductInput";
 import { IProductCreate } from "@/@types/inputTypes";
 import { api } from "@/services/api";
 import { parseCookies } from "nookies";
-
-
+import { useState } from "react";
+import { Button } from "./Button";
 
 const CreateProductDialog = () => {
   const { register, handleSubmit } = useForm<IProductCreate>();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const router = useRouter();
 
-  const handleProductCreation = async(data : IProductCreate) =>{
+  const handleProductCreation = async (data: IProductCreate) => {
+    setButtonDisabled(true);
     const {['atis.token']: token} = parseCookies();
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub;
@@ -30,9 +32,11 @@ const CreateProductDialog = () => {
           user: id
         }
       }).then(() => {
+        setButtonDisabled(false);
         router.reload();
       })
     } catch (err) {
+      setButtonDisabled(false);
       console.log(err);
     }
 
@@ -67,9 +71,12 @@ const CreateProductDialog = () => {
             </label>
             
             <ProductInput 
-            label="name"
-            register={register} 
-            id="name" type="text"/>
+              label="name"
+              register={register} 
+              id="name"
+              type="text"
+              required
+            />
           </div>
 
           <div
@@ -82,7 +89,8 @@ const CreateProductDialog = () => {
               Code
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="code"
             register={register} 
             name="code" id="code" type="text"/>
@@ -98,7 +106,8 @@ const CreateProductDialog = () => {
               Price
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="price"
             register={register} 
             name="price" id="price" type="number"/>
@@ -114,7 +123,8 @@ const CreateProductDialog = () => {
               Discount (%)
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="discountPercentage"
             register={register} 
             name="discountPercentage" id="discountPercentage" type="number"/>
@@ -130,17 +140,19 @@ const CreateProductDialog = () => {
               Banner
             </label>
             
-            <ProductInput 
+            <ProductInput
+            required 
             label="bannerUrl"
             register={register}
              name="bannerUrl" id="bannerUrl" type="text"/>
           </div>
 
-          <button
-            className="w-full bg-emerald-500 mt-2 px-3 py-4 rounded transition-all hover:bg-emerald-600 uppercase font-bold"
-          >
-            Create Product
-          </button>
+          <Button
+            color="bg-emerald-500"
+            hover="bg-emerald-600"
+            label="Create Product"
+            disabled={buttonDisabled}
+          />
         </form>
 
 

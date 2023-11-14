@@ -1,14 +1,11 @@
 import { ProductDialog } from "@/components/ProductDialog";
-import { Inter } from 'next/font/google';
 import { Plus } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { CreateProductDialog } from "@/components/CreateProductDialog";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { GetServerSideProps } from "next";
+import { api } from "@/services/api";
 
-const inter = Inter({ subsets: ['latin'] })
 
 interface productResponse{
   id: string,
@@ -23,23 +20,17 @@ interface productResponse{
   }
 }
 
-export default function Products() {
-  const [products, setProducts] = useState<productResponse[]>();
-
-  useEffect(() => {
-    axios.get('http://localhost:3333/products')
-      .then((res) => {
-        setProducts(res.data);
-      }).catch((err) => console.log(err));
-  })
-
+interface Props{
+  products: productResponse[]
+}
+export default function Products({products}: Props) {
   return (
     <div
-      className={`ml-80 pt-16 text-white ${inter.className}`}
+      className={`ml-80 pt-16 text-white `}
     >
       <div className="p-16">
         <h1
-          className={`${inter.className} text-2xl font-semibold`}
+          className={`text-2xl font-semibold`}
         >
           Produtos
         </h1>
@@ -60,7 +51,7 @@ export default function Products() {
           </Dialog.Root>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           {products ? 
             products.map((product) => {
               return (
@@ -76,7 +67,7 @@ export default function Products() {
             )
             }) 
             :
-            <p>Nao existem produtos registados, clique em + para registar!</p>  
+            <p>Nao existm produtos registados, clique em + para registar!</p>  
           }
 
         </div>
@@ -86,10 +77,24 @@ export default function Products() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  AuthOnServerSide(ctx);
+  const isAuth = AuthOnServerSide(ctx);
+
+  if (!isAuth) {
+    return {
+      redirect: {
+        destination: `/login`,
+        permanent: false
+      }
+    }
+  }
+
+  const products: productResponse[] = await api.get(`/products`)
+    .then((res) => { return res.data })
+    .catch((err) => { console.log(err) });
+
   return {
     props: {
-      
+      products
     }
   }
 }

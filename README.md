@@ -1,9 +1,14 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+  <img 
+    width=200px height=200px 
+    src="https://png.pngtree.com/template/20190322/ourmid/pngtree-chicken-logo-designs-image_83471.jpg" 
+    alt="Project logo"
+  >
+ </a>
 </p>
 
-<h3 align="center">ATIS - AnyTech Iventory System</h3>
+<h1 align="center">ATIS - AnyTech Iventory System</h1>
 
 <div align="center">
 
@@ -16,11 +21,16 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
+<div>
+  <img
+  src="./View.jpg"
+  alt="ATIS View"
+  >
+</div>
 
-## 📝 Table of Contents
+---
+
+# 📝 Table of Contents
 
 - [About](#about)
 - [Getting Started](#getting_started)
@@ -42,32 +52,55 @@ This project is not responsive yet, so it is a desktop-only project.
 
 You can clone this repository by running the following command
 
+<h3> GitHub CLI </h3>
+
 ```
-gh repo clone Norberto-Boa/NLWeSports-Norberto
+gh repo clone https://github.com/Norberto-Boa/Atis-AnyFresh.git
 ```
+
+<h3>Git clone</h3>
+
+```
+git clone https://github.com/Norberto-Boa/Atis-AnyFresh.git
+```
+
+Then you must navigate to the project directory.
 
 ### Prerequisites
 
 What things you need to install the software and how to install them
 
+<img
+  width=80px height=80px 
+  src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" 
+  alt="Pre requirement"
+/>
+
+### Installing and running
+
+First you must navigate to the server directory and install the dependencies, then run the dev script using npm.
+
+Before running the project, you must create a .env file, to store the environment variables, which are:
+
+
+
+After creating the .env file, proceed with the installation and database migration. 
+To achive this you can write the following commands:
+
 ```
-Give examples
+cd server
+npm install
+npx prisma migrate dev
+npm run dev
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
+Same goes with the front end, navigate to the web directory and install the dependencies, then run the dev script using npm.
+To achive this you can write the following commands:
 
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+cd web
+npm install
+npm run dev
 ```
 
 End with an example of getting some data out of the system or using it for a little demo.
@@ -102,10 +135,11 @@ Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+<p align="start">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=nextjs,tailwind,postgres,express" />
+  </a>
+</p>
 
 ## ✍️ Authors <a name = "authors"></a>
 

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { api } from "@/services/api";
 import { parseCookies } from "nookies";
 import { IExpenseCreate } from "@/@types/inputTypes";
+import { Button } from "./Button";
 
 interface CreateExpenseProps{
   isOpen: () => void,
@@ -15,6 +16,7 @@ interface CreateExpenseProps{
 
 const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
   const { register, handleSubmit } = useForm<IExpenseCreate>()
+  const [disabled, setDisabled] = useState(false);
   const [date, setDate] = useState("");
   const router = useRouter();
 
@@ -24,7 +26,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
   }
 
   const handleExpenseCreation = async (data : IExpenseCreate) => {
-    
+    setDisabled(true);
     const {['atis.token'] : token} = parseCookies()
     const decodedToken = parseJwt(token);
     const id = decodedToken.sub
@@ -44,6 +46,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
         }
       }).then((res) => {
         if (updateState) {
+          setDisabled(false);
           router.reload();
         }
         isOpen();
@@ -58,7 +61,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
       <Dialog.Content
-        className="bg-darkbg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 px-8 py-7 w-96 rounded-lg"
+        className="bg-darkbg fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 px-8 py-7 w-96 rounded-lg"
       >
 
         <Dialog.Title
@@ -83,7 +86,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Nome do comprador
             </label>
             
-            <Input label="buyerName" register={register} id="buyerName" type="text"/>
+            <Input required label="buyerName" register={register} id="buyerName" type="text"/>
           </div>
 
           <div
@@ -96,7 +99,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Nome do Produto
             </label>
             
-            <Input label="description" register={register} id="description" type="text"/>
+            <Input required label="description" register={register} id="description" type="text"/>
           </div>
 
           <div
@@ -109,7 +112,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Preço
             </label>
             
-            <Input label="price" register={register} id="price" type="number"/>
+            <Input required label="price" register={register} id="price" type="number"/>
           </div>
 
           <div
@@ -122,7 +125,7 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
               Quantidade
             </label>
             
-            <Input label="quantity" register={register} id="quantity" type="number"/>
+            <Input required label="quantity" register={register} id="quantity" type="number"/>
           </div>
 
           <div
@@ -136,17 +139,19 @@ const CreateExpenseDialog = ({updateState, isOpen} : CreateExpenseProps) => {
             </label>
             
             <input
+              required
               className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
-              id="date" type="datetime-local"
+              id="date" type="date"
               onChange={handleDate}
             />
           </div>
 
-          <button
-            className="w-full bg-red-500 mt-2 px-3 py-4 rounded transition-all hover:bg-red-600 uppercase font-bold"
-          >
-            Create Expense
-          </button>
+          <Button
+            color="bg-red-500"
+            hover="bg-red-600"
+            label="Create Expense"
+            disabled={disabled}
+          />
         </form>
 
 
