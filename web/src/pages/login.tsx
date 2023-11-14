@@ -107,12 +107,6 @@ export default function Login() {
               label="Login"
               disabled={buttonDisabled}
             />
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center transition-all"
-            >
-              Login
-            </button>
           </form>
         </div>
       </div>
