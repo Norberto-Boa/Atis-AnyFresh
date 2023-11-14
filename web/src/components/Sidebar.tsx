@@ -38,7 +38,7 @@ const Sidebar = () => {
       {/* Mobile Navbar  */}
 
       <div
-        className={`bg-slate-900 min-h-screen fixed lg:hidden transition-all duration-700
+        className={`bg-slate-900 min-h-screen z-10 fixed lg:hidden transition-all duration-700
         -translate-y-11 ${open ? '-translate-x-0' : '-translate-x-64'}
         ${isAutheticated ? "block" : "hidden"}`}
       >
