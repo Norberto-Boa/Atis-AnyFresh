@@ -26,9 +26,9 @@ interface Props{
 export default function Products({products}: Props) {
   return (
     <div
-      className={`ml-80 pt-16 text-white `}
+      className={`lg:ml-80 pt-8 text-white `}
     >
-      <div className="p-16">
+      <div className="lg:p-8 px-4">
         <h1
           className={`text-2xl font-semibold`}
         >
@@ -38,10 +38,10 @@ export default function Products({products}: Props) {
         <div className={`w-full h-[1px] bg-zinc-700 my-12`} />
         
         <div
-          className="p-4 bg-white text-black w-fit rounded-full flex items-center justify-center shadow-md mb-12"
+          className="p-4 bg-white mx-auto lg:mx-0 text-black w-fit rounded-full flex items-center justify-center shadow-md mb-12"
         >
           <Dialog.Root>
-            <Dialog.Trigger>
+            <Dialog.Trigger >
               <Plus size={24} />
             </Dialog.Trigger>
             
@@ -51,7 +51,7 @@ export default function Products({products}: Props) {
           </Dialog.Root>
         </div>
 
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap lg:justify-start justify-center">
           {products ? 
             products.map((product) => {
               return (

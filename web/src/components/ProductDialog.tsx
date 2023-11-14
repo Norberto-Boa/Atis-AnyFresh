@@ -19,7 +19,7 @@ const ProductDialog = ({name, code, bannerUrl, discountPercentage, price, sales}
   return (
     <Dialog.Root>
       <Dialog.Trigger
-        className={`font-medium relative rounded-lg overflow-hidden group`}
+        className={`font-medium relative rounded-lg overflow-hidden group `}
       >
         <Image
           src={bannerUrl}

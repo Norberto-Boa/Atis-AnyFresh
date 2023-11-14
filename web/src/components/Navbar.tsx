@@ -3,9 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SignOut } from "phosphor-react";
 import { useContext } from "react";
-import { destroyCookie, parseCookies } from "nookies";
 import Router from "next/router";
-
 
 const Navbar = () => {
   const { logOut, isAutheticated } = useContext(AuthContext);
@@ -17,7 +15,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className={`w-full h-16 fixed ${isAutheticated ? "block" : "hidden"}`}>
+    <div className={`w-full h-16 fixed z-10 ${isAutheticated ? "block" : "hidden"}`}>
       <div className="w-full lg:max-w-full mx-auto flex justify-between items-center h-full py-4 px-12 lg:px-20 bg-slate-900 border-b-2 border-slate-700">
         <div>
           <Link href={`#`} className="text-2xl font-bold">Any<span className={`text-green-400`}>Fresh</span></Link>
