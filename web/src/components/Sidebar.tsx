@@ -27,10 +27,10 @@ const Sidebar = () => {
         onClick={() => setOpen(!open)}
       />
       
-      <div className="lg:hidden px-4">
+      <div className="xl:hidden px-4">
         <List
           size={36} weight="bold"
-          className="text-slate-100 cursor-pointer mt-2"
+          className={` ${isAutheticated ? "xl:block" : "hidden"} text-slate-100 cursor-pointer mt-2`}
           onClick={()=> setOpen(!open)}
         />
       </div>
@@ -64,8 +64,8 @@ const Sidebar = () => {
       </div>
 
       <div
-        className={`bg-slate-900 lg:w-64 min-h-screen fixed hidden
-        ${isAutheticated ? "lg:block" : "hidden"}`}
+        className={`bg-slate-900 xl:w-64 min-h-screen fixed hidden
+        ${isAutheticated ? "xl:block" : "hidden"}`}
       >
         <div className="px-8 py-6">
           <h1 className={`text-xl font-bold tracking-wide mb-4 uppercase`}>Menu</h1>

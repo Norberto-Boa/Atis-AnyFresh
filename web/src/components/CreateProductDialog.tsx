@@ -44,9 +44,9 @@ const CreateProductDialog = () => {
 
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-white/20 min-w-full fixed inset-0 animate-overlay-show" />
+      <Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
       <Dialog.Content
-        className="bg-darkbg top-1/2 left-1/2 fixed -translate-x-1/2 -translate-y-1/3 px-8 py-7 w-96 rounded-lg"
+        className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 lg:w-96 max-lg:w-80 rounded-lg"
       >
 
         <Dialog.Title
@@ -147,6 +147,12 @@ const CreateProductDialog = () => {
              name="bannerUrl" id="bannerUrl" type="text"/>
           </div>
 
+          <Dialog.Close
+            className={`w-full bg-red-500 text-white mt-4 px-3 py-4 rounded transition-all  uppercase font-bold disabled:opacity-60 disabled:cursor-not-allowed`}
+          >
+            Cancelar
+          </Dialog.Close>
+          
           <Button
             color="bg-emerald-500"
             hover="bg-emerald-600"
