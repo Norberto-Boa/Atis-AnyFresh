@@ -8,7 +8,8 @@ class getSaleUseCase {
         id
       },
       include: {
-        Product: true
+        Product: true,
+        Payment: true
       }
     })
 
