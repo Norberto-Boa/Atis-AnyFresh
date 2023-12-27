@@ -53,7 +53,7 @@ export default function Home({
 
         <div className={`w-full h-[1px] bg-zinc-700 my-12`} />
 
-        <div className="flex gap-8 flex-wrap max-md:justify-center">
+        <div className="flex gap-4 flex-wrap max-md:justify-center">
           <Dialog.Root>
             <Dialog.Trigger className="flex items-center border w-60 px-4 py-3 gap-2 justify-center rounded-lg text-emerald-400 border-emerald-400 transition-all hover:text-emerald-500 hover:border-emerald-500">
               <Plus size={28} />
