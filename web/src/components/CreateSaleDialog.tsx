@@ -63,7 +63,7 @@ const CreateSaleDialog = ({products} : props) => {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
       <Dialog.Content
-        className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 w-96 rounded-lg"
+        className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 lg:w-96 max-lg:w-80 rounded-lg"
       >
 
         <Dialog.Title
@@ -200,10 +200,13 @@ const CreateSaleDialog = ({products} : props) => {
               Desconto
             </label>
           </div>
-
-          <p className="text-2xl font-medium mt-4">Total:</p>
-          <span className="text-2xl font-bold text-emerald-500 mb-2">{2500} MT</span>
-
+          
+          <Dialog.Close
+            className={`w-full bg-red-500 text-white mt-4 px-3 py-4 rounded transition-all  uppercase font-bold disabled:opacity-60 disabled:cursor-not-allowed`}
+          >
+            Cancelar
+          </Dialog.Close>
+          
           <Button
             color="bg-green-500"
             hover="bg-green-600"

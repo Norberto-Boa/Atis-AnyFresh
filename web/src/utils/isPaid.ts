@@ -7,7 +7,7 @@ interface paymentData{
 function isPaid(totalPrice?: number, payment? : paymentData[]) {
   var totalPaid = 0
   if (totalPrice === null || payment === null || !payment) {
-    return
+    return {status: false, price: totalPrice ?? 0, paid: totalPaid}
   }
 
   
@@ -15,16 +15,16 @@ function isPaid(totalPrice?: number, payment? : paymentData[]) {
 
 
   if (totalPrice === totalPaid) {
-    return true;
+    return {status: true, price: totalPrice ?? 0, paid: totalPaid};
   }
 
-  return totalPaid;
+  return {status: false, price: totalPrice ?? 0, paid: totalPaid};
 }
 
 function whatIsPaid(totalPrice: number, payment?: paymentData[]) {
   var totalPaid = 0
   if ( payment === null || !payment) {
-    return "Nao pago"
+    return "Não pago"
   }
 
   

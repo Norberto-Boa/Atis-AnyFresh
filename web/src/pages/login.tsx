@@ -1,22 +1,32 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { ErrorInfo, useContext, useEffect, useState } from "react";
 import { IUserLogin } from "@/@types/userTypes";
 import { useForm } from 'react-hook-form';
 import { AuthContext } from "@/context/authContext";
 import { Button } from "@/components/Button";
 
+interface SignInFailure{
+  message: string;
+}
+  
 export default function Login() {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { register, handleSubmit } = useForm<IUserLogin>();
+  const [error, setError] = useState<SignInFailure|null>(null);
   const { signIn, isAutheticated } = useContext(AuthContext);
   
   
   const router = useRouter();
 
   async function handleLogin(data: IUserLogin) {
-    setButtonDisabled(true);
-    await signIn(data);
-    setButtonDisabled(false);
+    try {
+      setButtonDisabled(true);
+      await signIn(data);
+    } catch (err: any) {
+      setError({message: err.response.data.message});
+      setButtonDisabled(false);
+    }
+    
   }
 
 
@@ -100,7 +110,8 @@ export default function Login() {
                 required
               />
             </div>
-
+            {error ? <p className="text-red-600 font-bold">{error.message}</p> : null}
+            
             <Button
               color="bg-blue-500"
               hover="bg-blue-600"

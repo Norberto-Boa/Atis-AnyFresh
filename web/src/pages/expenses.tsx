@@ -11,71 +11,48 @@ import { expense } from "@/@types/_types";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { useRouter } from "next/router";
 
-
-
-
-interface expensesResponse{
-  expenses: expense[], 
-  count: number
+interface expensesResponse {
+  expenses: expense[];
+  count: number;
 }
 
-interface Props{
-  expenses: expense[],
-  count: number,
-  page: number
+interface Props {
+  expenses: expense[];
+  count: number;
+  page: number;
 }
 
-export default function Expenses({expenses, count, page}: Props) {
+export default function Expenses({ expenses, count, page }: Props) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   async function handleExpenseDelete(id: string) {
     try {
-      await api.delete(`/expense/${id}/delete`)
-        .then(()=> router.reload());
+      await api.delete(`/expense/${id}/delete`).then(() => router.reload());
     } catch (error) {
       console.log(error);
     }
   }
-     
 
   return (
-    <div
-      className={`ml-80 pt-16 text-white`}
-    >
+    <div className={`ml-80 pt-16 text-white`}>
       <Head>
         <title>Gastos | AnyFresh</title>
       </Head>
-      <div
-        className="p-16"
-      >
-        <h1
-          className={`text-2xl font-semibold`}
-        >
-          Gastos
-        </h1>
+      <div className="p-16">
+        <h1 className={`text-2xl font-semibold`}>Gastos</h1>
 
         {/* Divider line */}
 
         <div className={`w-full h-[1px] bg-zinc-700 my-12`} />
 
         <div className="flex justify-between">
-          <Dialog.Root
-            open={open}
-            onOpenChange={setOpen}
-          >
-            <Dialog.Trigger
-              className="flex mb-8 items-center border w-60 px-4 py-3 gap-2 justify-center rounded-lg text-red-400 border-red-400 transition-all hover:text-red-500 hover:border-red-500"
-            >
+          <Dialog.Root open={open} onOpenChange={setOpen}>
+            <Dialog.Trigger className="flex mb-8 items-center border w-60 px-4 py-3 gap-2 justify-center rounded-lg text-red-400 border-red-400 transition-all hover:text-red-500 hover:border-red-500">
               <Plus size={28} />
-              <span className="font-semibold">Novo Gasto</span> 
+              <span className="font-semibold">Novo Gasto</span>
             </Dialog.Trigger>
-            <CreateExpenseDialog
-            isOpen={() => {
-              setOpen(!open)
-            }}
-              updateState={true}  
-            />
+            <CreateExpenseDialog updateState={true} />
           </Dialog.Root>
 
           <PaginationButtons
@@ -84,9 +61,7 @@ export default function Expenses({expenses, count, page}: Props) {
             url="/expenses"
             items={8}
           />
-
         </div>
-
 
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y-2 divide-zinc-600 text-base">
@@ -117,10 +92,10 @@ export default function Expenses({expenses, count, page}: Props) {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {expenses ?
+              {expenses ? (
                 expenses.map((expense) => {
                   return (
-                    <TableRow 
+                    <TableRow
                       key={expense.id}
                       id={expense.id}
                       name={expense.buyerName}
@@ -128,10 +103,11 @@ export default function Expenses({expenses, count, page}: Props) {
                       date={new Date(expense.date)}
                       price={expense.price}
                       quantity={expense.quantity}
-                      deleteFunction={handleExpenseDelete}  
+                      deleteFunction={handleExpenseDelete}
                     />
-                  )
-                }) :
+                  );
+                })
+              ) : (
                 <TableRow
                   id="0"
                   name="-"
@@ -139,17 +115,15 @@ export default function Expenses({expenses, count, page}: Props) {
                   quantity={0}
                   productName="-"
                   date={new Date(0)}
-                  deleteFunction= {() => null}
+                  deleteFunction={() => null}
                 />
-              }
-
-              
+              )}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -159,21 +133,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!isAuth) {
     return {
       redirect: {
-        destination: '/login',
-        permanent: false
-      }
-    }
+        destination: "/login",
+        permanent: false,
+      },
+    };
   }
 
-  const data : expensesResponse = await api.get(`/expenses?page=${page}`)
-    .then((res) => { return res.data })
-    .catch((err) => { return err})
+  const data: expensesResponse = await api
+    .get(`/expenses?page=${page}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err;
+    });
 
   return {
     props: {
       expenses: data.expenses,
       count: data.count,
-      page: +page
-    }
-  }
-}
+      page: +page,
+    },
+  };
+};
