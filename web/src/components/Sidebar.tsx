@@ -16,7 +16,7 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="pt-16 relative">
+    <div className={`${isAutheticated ? "xl:block" : "hidden"} pt-16 relative`}>
       <div
         className={`absolute inset-0 h-screen bg-black/25 ${
           open ? "" : "hidden"

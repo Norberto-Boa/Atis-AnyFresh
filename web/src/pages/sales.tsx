@@ -32,7 +32,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
   });
 
   return (
-    <div className={`xl:ml-80 pt-16 max-md:pt-12 text-white`}>
+    <div className={`xl:ml-80 max-lg:pt-16 max-md:pt-12 text-white`}>
       <Head>
         <title>Vendas | AnyFresh</title>
       </Head>
@@ -61,7 +61,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
           </h1>
         </div>
 
-        <div className="flex justify-between max-md:justify-center items-center mb-4 flex-wrap gap-2">
+        <div className="flex justify-between max-md:flex-col max-md:justify-center items-center mb-4 flex-wrap gap-2">
           {/* Search input and button */}
           <div className="flex items-center gap-2 flex-wrap max-md: justify-center">
             {/* <div className="py-2 px-2 border border-r-0 border-zinc-600 rounded">
@@ -79,7 +79,8 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
             </button>
           </div>
 
-          <div className="flex gap-2 items-center justify-center">
+          {/* Pagination buttons */}
+          <div className="flex gap-2 mt-2 items-center justify-center">
             <PaginationButtons
               count={count}
               page={page}
@@ -89,7 +90,10 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
           </div>
         </div>
 
-        <div className="flex gap-4 flex-wrap max-lg:justify-center justify-between">
+        {/* divider line */}
+        <div className={`w-full h-[1px] bg-zinc-700 my-4`} />
+
+        <div className="flex gap-4 flex-wrap max-lg:justify-center">
           {sales ? (
             sales.map((sale, i) => {
               return (

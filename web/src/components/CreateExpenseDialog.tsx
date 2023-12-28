@@ -130,7 +130,7 @@ const CreateExpenseDialog = ({ updateState }: CreateExpenseProps) => {
 
             <input
               required
-              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-[100%] mt-1"
+              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 w-full d-block min-w-full h-12 mt-1"
               id="date"
               type="date"
               onChange={handleDate}

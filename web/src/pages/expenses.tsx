@@ -35,20 +35,20 @@ export default function Expenses({ expenses, count, page }: Props) {
   }
 
   return (
-    <div className={`ml-80 pt-16 text-white`}>
+    <div className={`xl:ml-80 max-lg:pt-16 max-md:pt-12 text-white`}>
       <Head>
         <title>Gastos | AnyFresh</title>
       </Head>
-      <div className="p-16">
+      <div className="xl:p-16 px-6">
         <h1 className={`text-2xl font-semibold`}>Gastos</h1>
 
         {/* Divider line */}
 
-        <div className={`w-full h-[1px] bg-zinc-700 my-12`} />
+        <div className={`w-full h-[1px] bg-zinc-700 my-8`} />
 
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4 items-center max-md:flex-col">
           <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger className="flex mb-8 items-center border w-60 px-4 py-3 gap-2 justify-center rounded-lg text-red-400 border-red-400 transition-all hover:text-red-500 hover:border-red-500">
+            <Dialog.Trigger className="flex xl:mb-8 items-center border w-60 max-md:w-full px-4 py-3 gap-2 justify-center rounded-lg text-red-400 border-red-400 transition-all hover:text-red-500 hover:border-red-500">
               <Plus size={28} />
               <span className="font-semibold">Novo Gasto</span>
             </Dialog.Trigger>
@@ -63,7 +63,7 @@ export default function Expenses({ expenses, count, page }: Props) {
           />
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-md:mt-4">
           <table className="min-w-full divide-y-2 divide-zinc-600 text-base">
             <thead className="ltr:text-left rtl:text-right border-t-2 border-zinc-600">
               <tr>
