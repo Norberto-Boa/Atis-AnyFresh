@@ -20,13 +20,13 @@ import { editSaleController } from "./editSale/editSaleController";
 
 import { createUserController } from "./createUser/createUserController";
 import { authenticateUserController } from "./authenticateUser/authenticateUserController";
-import { ensureAuthenticated } from '../middleware/ensureAuthenticated';
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import { refreshTokenUserController } from "./refreshTokenUser/refreshTokenUserController";
 
-import { getPaymentsController } from "./getAllPayments/getAllPaymentsController";
+import { getPaymentsController } from "./getPayments/getPaymentsController";
 import { createPaymentController } from "./createPayment/createPaymentController";
 import { editExpenseController } from "./editExpense/editExpenseController";
-
+import { getAllPaymentsController } from "./getAllPayments/getAllPaymentsController";
 
 // Product Controllers
 const createProduct = new createProductController();
@@ -57,39 +57,39 @@ const refreshToken = new refreshTokenUserController();
 //Payment Routes
 const createPayment = new createPaymentController();
 const getPayment = new getPaymentsController();
+const getAllPayments = new getAllPaymentsController();
 
 const router = Router();
 
 // Product routes
-router.post('/product', tryCatch(createProduct.handle));
-router.get('/products', tryCatch(getAllProducts.handle));
-router.get('/product/:id', tryCatch(getProduct.handle));
-router.post('/product/:id/delete', tryCatch(deleteProduct.handle));
+router.post("/product", tryCatch(createProduct.handle));
+router.get("/products", tryCatch(getAllProducts.handle));
+router.get("/product/:id", tryCatch(getProduct.handle));
+router.post("/product/:id/delete", tryCatch(deleteProduct.handle));
 
 //Expenses Routes
-router.post('/expense', tryCatch(createExpense.create));
-router.get('/expenses', tryCatch(getExpenses.get));
-router.get('/allexpenses', tryCatch(getAllExpenses.get));
-router.get('/expense/:id', tryCatch(getExpense.get));
-router.put('/expense/:id/edit', tryCatch(editExpense.edit));
-router.delete('/expense/:id/delete', tryCatch(deleteExpense.delete));
+router.post("/expense", tryCatch(createExpense.create));
+router.get("/expenses", tryCatch(getExpenses.get));
+router.get("/allexpenses", tryCatch(getAllExpenses.get));
+router.get("/expense/:id", tryCatch(getExpense.get));
+router.put("/expense/:id/edit", tryCatch(editExpense.edit));
+router.delete("/expense/:id/delete", tryCatch(deleteExpense.delete));
 
 //Sales Routes
-router.post('/sale', tryCatch(createSale.create));
-router.get('/sales', tryCatch(getSales.get));
-router.get('/sale/:id', tryCatch(getSale.get));
-router.put('/sale/:id/edit', tryCatch(editSale.edit));
-router.delete('/sale/:id', tryCatch(deleteSale.delete));
+router.post("/sale", tryCatch(createSale.create));
+router.get("/sales", tryCatch(getSales.get));
+router.get("/sale/:id", tryCatch(getSale.get));
+router.put("/sale/:id/edit", tryCatch(editSale.edit));
+router.delete("/sale/:id", tryCatch(deleteSale.delete));
 
 //Authentication Routes
-router.post('/register', tryCatch(createUser.create));
-router.post('/login', tryCatch(authenticateUser.login));
-router.post('/refresh-token/:id', tryCatch(refreshToken.refresh));
-
+router.post("/register", tryCatch(createUser.create));
+router.post("/login", tryCatch(authenticateUser.login));
+router.post("/refresh-token/:id", tryCatch(refreshToken.refresh));
 
 // Payment Routes
-router.post('/payment/:sale_id', tryCatch(createPayment.handle));
-router.get('/payments', tryCatch(getPayment.get));
-
+router.post("/payment/:sale_id", tryCatch(createPayment.handle));
+router.get("/payments", tryCatch(getPayment.get));
+router.get("/allpayments", tryCatch(getAllPayments.get));
 
 export { router };

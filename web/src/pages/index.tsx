@@ -154,7 +154,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const endpoints = ["/products", "/sales", "/allexpenses", "/payments"];
+  const endpoints = ["/products", "/sales", "/allexpenses", "/allpayments"];
 
   const res = await Promise.all([
     api.get(endpoints[0]),
@@ -172,6 +172,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   res3.data.forEach((expense: { quantity: number; price: number }) => {
     expenses += expense.quantity * expense.price;
   });
+
+  let payments = res4.data;
+  console.log(payments);
 
   let totalPayment = 0;
   res4.data.forEach((payment: { amount: number }) => {

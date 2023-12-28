@@ -1,15 +1,14 @@
 import { Request, Response } from "express";
-import { getPaymentsUseCase } from "./getAllPaymentsUseCase";
+import { getAllPaymentsUseCase } from "./getAllPaymentsUseCase";
 
-
-class getPaymentsController{
+class getAllPaymentsController {
   async get(req: Request, res: Response) {
-    const getPayments = new getPaymentsUseCase();
-    
-    const payments = await getPayments.handle();
+    const getAllPayments = new getAllPaymentsUseCase();
+
+    const payments = await getAllPayments.getAll();
 
     return res.status(200).json(payments);
   }
 }
 
-export { getPaymentsController };
+export { getAllPaymentsController };

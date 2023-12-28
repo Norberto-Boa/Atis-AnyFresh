@@ -1,24 +1,23 @@
 import { client } from "../../prisma/client";
 
-class getExpensesUseCase{
-  async handle( page : number) {
+class getExpensesUseCase {
+  async handle(page: number) {
     const expensesPerPage = 8;
     const start = page === 1 ? 0 : (page - 1) * expensesPerPage;
-    const query : any = {
+    const query: any = {
       orderBy: {
-        date: 'desc'
-      }, 
+        date: "desc",
+      },
       skip: start,
-      take: expensesPerPage
-    }
-
+      take: expensesPerPage,
+    };
 
     const [count, expenses] = await client.$transaction([
       client.expense.count(),
-      client.expense.findMany(query)
-    ])
+      client.expense.findMany(query),
+    ]);
 
-    return {count, expenses} ;
+    return { count, expenses };
   }
 }
 
