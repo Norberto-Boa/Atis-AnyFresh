@@ -1,22 +1,25 @@
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { useRouter } from "next/router";
 
-interface PaginationButtonsProps{
-  page: number,
-  count: number
-  url: string,
-  items: number
+interface PaginationButtonsProps {
+  page: number;
+  count: number;
+  url: string;
+  items: number;
 }
 
-const PaginationButtons = ({page, count, url, items} : PaginationButtonsProps) => {
+const PaginationButtons = ({
+  page,
+  count,
+  url,
+  items,
+}: PaginationButtonsProps) => {
   const router = useRouter();
   const lastPage = Math.ceil(count / items);
 
   return (
-    <div
-      className="flex gap-2 items-center"
-    >
-      <button 
+    <div className="flex gap-2 items-center">
+      <button
         className="p-2 border border-zinc-700 rounded-md hover:border-zinc-600 transition-all text-zinc-300 disabled:border-zinc-800 disabled:text-zinc-700 disabled:cursor-not-allowed"
         onClick={() => router.push(`${url}?page=${page - 1}`)}
         disabled={page <= 1}
@@ -25,7 +28,7 @@ const PaginationButtons = ({page, count, url, items} : PaginationButtonsProps) =
       </button>
       <span className="text-zinc-300">{page}</span>
       <span className="text-zinc-400">/ {lastPage}</span>
-      <button 
+      <button
         className={`p-2 border border-zinc-700 rounded-md hover:border-zinc-600 transition-all text-zinc-300 disabled:border-zinc-800 disabled:text-zinc-700 disabled:cursor-not-allowed`}
         onClick={() => router.push(`${url}?page=${page + 1}`)}
         disabled={page >= lastPage}
@@ -33,7 +36,7 @@ const PaginationButtons = ({page, count, url, items} : PaginationButtonsProps) =
         <CaretRight size={24} />
       </button>
     </div>
-  )
-}
+  );
+};
 
 export { PaginationButtons };

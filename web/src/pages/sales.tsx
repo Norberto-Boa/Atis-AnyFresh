@@ -10,6 +10,8 @@ import Head from "next/head";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { products } from "../components/CreateSaleDialog";
 import { whatIsPaid } from "@/utils/isPaid";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface PropsSale {
   sales: salesResponse[];
@@ -19,11 +21,18 @@ interface PropsSale {
 }
 
 export default function Sales({ sales, page, count, products }: PropsSale) {
+  const [name, setName] = useState();
   let money = 0;
   let paid = 0;
   sales.map((sale) => {
     return (money = money + sale.TotalPrice);
   });
+
+  const router = useRouter();
+
+  function handleSearchInput(e: any) {
+    setName(e.target.value);
+  }
 
   sales.map((sale) => {
     sale?.Payment?.forEach((payment) => {
@@ -71,9 +80,13 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
               type="text"
               className="max-md:w-full md:w-80 border-2 border-zinc-600 bg-zinc-900 py-3 px-4 rounded text-base placeholder:text-zinc-500"
               placeholder="Procure pelo nome..."
+              onChange={handleSearchInput}
             />
 
-            <button className="flex text-lg gap-2 py-3 px-5 bg-green-600 rounded justify-center items-center font-semibold max-md:w-full">
+            <button
+              className="flex text-lg gap-2 py-3 px-5 bg-green-600 rounded justify-center items-center font-semibold max-md:w-full"
+              onClick={() => router.push(`/sales?page=${page}&search=${name}`)}
+            >
               Procurar
               <MagnifyingGlass size={24} weight="bold" />
             </button>
@@ -125,6 +138,7 @@ export default function Sales({ sales, page, count, products }: PropsSale) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isAuth = AuthOnServerSide(ctx);
   let page = ctx.query.page ?? 1;
+  let search = ctx.query.search ?? undefined;
 
   if (!isAuth) {
     return {
@@ -135,7 +149,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const endpoints = ["/products", `/sales?page=${page}`];
+  const endpoints = ["/products", `/sales?page=${page}&search=${search}`];
 
   const res = await Promise.all([api.get(endpoints[0]), api.get(endpoints[1])]);
 

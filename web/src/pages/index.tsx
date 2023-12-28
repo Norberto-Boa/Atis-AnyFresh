@@ -173,9 +173,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     expenses += expense.quantity * expense.price;
   });
 
-  let payments = res4.data;
-  console.log(payments);
-
   let totalPayment = 0;
   res4.data.forEach((payment: { amount: number }) => {
     totalPayment += payment.amount;
