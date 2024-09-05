@@ -19,25 +19,17 @@ import Head from "next/head";
 import { useGetSales } from "@/hooks/useSales/useSales";
 import { useGetProducts } from "@/hooks/useProducts/useProducts";
 import { useGetPayments } from "@/hooks/usePayments/usePayments";
+import { useGetExpenses } from "@/hooks/useExpenses";
 
-interface DashboardData {
-  // products: products[];
-  // sales: number;
-  expenses: number;
-  balance: number;
-}
-
-export default function Home({
-  // products,
-  // sales,
-  expenses,
-  balance,
-}: DashboardData) {
+export default function Home() {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
   const { data: sales, isPending: loadingSales, isFetched } = useGetSales();
   const { data: products, isPending: loadingProducts } = useGetProducts();
   const { data: payments, isPending: loadingPayments } = useGetPayments();
+  const { data: expenses, isPending: loadingExpenses } = useGetExpenses();
+  console.log(payments, expenses);
+  const balance = payments - expenses;
 
   return (
     <div className={`xl:ml-80 pt-16 text-white`}>

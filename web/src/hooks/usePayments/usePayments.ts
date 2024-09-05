@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchPaymentsRequest = async () => {
+const fetchPaymentsQuery = async () => {
   const response = await api("/allpayments");
   const data = await response.data;
   return data;
@@ -10,6 +10,6 @@ const fetchPaymentsRequest = async () => {
 export const useGetPayments = () => {
   return useQuery({
     queryKey: ["payments"],
-    queryFn: () => fetchPaymentsRequest(),
+    queryFn: () => fetchPaymentsQuery(),
   });
 };
