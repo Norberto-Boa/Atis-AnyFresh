@@ -141,7 +141,10 @@ export default function Home() {
 
             <div className="px-1 py-2 bg-zinc-900 ">
               <p className="text-xl font-bold">
-                {getTotalOfExpenses(expenses).toFixed(2)} MT
+                {loadingExpenses
+                  ? "..."
+                  : getTotalOfExpenses(expenses).toFixed(2)}{" "}
+                MT
               </p>
             </div>
           </div>
