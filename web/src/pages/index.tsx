@@ -16,8 +16,9 @@ import {
 } from "phosphor-react";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import Head from "next/head";
-import { useGetSales } from "@/hooks/useSales";
-import { useGetProducts } from "@/hooks/useProducts";
+import { useGetSales } from "@/hooks/useSales/useSales";
+import { useGetProducts } from "@/hooks/useProducts/useProducts";
+import { useGetPayments } from "@/hooks/usePayments/usePayments";
 
 interface DashboardData {
   // products: products[];
@@ -36,6 +37,7 @@ export default function Home({
   const { user } = useContext(AuthContext);
   const { data: sales, isPending: loadingSales, isFetched } = useGetSales();
   const { data: products, isPending: loadingProducts } = useGetProducts();
+  const { data: payments, isPending: loadingPayments } = useGetPayments();
 
   return (
     <div className={`xl:ml-80 pt-16 text-white`}>
@@ -125,9 +127,7 @@ export default function Home({
             </div>
 
             <div className="px-2 py-1 bg-zinc-900 ">
-              <p className="text-xl font-bold">
-                {Intl.NumberFormat("en-DE").format(balance)} MT
-              </p>
+              <p className="text-xl font-bold">{balance.toFixed(2)} MT</p>
             </div>
           </div>
 
