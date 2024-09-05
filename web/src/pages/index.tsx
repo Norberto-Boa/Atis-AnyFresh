@@ -163,38 +163,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const endpoints = ["/products", "/sales", "/allexpenses", "/allpayments"];
-
-  const res = await Promise.all([
-    api.get(endpoints[0]),
-    api.get(endpoints[1]),
-    api.get(endpoints[2]),
-    api.get(endpoints[3]),
-  ]);
-
-  const [res1, res2, res3, res4] = res;
-
-  const products = res1.data;
-  const sales = res2.data.count;
-
-  let expenses = 0;
-  res3.data.forEach((expense: { quantity: number; price: number }) => {
-    expenses += expense.quantity * expense.price;
-  });
-
-  let totalPayment = 0;
-  res4.data.forEach((payment: { amount: number }) => {
-    totalPayment += payment.amount;
-  });
-
-  const balance = totalPayment - expenses;
-
   return {
-    props: {
-      products,
-      sales,
-      expenses,
-      balance,
-    },
+    props: {},
   };
 };
