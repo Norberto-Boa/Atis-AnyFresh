@@ -6,7 +6,7 @@ import { Check } from "phosphor-react";
 import { parseJwt } from "@/utils/parsejwt";
 import { SaleInput } from "./SaleInput";
 import { useForm } from "react-hook-form";
-import { ISaleCreate } from "@/@types/inputTypes";
+import { ISaleCreate } from "@/types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
 import { Button } from "./Button";
@@ -17,7 +17,7 @@ export interface products {
 }
 
 interface props {
-  products: products[];
+  products: products[] | undefined;
 }
 
 const CreateSaleDialog = ({ products }: props) => {
@@ -83,7 +83,7 @@ const CreateSaleDialog = ({ products }: props) => {
               <option value={""} className="text-zinc-500 py-3 px-4">
                 Selecione o produto vendido
               </option>
-              {products.map((product, i) => {
+              {products?.map((product, i) => {
                 return (
                   <option
                     key={product.id}

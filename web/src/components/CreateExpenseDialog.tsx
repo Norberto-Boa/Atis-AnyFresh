@@ -6,7 +6,7 @@ import { parseJwt } from "@/utils/parsejwt";
 import { useForm } from "react-hook-form";
 import { api } from "@/services/api";
 import { parseCookies } from "nookies";
-import { IExpenseCreate } from "@/@types/inputTypes";
+import { IExpenseCreate } from "@/types/inputTypes";
 import { Button } from "./Button";
 
 interface CreateExpenseProps {

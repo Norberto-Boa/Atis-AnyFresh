@@ -6,7 +6,7 @@ import { api } from "@/services/api";
 import { AuthContext } from "@/context/authContext";
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { CreateExpenseDialog } from "@/components/CreateExpenseDialog";
-import { CreateSaleDialog, products } from "@/components/CreateSaleDialog";
+import { CreateSaleDialog } from "@/components/CreateSaleDialog";
 import {
   ArrowDown,
   CurrencyDollar,
@@ -16,25 +16,26 @@ import {
 } from "phosphor-react";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import Head from "next/head";
-import { getSales } from "@/hooks/useSales";
+import { useGetSales } from "@/hooks/useSales";
+import { useGetProducts } from "@/hooks/useProducts";
 
 interface DashboardData {
-  products: products[];
+  // products: products[];
   // sales: number;
   expenses: number;
   balance: number;
 }
 
 export default function Home({
-  products,
+  // products,
   // sales,
   expenses,
   balance,
 }: DashboardData) {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
-  const { data: sales, isPending, isFetching } = getSales();
-  console.log(sales);
+  const { data: sales, isPending: loadingSales, isFetched } = useGetSales();
+  const { data: products, isPending: loadingProducts } = useGetProducts();
 
   return (
     <div className={`xl:ml-80 pt-16 text-white`}>
@@ -63,7 +64,7 @@ export default function Home({
               <span className="font-semibold">Nova Venda</span>
             </Dialog.Trigger>
 
-            <CreateSaleDialog products={products} />
+            {isFetched ? <CreateSaleDialog products={products} /> : ""}
           </Dialog.Root>
 
           <Dialog.Root>
@@ -96,7 +97,9 @@ export default function Home({
             </div>
 
             <div className="px-6 py-4 bg-zinc-900 rounded-xl">
-              <p className="text-xl font-bold">{products.length}</p>
+              <p className="text-xl font-bold">
+                {loadingSales ? "..." : products?.length}
+              </p>
             </div>
           </div>
 
@@ -109,7 +112,7 @@ export default function Home({
 
             <div className="px-6 py-4 bg-zinc-900 rounded-xl">
               <p className="text-xl font-bold">
-                {isPending ? "..." : sales?.count}
+                {loadingSales ? "..." : sales?.count}
               </p>
             </div>
           </div>

@@ -10,9 +10,9 @@ import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import { PaymentInput } from "@/components/PaymentInput";
-import { IPayment } from "@/@types/inputTypes";
-import { Params } from "@/@types/_types";
-import { salesResponse } from "@/@types/userTypes";
+import { IPayment } from "@/types/inputTypes";
+import { Params } from "@/types/_types";
+import { salesResponse } from "@/types/userTypes";
 import { Button } from "@/components/Button";
 
 interface Props {

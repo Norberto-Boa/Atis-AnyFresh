@@ -7,7 +7,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Plus } from "phosphor-react";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import { expense } from "@/@types/_types";
+import { expense } from "@/types/_types";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { useRouter } from "next/router";
 

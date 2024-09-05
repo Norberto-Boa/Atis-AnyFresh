@@ -5,7 +5,7 @@ import { CreateSaleDialog } from "@/components/CreateSaleDialog";
 import { api } from "@/services/api";
 import { GetServerSideProps } from "next";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
-import { salesResponse } from "@/@types/userTypes";
+import { salesResponse } from "@/types/userTypes";
 import Head from "next/head";
 import { PaginationButtons } from "@/components/PaginationButtons";
 import { products } from "../components/CreateSaleDialog";

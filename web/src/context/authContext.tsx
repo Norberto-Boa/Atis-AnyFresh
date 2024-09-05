@@ -7,7 +7,7 @@ import {
 } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from "next/router";
-import { IUserLogin, UserInfo, decodedTokenData } from "@/@types/userTypes";
+import { IUserLogin, UserInfo, decodedTokenData } from "@/types/userTypes";
 import { parseJwt } from "@/utils/parsejwt";
 import { api } from "@/services/api";
 

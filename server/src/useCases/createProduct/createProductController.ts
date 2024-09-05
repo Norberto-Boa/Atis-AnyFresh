@@ -2,8 +2,8 @@ import { z } from "zod";
 import { createProductUseCase } from "./createProductUseCase";
 import { NextFunction, Request, Response } from "express";
 
-class createProductController{
-  async handle(req: Request, res: Response) {    
+class createProductController {
+  async handle(req: Request, res: Response) {
     const createProductBody = z.object({
       name: z
         .string({
