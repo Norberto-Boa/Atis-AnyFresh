@@ -1,47 +1,28 @@
-import { Navbar } from "@/components/Navbar"
-import { Sidebar } from "@/components/Sidebar"
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import { Navbar } from "@/components/Navbar";
+import { Sidebar } from "@/components/Sidebar";
+import { useState } from "react";
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
 import { AuthProvider } from "@/context/authContext";
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  HydrationBoundary,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 export default function App({ Component, pageProps }: AppProps) {
-
-  // useEffect(() => {
-  //   const token = getToken();
-    
-  //   if (token === null) {
-  //     setAuthenticated(false);
-  //     router.push("/login");
-  //     return;
-  //   }
-
-  //   const decodedToken = parseJwt(token);
-  //   const isLogged = checkJwt(decodedToken)
-  //   if (!isLogged) {
-  //     router.push("/login")
-  //   }
-
-    
-  //   const data = {
-  //     id: decodedToken.sub,
-  //     name: decodedToken.name,
-  //     exp: decodedToken.exp
-  //   }
-    
-
-  //   setAuthenticated(isLogged);
-    
-
-
-  // },[router])
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <AuthProvider>
-        <Navbar />
-        <Sidebar />
-        <Component {...pageProps} />
-    </AuthProvider>
-  )
-    
+    <QueryClientProvider client={queryClient}>
+      <HydrationBoundary state={pageProps.dehydratedState}>
+        <AuthProvider>
+          <Navbar />
+          <Sidebar />
+          <Component {...pageProps} />
+        </AuthProvider>
+      </HydrationBoundary>
+    </QueryClientProvider>
+  );
 }

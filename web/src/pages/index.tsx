@@ -16,22 +16,25 @@ import {
 } from "phosphor-react";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import Head from "next/head";
+import { getSales } from "@/hooks/useSales";
 
 interface DashboardData {
   products: products[];
-  sales: number;
+  // sales: number;
   expenses: number;
   balance: number;
 }
 
 export default function Home({
   products,
-  sales,
+  // sales,
   expenses,
   balance,
 }: DashboardData) {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
+  const { data: sales, isPending, isFetching } = getSales();
+  console.log(sales);
 
   return (
     <div className={`xl:ml-80 pt-16 text-white`}>
@@ -57,7 +60,7 @@ export default function Home({
           <Dialog.Root>
             <Dialog.Trigger className="flex items-center border w-60 px-4 py-3 gap-2 justify-center rounded-lg text-emerald-400 border-emerald-400 transition-all hover:text-emerald-500 hover:border-emerald-500">
               <Plus size={28} />
-              <span className="font-semibold">Nova Compra</span>
+              <span className="font-semibold">Nova Venda</span>
             </Dialog.Trigger>
 
             <CreateSaleDialog products={products} />
@@ -105,7 +108,9 @@ export default function Home({
             </div>
 
             <div className="px-6 py-4 bg-zinc-900 rounded-xl">
-              <p className="text-xl font-bold">{sales}</p>
+              <p className="text-xl font-bold">
+                {isPending ? "..." : sales?.count}
+              </p>
             </div>
           </div>
 
