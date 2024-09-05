@@ -20,16 +20,17 @@ import { useGetSales } from "@/hooks/useSales/useSales";
 import { useGetProducts } from "@/hooks/useProducts/useProducts";
 import { useGetPayments } from "@/hooks/usePayments/usePayments";
 import { useGetExpenses } from "@/hooks/useExpenses";
+import { getTotalOfPayments } from "@/utils/getTotalOfPayments";
+import { getTotalOfExpenses } from "@/utils/getTotalOfExpenses";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  // const [balance, setBalance] = useState<number>();
   const { user } = useContext(AuthContext);
   const { data: sales, isPending: loadingSales, isFetched } = useGetSales();
   const { data: products, isPending: loadingProducts } = useGetProducts();
   const { data: payments, isPending: loadingPayments } = useGetPayments();
   const { data: expenses, isPending: loadingExpenses } = useGetExpenses();
-  console.log(payments, expenses);
-  const balance = payments - expenses;
 
   return (
     <div className={`xl:ml-80 pt-16 text-white`}>
@@ -119,7 +120,15 @@ export default function Home() {
             </div>
 
             <div className="px-2 py-1 bg-zinc-900 ">
-              <p className="text-xl font-bold">{balance.toFixed(2)} MT</p>
+              <p className="text-xl font-bold">
+                {!loadingPayments && !loadingExpenses
+                  ? (
+                      getTotalOfPayments(payments) -
+                      getTotalOfExpenses(expenses)
+                    ).toFixed(2)
+                  : "..."}{" "}
+                MT
+              </p>
             </div>
           </div>
 
@@ -132,7 +141,7 @@ export default function Home() {
 
             <div className="px-1 py-2 bg-zinc-900 ">
               <p className="text-xl font-bold">
-                {Intl.NumberFormat("en-DE").format(expenses)} MT
+                {getTotalOfExpenses(expenses).toFixed(2)} MT
               </p>
             </div>
           </div>
