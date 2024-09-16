@@ -1,6 +1,15 @@
 import type { GetSalesResponse } from "@/types/saleTypes";
 import { api } from "@/services/api";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { AxiosResponse } from "axios";
+
+interface SaleDTO{
+  client_name: string,
+  productId: string,
+  quantity: number,
+  date: Date,
+  discount: boolean
+}
 
 const fetchSalesQuery = async () => {
   const response = await api("/sales");
@@ -15,4 +24,22 @@ const useGetSales = () => {
   });
 };
 
+const createSaleQuery = async (sale: SaleDTO) : Promise<AxiosResponse<any,any>> => {
+  const response = await api.post("/sale", sale);
+  return response;
+};
+
+export const useAddSale = () => {
+  const queryClient =useQueryClient();
+  return useMutation({
+    mutationFn: createSaleQuery,
+    onSuccess: () => {
+      console.log("Sale added successfully!");
+      queryClient.invalidateQueries({queryKey: ["sales"],})
+    },
+    onError: (error) => {
+      console.log(error);
+    } 
+  })
+}
 export { useGetSales };

@@ -1,6 +1,7 @@
 import { getUnixTime, isAfter } from "date-fns";
+import type { JwtPayload } from "jsonwebtoken";
 
-interface decodedToken{
+export interface decodedToken extends JwtPayload{
   name: string;
   exp: number;
   iat: number;

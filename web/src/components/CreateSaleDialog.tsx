@@ -10,6 +10,7 @@ import { ISaleCreate } from "@/types/inputTypes";
 import { parseCookies } from "nookies";
 import { api } from "@/services/api";
 import { Button } from "./Button";
+import { useAddSale } from "@/hooks/useSales/useSales";
 
 export interface products {
   id: string;
@@ -24,39 +25,51 @@ const CreateSaleDialog = ({ products }: props) => {
   const { register, handleSubmit } = useForm<ISaleCreate>();
   const [hasDiscount, setHasDiscount] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const {data: sale, isPending, isSuccess, mutate} = useAddSale();
 
   async function handleCreateProduct(data: ISaleCreate) {
     setButtonDisabled(true);
-    const { ["atis.token"]: token } = parseCookies();
-    const decodedToken = parseJwt(token);
-    const id = decodedToken.sub;
+    // const { ["atis.token"]: token } = parseCookies();
+    // const decodedToken = parseJwt(token);
+    // const id = decodedToken.sub;
 
-    try {
-      await api
-        .post(
-          `/sale`,
-          {
-            client_name: data.client_name,
-            productId: data.product,
-            quantity: Number(data.quantity),
-            paid: Number(data.paid),
-            date: data.date,
-            discount: hasDiscount,
-          },
-          {
-            headers: {
-              user: `${id}`,
-            },
-          }
-        )
-        .then(() => {
-          alert("Anuncio criado");
-          setButtonDisabled(false);
-        });
-    } catch (err) {
-      console.log(err);
-      setButtonDisabled(false);
-    }
+    mutate({
+      client_name: data.client_name,
+      productId: data.product,
+      quantity: Number(data.quantity),
+      date: data.date,
+      discount: hasDiscount,
+      paid: 0
+    })
+
+    setButtonDisabled(false)
+
+    // try {
+    //   await api
+    //     .post(
+    //       `/sale`,
+    //       {
+    //         client_name: data.client_name,
+    //         productId: data.product,
+    //         quantity: Number(data.quantity),
+    //         paid: Number(data.paid),
+    //         date: data.date,
+    //         discount: hasDiscount,
+    //       },
+    //       {
+    //         headers: {
+    //           user: `${id}`,
+    //         },
+    //       }
+    //     )
+    //     .then(() => {
+    //       alert("Anuncio criado");
+    //       setButtonDisabled(false);
+    //     });
+    // } catch (err) {
+    //   console.log(err);
+    //   setButtonDisabled(false);
+    // }
   }
 
   return (
