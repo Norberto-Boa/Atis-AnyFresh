@@ -8,7 +8,8 @@ interface SaleDTO{
   productId: string,
   quantity: number,
   date: Date,
-  discount: boolean
+  discount: boolean,
+  paid: number
 }
 
 const fetchSalesQuery = async () => {
