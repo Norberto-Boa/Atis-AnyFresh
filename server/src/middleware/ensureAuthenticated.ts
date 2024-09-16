@@ -13,8 +13,8 @@ export function ensureAuthenticated(req: Request, res: Response, next: NextFunct
   const [, token] = authToken.split(" ");
 
   try {
-    verify(token, "Mena")
     
+    (req as any).user = verify(token, "Mena");
     return next();
   } catch (error) {
     return res.status(401).json({
