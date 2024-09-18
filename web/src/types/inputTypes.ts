@@ -11,6 +11,7 @@ export interface IProductCreate{
   discountPercentage: number,
   price: number,
   bannerUrl: string
+  paid: number
 }
 
 export interface ISaleCreate{

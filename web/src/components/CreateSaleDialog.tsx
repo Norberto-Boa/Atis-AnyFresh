@@ -29,10 +29,6 @@ const CreateSaleDialog = ({ products }: props) => {
 
   async function handleCreateProduct(data: ISaleCreate) {
     setButtonDisabled(true);
-    // const { ["atis.token"]: token } = parseCookies();
-    // const decodedToken = parseJwt(token);
-    // const id = decodedToken.sub;
-
     mutate({
       client_name: data.client_name,
       productId: data.product,
