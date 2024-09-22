@@ -2,6 +2,8 @@ import type { GetSalesResponse } from "@/types/saleTypes";
 import { api } from "@/services/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
+import { useState } from "react";
+import type { NotificationProps } from "@/components/NotificationDialog";
 
 interface SaleDTO {
 	client_name: string;
@@ -35,15 +37,23 @@ const createSaleQuery = async (
 
 export const useAddSale = () => {
 	const queryClient = useQueryClient();
-	return useMutation({
+	const [feedback, setFeedback] = useState<NotificationProps | null>(null);
+	const mutation = useMutation({
 		mutationFn: createSaleQuery,
 		onSuccess: () => {
-			console.log("Sale added successfully!");
-			queryClient.invalidateQueries({ queryKey: ["sales"] });
+			setFeedback({
+				type: "success",
+				message: "Produto adicionado com sucesso!",
+			});
 		},
 		onError: (error) => {
-			console.log(error);
+			setFeedback({
+				type: "error",
+				message: `Ocorreu um erro ao adicionar o produto: ${error.message}`,
+			});
 		},
 	});
+
+	return { ...mutation, feedback };
 };
 export { useGetSales };

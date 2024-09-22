@@ -1,6 +1,8 @@
 import { api } from "@/services/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IProductCreate } from "../../types/inputTypes";
+import { useState } from "react";
+import type { NotificationProps } from "@/components/NotificationDialog";
 
 const fetchProductsQuery = async () => {
 	const response = await api("/products");
@@ -22,16 +24,24 @@ const createProductQuery = async (product: IProductCreate) => {
 
 export const useAddProduct = () => {
 	const queryClient = useQueryClient();
-	return useMutation({
+	const [feedback, setFeedback] = useState<NotificationProps | null>(null);
+	const mutation = useMutation({
 		mutationFn: createProductQuery,
 		onSuccess: () => {
-			alert("Produto criado com sucesso!");
-			queryClient.invalidateQueries({ queryKey: ["products"] });
+			setFeedback({
+				type: "success",
+				message: "Produto adicionado com sucesso!",
+			});
 		},
 		onError: (error) => {
-			console.log(error);
+			setFeedback({
+				type: "error",
+				message: `Ocorreu um erro ao adicionar o produto: ${error.message}`,
+			});
 		},
 	});
+
+	return { ...mutation, feedback };
 };
 
 export { useGetProducts };

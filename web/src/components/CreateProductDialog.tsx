@@ -9,12 +9,19 @@ import { parseCookies } from "nookies";
 import { useState } from "react";
 import { Button } from "./Button";
 import { useAddProduct } from "@/hooks/useProducts/useProducts";
+import { Notification } from "./NotificationDialog";
 
 const CreateProductDialog = () => {
 	const { register, handleSubmit } = useForm<IProductCreate>();
 	const [buttonDisabled, setButtonDisabled] = useState(false);
 	const router = useRouter();
-	const { data: product, isPending, isSuccess, mutate } = useAddProduct();
+	const {
+		data: product,
+		isPending,
+		isSuccess,
+		mutate,
+		feedback,
+	} = useAddProduct();
 
 	const handleProductCreation = async (data: IProductCreate) => {
 		setButtonDisabled(true);
@@ -28,11 +35,16 @@ const CreateProductDialog = () => {
 			discountPercentage: Number(data.discountPercentage),
 			bannerUrl: data.bannerUrl,
 		});
+		setButtonDisabled(false);
 	};
 
 	return (
 		<Dialog.Portal>
 			<Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
+
+			{feedback && (
+				<Notification type={feedback.type} message={feedback.message} />
+			)}
 			<Dialog.Content className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 lg:w-96 max-lg:w-80 rounded-lg">
 				<Dialog.Title className="text-3xl font-bold text-white mb-4">
 					Create a new Product
