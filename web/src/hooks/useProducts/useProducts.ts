@@ -32,6 +32,10 @@ export const useAddProduct = () => {
 				type: "success",
 				message: "Produto adicionado com sucesso!",
 			});
+
+			queryClient.invalidateQueries({
+				queryKey: ["products"],
+			});
 		},
 		onError: (error) => {
 			setFeedback({

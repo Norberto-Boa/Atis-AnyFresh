@@ -4,26 +4,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { CreateProductDialog } from "@/components/CreateProductDialog";
 import { AuthOnServerSide } from "@/services/serverSideAuth";
 import type { GetServerSideProps } from "next";
-import { api } from "@/services/api";
-import { Notification } from "@/components/NotificationDialog";
+import { useGetProducts } from "@/hooks/useProducts/useProducts";
 
-interface productResponse {
-	id: string;
-	name: string;
-	code: string;
-	discountPercentage: number;
-	price: number;
-	bannerUrl: string;
-	created_at: string;
-	_count: {
-		sales: number;
-	};
-}
+export default function Products() {
+	const { data: products, isPending: loadingProducts } = useGetProducts();
 
-interface Props {
-	products: productResponse[];
-}
-export default function Products({ products }: Props) {
 	return (
 		<div className={"lg:ml-80 pt-8 text-white "}>
 			<div className="lg:p-8 px-4 z-0">
@@ -42,26 +27,31 @@ export default function Products({ products }: Props) {
 						</Dialog.Portal>
 					</Dialog.Root>
 				</div>
-
-				<div className="flex gap-4 flex-wrap lg:justify-start justify-center">
-					{products ? (
-						products.map((product) => {
-							return (
-								<ProductDialog
-									key={product.id}
-									name={product.name}
-									bannerUrl={product.bannerUrl}
-									code={product.code}
-									discountPercentage={product.discountPercentage}
-									price={product.price}
-									sales={product._count.sales}
-								/>
-							);
-						})
-					) : (
-						<p>Nao existm produtos registados, clique em + para registar!</p>
-					)}
-				</div>
+				{loadingProducts ? (
+					<p className="text-xl text-emerald-500 font-semibold">
+						Carregando os produtos já criados...
+					</p>
+				) : (
+					<div className="flex gap-4 flex-wrap lg:justify-start justify-center">
+						{products ? (
+							products.map((product) => {
+								return (
+									<ProductDialog
+										key={product.id}
+										name={product.name}
+										bannerUrl={product.bannerUrl}
+										code={product.code}
+										discountPercentage={product.discountPercentage}
+										price={product.price}
+										sales={product._count.sales}
+									/>
+								);
+							})
+						) : (
+							<p>Nao existm produtos registados, clique em + para registar!</p>
+						)}
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -79,18 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		};
 	}
 
-	const products: productResponse[] = await api
-		.get("/products")
-		.then((res) => {
-			return res.data;
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-
 	return {
-		props: {
-			products,
-		},
+		props: {},
 	};
 };
