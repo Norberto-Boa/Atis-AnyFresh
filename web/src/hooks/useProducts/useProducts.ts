@@ -1,8 +1,9 @@
 import { api } from "@/services/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { IProductCreate } from "../../types/inputTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NotificationProps } from "@/components/NotificationDialog";
+import type { ResponseError } from "@/types/_types";
 
 const fetchProductsQuery = async () => {
 	const response = await api("/products");
@@ -24,7 +25,10 @@ const createProductQuery = async (product: IProductCreate) => {
 
 export const useAddProduct = () => {
 	const queryClient = useQueryClient();
-	const [feedback, setFeedback] = useState<NotificationProps | null>(null);
+	const [feedback, setFeedback] = useState<Pick<
+		NotificationProps,
+		"message" | "type"
+	> | null>(null);
 	const mutation = useMutation({
 		mutationFn: createProductQuery,
 		onSuccess: () => {
@@ -37,15 +41,16 @@ export const useAddProduct = () => {
 				queryKey: ["products"],
 			});
 		},
-		onError: (error) => {
+		onError: (error: ResponseError) => {
+			console.log(error);
 			setFeedback({
 				type: "error",
-				message: `Ocorreu um erro ao adicionar o produto: ${error.message}`,
+				message: `${error.response?.data?.message}`,
 			});
 		},
 	});
 
-	return { ...mutation, feedback };
+	return { ...mutation, feedback, setFeedback };
 };
 
 export { useGetProducts };

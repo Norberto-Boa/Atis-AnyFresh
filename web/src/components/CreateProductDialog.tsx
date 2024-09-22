@@ -21,6 +21,7 @@ const CreateProductDialog = () => {
 		isSuccess,
 		mutate,
 		feedback,
+		setFeedback,
 	} = useAddProduct();
 
 	const handleProductCreation = async (data: IProductCreate) => {
@@ -43,7 +44,11 @@ const CreateProductDialog = () => {
 			<Dialog.Overlay className="bg-white/20 min-w-full min-h-screen fixed inset-0 animate-overlay-show" />
 
 			{feedback && (
-				<Notification type={feedback.type} message={feedback.message} />
+				<Notification
+					type={feedback.type}
+					message={feedback.message}
+					onClose={() => setFeedback(null)}
+				/>
 			)}
 			<Dialog.Content className="bg-darkbg fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/4 px-8 py-7 lg:w-96 max-lg:w-80 rounded-lg">
 				<Dialog.Title className="text-3xl font-bold text-white mb-4">

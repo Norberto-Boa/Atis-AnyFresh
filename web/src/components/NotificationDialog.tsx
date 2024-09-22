@@ -4,19 +4,22 @@ import { useEffect, useState } from "react";
 export interface NotificationProps {
 	type: "success" | "error" | "warning";
 	message: string;
+	onClose: () => void;
 }
 
-const Notification: React.FC<NotificationProps> = ({ type, message }) => {
-	const [visible, setVisible] = useState(true);
-
+const Notification: React.FC<NotificationProps> = ({
+	type,
+	message,
+	onClose,
+}) => {
 	useEffect(() => {
-		// Auto-dismiss the notification after 5 seconds
 		const timer = setTimeout(() => {
-			setVisible(false);
+			onClose(); // Call the onClose function after 5 seconds
 		}, 5000);
 
+		// Cleanup the timer on unmount
 		return () => clearTimeout(timer);
-	}, []);
+	}, [onClose]);
 
 	const getIcon = () => {
 		switch (type) {
@@ -57,7 +60,7 @@ const Notification: React.FC<NotificationProps> = ({ type, message }) => {
 		}
 	};
 
-	return visible ? (
+	return (
 		<div
 			className={`fixed bottom-5 right-5 bg-white shadow-lg rounded-lg py-3 px-8 flex items-center space-x-4 border-l-4 z-[9999] 
         ${
@@ -76,7 +79,7 @@ const Notification: React.FC<NotificationProps> = ({ type, message }) => {
 				<p className="text-slate-800 font-semibold">{message}</p>
 			</div>
 		</div>
-	) : null;
+	);
 };
 
 export { Notification };
