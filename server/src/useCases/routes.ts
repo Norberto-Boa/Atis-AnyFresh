@@ -76,7 +76,7 @@ router.put("/expense/:id/edit", tryCatch(editExpense.edit));
 router.delete("/expense/:id/delete", tryCatch(deleteExpense.delete));
 
 //Sales Routes
-router.post("/sale", ensureAuthenticated ,tryCatch(createSale.create));
+router.post("/sale", ensureAuthenticated, tryCatch(createSale.create));
 router.get("/sales", tryCatch(getSales.get));
 router.get("/sale/:id", tryCatch(getSale.get));
 router.put("/sale/:id/edit", tryCatch(editSale.edit));
