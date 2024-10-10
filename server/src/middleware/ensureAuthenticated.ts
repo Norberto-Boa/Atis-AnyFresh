@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
 export function ensureAuthenticated(
@@ -17,6 +17,7 @@ export function ensureAuthenticated(
 	const [, token] = authToken.split(" ");
 
 	try {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		(req as any).user = verify(token, "Mena");
 		return next();
 	} catch (error) {
