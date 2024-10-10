@@ -68,7 +68,7 @@ router.get("/product/:id", tryCatch(getProduct.handle));
 router.post("/product/:id/delete", tryCatch(deleteProduct.handle));
 
 //Expenses Routes
-router.post("/expense", tryCatch(createExpense.create));
+router.post("/expense", ensureAuthenticated, tryCatch(createExpense.create));
 router.get("/expenses", tryCatch(getExpenses.get));
 router.get("/allexpenses", tryCatch(getAllExpenses.get));
 router.get("/expense/:id", tryCatch(getExpense.get));

@@ -5,7 +5,8 @@ import { createExpenseUseCase } from "./createExpenseUseCase";
 
 class createExpenseController {
 	async create(req: Request, res: Response) {
-		const { user } = req.headers;
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		const user = (req as any).user;
 
 		const createExpenseBody = z
 			.object({
@@ -25,16 +26,12 @@ class createExpenseController {
 			})
 			.parse(req.body);
 
-		if (typeof user !== "string") {
-			throw new Error("O id inserido é inválido!");
-		}
-
 		const { description, buyerName, date, price, quantity } = createExpenseBody;
 
 		const createExpense = new createExpenseUseCase();
 
 		const expense = await createExpense.handle({
-			userId: user,
+			userId: user.sub,
 			description,
 			date,
 			buyerName,
