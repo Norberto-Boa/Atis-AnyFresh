@@ -37,23 +37,27 @@ const createSaleQuery = async (
 
 export const useAddSale = () => {
 	const queryClient = useQueryClient();
-	const [feedback, setFeedback] = useState<NotificationProps | null>(null);
+	const [feedback, setFeedback] = useState<Pick<
+		NotificationProps,
+		"message" | "type"
+	> | null>(null);
+
 	const mutation = useMutation({
 		mutationFn: createSaleQuery,
 		onSuccess: () => {
 			setFeedback({
 				type: "success",
-				message: "Produto adicionado com sucesso!",
+				message: "Venda adicionada com sucesso!",
 			});
 		},
 		onError: (error) => {
 			setFeedback({
 				type: "error",
-				message: `Ocorreu um erro ao adicionar o produto: ${error.message}`,
+				message: `${error.message}`,
 			});
 		},
 	});
 
-	return { ...mutation, feedback };
+	return { ...mutation, feedback, setFeedback };
 };
 export { useGetSales };

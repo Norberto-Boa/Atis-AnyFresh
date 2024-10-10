@@ -25,10 +25,12 @@ const createProductQuery = async (product: IProductCreate) => {
 
 export const useAddProduct = () => {
 	const queryClient = useQueryClient();
+
 	const [feedback, setFeedback] = useState<Pick<
 		NotificationProps,
 		"message" | "type"
 	> | null>(null);
+
 	const mutation = useMutation({
 		mutationFn: createProductQuery,
 		onSuccess: () => {
@@ -42,7 +44,6 @@ export const useAddProduct = () => {
 			});
 		},
 		onError: (error: ResponseError) => {
-			console.log(error);
 			setFeedback({
 				type: "error",
 				message: `${error.response?.data?.message}`,
