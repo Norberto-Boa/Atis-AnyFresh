@@ -1,8 +1,9 @@
-export interface IExpenseCreate {
+export interface ExpenseDTO {
 	buyerName: string;
 	description: string;
 	price: number;
 	quantity: number;
+	date?: string;
 }
 
 export interface IProductCreate {

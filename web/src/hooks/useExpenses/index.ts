@@ -1,9 +1,11 @@
 import type { NotificationProps } from "@/components/NotificationDialog";
 import { api } from "@/services/api";
+import type { expense } from "@/types/_types";
+import type { ExpenseDTO } from "@/types/inputTypes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-const fetchExpensesQuery = async () => {
+const fetchExpensesQuery = async (): Promise<expense[] | []> => {
 	const response = await api("/allexpenses");
 	const data = await response.data;
 	return data;
@@ -16,8 +18,8 @@ export const useGetExpenses = () => {
 	});
 };
 
-const createExpesnseQuery = async () => {
-	const response = await api("/expense");
+const createExpesnseQuery = async (expense: ExpenseDTO) => {
+	const response = await api.post("/expense", expense);
 	const data = await response.data;
 	return data;
 };
@@ -43,10 +45,15 @@ const useAddExpense = () => {
 			});
 		},
 		onError: (error) => {
+			console.log(error);
 			setFeedback({
 				type: "error",
 				message: error.message,
 			});
 		},
 	});
+
+	return { ...mutate, feedback, setFeedback };
 };
+
+export { useAddExpense };
