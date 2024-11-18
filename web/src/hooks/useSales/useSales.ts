@@ -60,4 +60,38 @@ export const useAddSale = () => {
 
 	return { ...mutation, feedback, setFeedback };
 };
+
+const deleteSaleQuery = async (id: string) => {
+	const response = await api.delete(`/sale/${id}`);
+	return response;
+};
+
+export const useDeleteSale = (id: string) => {
+	const [feedback, setFeedback] = useState<Pick<
+		NotificationProps,
+		"message" | "type"
+	> | null>(null);
+
+	const mutation = useMutation({
+		mutationFn: () => deleteSaleQuery(id),
+		onSuccess: () => {
+			setFeedback({
+				type: "success",
+				message: "Venda Eliminada com sucesso!",
+			});
+
+			setTimeout(() => {
+				document.location.reload();
+			}, 750);
+		},
+		onError: (error) => {
+			setFeedback({
+				type: "error",
+				message: `${error.message}`,
+			});
+		},
+	});
+
+	return { ...mutation, feedback, setFeedback };
+};
 export { useGetSales };
