@@ -1,18 +1,19 @@
 import { client } from "../../prisma/client";
 
 class deleteSaleUseCase {
-  async handle(id : string) {
-    const sale = await client.sale.delete({
-      where: {
-        id
-      },
-      include: {
-        Product: true
-      }
-    });
+	async handle(id: string) {
+		const sale = await client.sale.delete({
+			where: {
+				id,
+			},
+			include: {
+				Product: true,
+				Payment: true,
+			},
+		});
 
-    return sale;
-  }
+		return sale;
+	}
 }
 
 export { deleteSaleUseCase };

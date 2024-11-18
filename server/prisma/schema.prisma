@@ -68,7 +68,7 @@ model Payment {
   created_at   DateTime @default(now())
   sale_id      String
 
-  sale Sale @relation(fields: [sale_id], references: [id])
+  sale Sale @relation(fields: [sale_id], references: [id], onDelete: Cascade)
 
   @@map("payment")
 }
