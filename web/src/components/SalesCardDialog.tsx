@@ -33,12 +33,15 @@ const SalesCardDialog = ({
 		? (price - (price * discountPercentage) / 100) * quantity
 		: price * quantity;
 	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	const { mutate, feedback, setFeedback } = useDeleteSale(id);
 
 	const handleDelteConfirmation = (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
+		setIsDeleting(true);
 		mutate();
+		document.location.reload();
 	};
 
 	const handleDeleteClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -118,6 +121,7 @@ const SalesCardDialog = ({
 								type="button"
 								className="w-full border-2 border-red-500 text-red-500 mt-4 px-3 py-4 rounded transition-all duration-700 hover:bg-red-600 hover:text-white uppercase font-bold flex items-center gap-3 justify-center flex-row-reverse"
 								onClick={handleDelteConfirmation}
+								disabled={isDeleting}
 							>
 								Confirmar
 							</button>
