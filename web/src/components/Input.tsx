@@ -1,10 +1,10 @@
-import { type Expense, IProductCreate } from "@/types/inputTypes";
+import { type ExpenseDTO, IProductCreate } from "@/types/inputTypes";
 import type { InputHTMLAttributes } from "react";
 import type { Path, UseFormRegister } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-	label: Path<Expense>;
-	register: UseFormRegister<Expense>;
+	label: Path<ExpenseDTO>;
+	register: UseFormRegister<ExpenseDTO>;
 }
 
 const Input = (props: InputProps) => {
